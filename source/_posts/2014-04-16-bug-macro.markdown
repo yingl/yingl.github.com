@@ -1,0 +1,75 @@
+---
+layout: post
+title: "Bugs: 小心Macro"
+date: 2014-04-16 20:24:59 +0800
+comments: true
+categories: Bugs
+---
+以前在微软做数据库连接组件测试时曾遇到这么一个问题，为了提高测试的真实性，所有测试用例在编译时取消了_DEBUG/DEBUG的定义，结果在执行测试用例的时候出现一个从未见过的错误，经调试发现if/else工作不正常，在if已经判断为false之后还是继续执行，没有跳转。经过对代码反复排查，最终发现是宏的不恰当使用导致了这个问题。
+
+<!--more-->
+先看以下这段简化过的代码：
+
+``` cpp xxx.h
+#ifdef _DEBUG
+  #define TRACE printf
+#else
+  #define TRACE if(0) printf
+#endif
+```
+
+这段代码初看没什么问题，如果_DEBUG打开TRACE就执行printf，否则TRACE就是一个空操作。但是情况真的跟想当然一样吗？请看以下代码：
+
+``` cpp test.cpp
+#include <stdio.h>
+
+#define _DEBUG
+
+#ifdef _DEBUG
+  #define TRACE printf
+#else
+  #define TRACE if(0) printf
+#endif
+
+int main(void) {
+  if (1) 
+    TRACE("OK!\n");
+  else
+    printf("Why?\n");
+}
+```
+
+分别打开关闭_DEBUG编译执行看看结果是什么？会不会觉得比较奇怪？如果我把#define _DEBUG注释掉，理论上应该什么都不打印。其实这个问题我们只要把宏展开就可以发现，代码其实是这样的：
+
+``` cpp xxx.cpp
+if (1)
+  if (0)
+    printf("OK!\n");
+  else
+    printf("Why?\n");
+```
+
+修复这个问题的方法有两个：
+
+1. 在所有调用TRACE的地方用{}包起来，这个改动量太大了，最后没有采用。
+2. 用while取代if，这样展开就没有问题了。而且只要修改一个公共的头文件就可以了。
+
+最终代码如下：
+
+``` cpp xxx.h
+#ifdef _DEBUG
+  #define TRACE printf
+#else
+  #define TRACE while(0) printf
+#endif
+```
+
+上面例子的代码展开就可以按照期望运行了。
+
+``` cpp xxx.cpp
+if (1)
+  while (0)
+    printf("OK!\n");
+else
+  printf("Why?\n");
+```
