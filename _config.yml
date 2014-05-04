@@ -101,3 +101,6 @@ facebook_like: false
 
 # Sina weibo
 weibo_show: true    # Whether weibo show is shown in aside
+weibo_share: true   # Whether show the sharing button
+weibo_uid: 2607195824
+weibo_verifier: d5cf5ffc
