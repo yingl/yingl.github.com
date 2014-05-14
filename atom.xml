@@ -4,7 +4,7 @@
   <title><![CDATA[怪兽说]]></title>
   <link href="http://yingl.github.io/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-05-04T13:36:57+08:00</updated>
+  <updated>2014-05-14T11:58:47+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -14,11 +14,27 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Leetcode终于刷完了]]></title>
+    <link href="http://yingl.github.io/blog/2014/05/13/leetcode/"/>
+    <updated>2014-05-13T21:33:45+08:00</updated>
+    <id>http://yingl.github.io/blog/2014/05/13/leetcode</id>
+    <content type="html"><![CDATA[<p>当年准备面试FLAG时开工的，后来断断续续做了一点，这次终于痛下决心刷完整理上传到github上了。参考链接：<a href="https://github.com/yingl/leetcode_in_cpp">https://github.com/yingl/leetcode_in_cpp</a></p>
+
+<p>总的来说，这些题目比起专业的ACM还是比较简单的，数据结构不外乎数组，链表和二叉树；算法不外乎二分，递归，回溯，深度／广度优先遍历，空间换时间。到9月份校园招聘季节就开始了，如果对自己算法数据结构不自信的话，那就把这当作一个福利吧！</p>
+
+<p>关于面试的时候为什么要考白板编程，好好参考一下这篇文章：<a href="http://blog.jobbole.com/65625/">白板与编程面试：为什么不在电脑上编程更有帮助</a>。</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[2014年阿里巴巴实习生面试武汉站总结]]></title>
     <link href="http://yingl.github.io/blog/2014/04/28/wuhan-interview/"/>
     <updated>2014-04-28T18:59:08+08:00</updated>
     <id>http://yingl.github.io/blog/2014/04/28/wuhan-interview</id>
     <content type="html"><![CDATA[<p>4月24、25两天奔赴武汉参加了2014年阿里巴巴实习生面试，感触不少，写下来和大家分享一下，希望今年找工作的学生能借鉴一二。</p>
+
+<!--more-->
+
 
 <h3>简历</h3>
 
