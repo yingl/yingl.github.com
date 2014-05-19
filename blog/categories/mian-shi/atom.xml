@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 面试 | 怪兽说]]></title>
   <link href="http://yingl.github.io/blog/categories/mian-shi/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-05-14T14:47:48+08:00</updated>
+  <updated>2014-05-19T22:16:31+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -19,6 +19,9 @@
     <updated>2014-05-13T21:33:45+08:00</updated>
     <id>http://yingl.github.io/blog/2014/05/13/leetcode</id>
     <content type="html"><![CDATA[<p>当年准备面试FLAG时开工的，后来断断续续做了一点，这次终于痛下决心刷完整理上传到github上了。参考链接：<a href="https://github.com/yingl/leetcode_in_cpp">https://github.com/yingl/leetcode_in_cpp</a></p>
+
+<!--more-->
+
 
 <p>总的来说，这些题目比起专业的ACM还是比较简单的，数据结构不外乎数组，链表和二叉树；算法不外乎二分，递归，回溯，深度／广度优先遍历，空间换时间。到9月份校园招聘季节就开始了，如果对自己算法数据结构不自信的话，那就把这当作一个福利吧！</p>
 
