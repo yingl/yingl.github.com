@@ -98,7 +98,7 @@
 
 <p>先看以下这段简化过的代码：</p>
 
-<figure class='code'><figcaption><span>xxx.h</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -113,7 +113,7 @@
 
 <p>这段代码初看没什么问题，如果_DEBUG打开TRACE就执行printf，否则TRACE就是一个空操作。但是情况真的跟想当然一样吗？请看以下代码：</p>
 
-<figure class='code'><figcaption><span>test.cpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -150,7 +150,7 @@
 
 <p>分别打开关闭<em>DEBUG编译执行看看结果是什么？会不会觉得比较奇怪？如果我把#define </em>DEBUG注释掉，理论上应该什么都不打印。其实这个问题我们只要把宏展开就可以发现，代码其实是这样的：</p>
 
-<figure class='code'><figcaption><span>xxx.cpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -173,7 +173,7 @@
 
 <p>最终代码如下：</p>
 
-<figure class='code'><figcaption><span>xxx.h</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -188,7 +188,7 @@
 
 <p>上面例子的代码展开就可以按照期望运行了。</p>
 
-<figure class='code'><figcaption><span>xxx.cpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -300,6 +300,10 @@ var duoshuoQuery = {short_name:"monstersay"};
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/20/bug-price-convert/">Bugs: 价格转换粗大事了</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/05/19/letter-from-student/">算法班学生来信及回复－鸡汤文！</a>
       </li>
     
@@ -315,16 +319,12 @@ var duoshuoQuery = {short_name:"monstersay"};
         <a href="/blog/2014/04/16/bug-macro/">Bugs: 小心Macro</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/04/16/dp-creational-prototype/">设计模式 创建型：原型</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/bugs/'>Bugs (1)</a></li>
+    <li class='category'><a href='/blog/categories/bugs/'>Bugs (2)</a></li>
 <li class='category'><a href='/blog/categories/c-plus-plus/'>C++ (1)</a></li>
 <li class='category'><a href='/blog/categories/zhao-pin/'>招聘 (1)</a></li>
 <li class='category'><a href='/blog/categories/ce-shi-fen-xiang/'>测试分享 (1)</a></li>

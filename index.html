@@ -9,7 +9,13 @@
   <meta name="author" content="窥基／无柳无酒／黑灯瞎火">
 
   
-  <meta name="description" content="在July，Ben，高博老师等一干同志的努力下，上海算法班终于开课了。第一次课比较成功，学生们求知若渴，积极互动。除了算法方面的入门讲座外，也分享了一些职业发展相关的话题。课后，有个同学给我发了消息，经与他确认后，我把这篇文章和我的回复一起贴出来分享一下。 黑灯老师好，感谢你今天的课程，充满真诚， &hellip;">
+  <meta name="description" content="今天中午刚吃完饭正在一狼假寐，突然电话铃响起！什么？居然有价格为0的商品？立刻从睡梦中惊醒开始排查。啥都不说了，先把肇事代码拿出来： 1
+2
+3
+4
+5
+6
+function getPriceStr(priceLong) { if (isNaN(priceLong)) { return &#39 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +77,59 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/05/20/bug-price-convert/">Bugs: 价格转换粗大事了</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-20T15:12:48+08:00" pubdate data-updated="true">May 20<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今天中午刚吃完饭正在一狼假寐，突然电话铃响起！什么？居然有价格为0的商品？立刻从睡梦中惊醒开始排查。啥都不说了，先把肇事代码拿出来：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">getPriceStr</span><span class="p">(</span><span class="nx">priceLong</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">priceLong</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">priceLong</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)).</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>很明显，问题出在round上，丫返回的是整数啊！后台返回的价格单位是分，前台转化成元，想法没错，但是但是&hellip;好吧，测试也有很大责任，只看页面展现，把这个细节漏掉了。从这个例子可以看出，单元测试非常非常重要，如果有单元测试的话，开发阶段就可以把这个问题修复了。还好这次没撞上大活动，在灰度阶段被兄弟部门发现。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/05/19/letter-from-student/">算法班学生来信及回复－鸡汤文！</a></h1>
     
     
@@ -96,33 +155,12 @@
 
   <div class="entry-content"><p>在July，Ben，高博老师等一干同志的努力下，上海算法班终于开课了。第一次课比较成功，学生们求知若渴，积极互动。除了算法方面的入门讲座外，也分享了一些职业发展相关的话题。课后，有个同学给我发了消息，经与他确认后，我把这篇文章和我的回复一起贴出来分享一下。</p>
 
-<p>黑灯老师好，感谢你今天的课程，充满真诚，全是干货。不知道你们出于什么目的办这个课程，因为看起来这些钱对你们来说不算什么。是为了帮助朋友，还是想把培训做大，或者想带出几个不错的学员。从我的角度来讲，这可能会是我花的最值的800块钱。
-我先介绍一下自己。我叫XYZ，今年26岁。07年参加高考考入大连理工大学，由于是辽宁人，省内学校的分数线相对低一些，超了录取分数线40多分，去了学校内分数最高的电子信息工程专业。大学期间基本没有把心细放在学习上，GPA只有3.0，后来大三的时候突击英语，申请到了香港大学的授课制研究生。这种研究生基本属于那边吸金的项目，上上课考考试也就毕业了。
-自己之前在找工作上也不是特别走心，毕业了以后还gap了将近一年。以前总以为自己有些基本素质，即使不会到企业里再学习。后来发现，企业不是培训机构，找我们来是让我们干活的，让我们创造价值的。父母都在军队工作，也算有些级别，但是对公司上的事就不是很了解，家里不太用我担心，也能帮我找到类似养老国企的工作，不过那些不太是我想要的。自己想真正学点东西，虽然现在水平很差，总归是have to start from somewhere.</p>
-
-<p>上面说了这么多，是想老师对我有个了解，下面问几个问题。
-第一、现在感觉处于一种信息很不对等的状态，不知道企业需要什么能力，还有例如这个工作具体每天做什么事情，是不是我想要的。欢迎老师分享一些你工作的经历，对职位发展、行业发展的理解。</p>
-
-<p>第二、就是硬实力这一块。针对面试是一种准备，另外就是真正把我的实力提升起来，肚子里有货。怎么把技术学习好，也都知道多写多看多思考，可是具体做起来就没了方向。比如算法重要还是其他的哪个部分重要，如果算法重要，有哪些具体的提升方法，比如想看MIT算法课程，听你们的课程，刷leetcode这种。看了我自己的介绍，老师估计也知道我是比较懒、比较贪玩的那种，期待找到什么捷径。现在是不想走弯路的多一些，如果有用，我会下决心做好。
-还有职业规划这一块。</p>
-
-<p>我是想做一些类似业务、技术、管理、和客户打交道这种交叉综合似的工作，企业可能想找一些外企，国内一些企业，比如百度它的一些做法我不是很认同。不过本身对外企不是很了解，这大多可能是一种叶公好龙的状态。欢迎老师分享见解。</p>
-
-<p>期待进一步跟你们的交流。</p>
-
-<p>&mdash;&mdash;&mdash; 分割线下面是我的回答 &mdash;&mdash;&mdash;</p>
-
-<p>首先你的学历背景已经胜过大多数同龄人了，家庭背景又足以让你没有后顾之忧，所以趁着年轻，赶紧努力去追逐梦想！下面逐条回答你的问题，希望能对你有所帮助。</p>
-
-<ol>
-<li><p>关于工作经历什么的建议你上Linkedin，可以查到很多牛人的经历。我的经历没什么特别的，先在国营工厂，然后去了外企，最近又来到了民企。对于职业发展，我有一句忠告：大多数人的工作都是乏味无趣的。如果想追求有挑战性的工作，第一件事诚实的问一下自己能力够不够？所以不要轻视你手里乏味的工作，有个关于年轻人贴发票的段子（不清楚的话可以Google）老得不能再老，但是对现实生活有着切实得指导意义。如果你觉得工作枯燥，乏味，那么运用你的智慧去改善它，让它变得更有趣，更有挑战力。另外对于刚参加工作的年轻人来说，不要指望有什么伯乐，在你证明你的能力之前没人把你当回事。当你一迈上工作岗位后，忘记你的学校和学历，在点滴工作中证明自己才是最好的办法。古人说得好，不积珪步无以成千里，很多业内大牛也都是从很多很初级的工作做起。比如上海微软不少人转到美国去工作，他们在加入微软之前已经是业务骨干，不少在网上也小有名气，但是来了微软后有的做的是很基础的修复一些老产品bug的工作，但正是慢慢的在这些项目上证明能力和建立信任，才逐步转到核心产品岗位上。</p></li>
-<li><p>关于企业具体想要什么能力，最简单的方法是看企业招聘广告上的JD（工作描述）。或者是通过社交网络结识相关企业的员工了解详细情况。但是某些能力是通用的：了解计算机体系结构，基本的数据结构和算法，至少熟悉一门编程语言，深入了解1到2样主流技术。</p></li>
-<li><p>关于真正的实力，只能说你们很幸运的生在了这个年代。互联网行业与传统行业不同，哪怕你一天班都没上过，也能积累很多经验并证明。想进入大公司，算法只是一方面，很多人不懂算法也混得很好，因为有真本事。但是真本事是需要花时间积累的，比如github上有很多开源项目，可以先试着去读他们的代码，在自己机器上调试，理解了别人的设计后再自己试着去改。说实话，捷径真的没有。我有个朋友，本科毕业加入阿里，4年就升到技术专家，无它，刻苦而已。本科的时候为ACM通宵刷题，工作后为解决技术难题加班到凌晨是经常的。只有热爱并为之真正付出才会有回报。最后给出一个勉强算是捷径的方法：好学校毕业，或者在微博上和很多真伪大牛打得火热，自己的努力达到能和这些人交流的门槛，然后就混圈子吧。</p></li>
-<li><p>关于你的职业理想，一开始不会有这样的工作等着你。至少在技术或业务某一个地方证明你的能力，上级才会扩大你的职责范围。今天下午开年会，分管的高级副总裁讲话，他在转向管理之前做了7年的技术工作。我之前有个同事是微软中国的首席技术步道师（从工作内容上来看接近你的要求），但是他在加入微软之前就已经国内出色的技术专家，之后在技术支持和项目管理岗位上又做了10年，没有这点积累，上级和客户怎么会信任你？无论如何，IT行业的萝卜干饭不用像传统行业吃那么久。当年我在国企第一年还是助理工程师，第二年也只是有资格考工程师职称，而且离开那个行业后，你积累的知识毫无用处。另外不管外企民企，干活最重要。很多外企外表光鲜，但本质就是一个大号国企。加入一个公司之前首先问你自己想从里面得到什么。</p></li>
-</ol>
-
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/05/19/letter-from-student/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -474,50 +512,9 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/18/kai-zhang-xian-da-ge-zhao-pin-guang-gao/">开张先打个招聘广告</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-18T19:24:02+08:00" pubdate data-updated="true">Mar 18<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>怪兽说开张了！</h2>
-
-<p>WordPress太笨重，Drupal的插件太不友好，折腾了一晚上决定还是拥抱Octopress。今天别的什么就不说了，先打个招聘广告，杭州淘宝技术质量部招聘高级测试开发工程师，上市前最好的机会， 待遇你懂的，而且还有大把水灵灵的妹子等着你哦！级别P6起，能力强P8也是能搞定的。有互联网行业经验的同学优先，没有也不要紧，只要你表现出了足够的技术力或业务洞察力，机会一样大大的。要求如下，仅供参考。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/03/18/kai-zhang-xian-da-ge-zhao-pin-guang-gao/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -538,6 +535,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/20/bug-price-convert/">Bugs: 价格转换粗大事了</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/05/19/letter-from-student/">算法班学生来信及回复－鸡汤文！</a>
       </li>
     
@@ -553,16 +554,12 @@
         <a href="/blog/2014/04/16/bug-macro/">Bugs: 小心Macro</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/04/16/dp-creational-prototype/">设计模式 创建型：原型</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/bugs/'>Bugs (1)</a></li>
+    <li class='category'><a href='/blog/categories/bugs/'>Bugs (2)</a></li>
 <li class='category'><a href='/blog/categories/c-plus-plus/'>C++ (1)</a></li>
 <li class='category'><a href='/blog/categories/zhao-pin/'>招聘 (1)</a></li>
 <li class='category'><a href='/blog/categories/ce-shi-fen-xiang/'>测试分享 (1)</a></li>

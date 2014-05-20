@@ -4,7 +4,7 @@
   <title><![CDATA[怪兽说]]></title>
   <link href="http://yingl.github.io/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-05-19T22:39:19+08:00</updated>
+  <updated>2014-05-20T21:34:10+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -14,11 +14,40 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Bugs: 价格转换粗大事了]]></title>
+    <link href="http://yingl.github.io/blog/2014/05/20/bug-price-convert/"/>
+    <updated>2014-05-20T15:12:48+08:00</updated>
+    <id>http://yingl.github.io/blog/2014/05/20/bug-price-convert</id>
+    <content type="html"><![CDATA[<p>今天中午刚吃完饭正在一狼假寐，突然电话铃响起！什么？居然有价格为0的商品？立刻从睡梦中惊醒开始排查。啥都不说了，先把肇事代码拿出来：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">getPriceStr</span><span class="p">(</span><span class="nx">priceLong</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">priceLong</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">priceLong</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)).</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>很明显，问题出在round上，丫返回的是整数啊！后台返回的价格单位是分，前台转化成元，想法没错，但是但是&hellip;好吧，测试也有很大责任，只看页面展现，把这个细节漏掉了。从这个例子可以看出，单元测试非常非常重要，如果有单元测试的话，开发阶段就可以把这个问题修复了。还好这次没撞上大活动，在灰度阶段被兄弟部门发现。</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[算法班学生来信及回复－鸡汤文！]]></title>
     <link href="http://yingl.github.io/blog/2014/05/19/letter-from-student/"/>
     <updated>2014-05-19T21:09:26+08:00</updated>
     <id>http://yingl.github.io/blog/2014/05/19/letter-from-student</id>
     <content type="html"><![CDATA[<p>在July，Ben，高博老师等一干同志的努力下，上海算法班终于开课了。第一次课比较成功，学生们求知若渴，积极互动。除了算法方面的入门讲座外，也分享了一些职业发展相关的话题。课后，有个同学给我发了消息，经与他确认后，我把这篇文章和我的回复一起贴出来分享一下。</p>
+
+<!--more-->
+
 
 <p>黑灯老师好，感谢你今天的课程，充满真诚，全是干货。不知道你们出于什么目的办这个课程，因为看起来这些钱对你们来说不算什么。是为了帮助朋友，还是想把培训做大，或者想带出几个不错的学员。从我的角度来讲，这可能会是我花的最值的800块钱。
 我先介绍一下自己。我叫XYZ，今年26岁。07年参加高考考入大连理工大学，由于是辽宁人，省内学校的分数线相对低一些，超了录取分数线40多分，去了学校内分数最高的电子信息工程专业。大学期间基本没有把心细放在学习上，GPA只有3.0，后来大三的时候突击英语，申请到了香港大学的授课制研究生。这种研究生基本属于那边吸金的项目，上上课考考试也就毕业了。
@@ -114,7 +143,7 @@
 
 <p>先看以下这段简化过的代码：</p>
 
-<figure class='code'><figcaption><span>xxx.h</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -129,7 +158,7 @@
 
 <p>这段代码初看没什么问题，如果_DEBUG打开TRACE就执行printf，否则TRACE就是一个空操作。但是情况真的跟想当然一样吗？请看以下代码：</p>
 
-<figure class='code'><figcaption><span>test.cpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -166,7 +195,7 @@
 
 <p>分别打开关闭<em>DEBUG编译执行看看结果是什么？会不会觉得比较奇怪？如果我把#define </em>DEBUG注释掉，理论上应该什么都不打印。其实这个问题我们只要把宏展开就可以发现，代码其实是这样的：</p>
 
-<figure class='code'><figcaption><span>xxx.cpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -189,7 +218,7 @@
 
 <p>最终代码如下：</p>
 
-<figure class='code'><figcaption><span>xxx.h</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -204,7 +233,7 @@
 
 <p>上面例子的代码展开就可以按照期望运行了。</p>
 
-<figure class='code'><figcaption><span>xxx.cpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -237,7 +266,7 @@
 
 <p>Wiki已经讲的很清楚了。简单来说就是把一个复杂的对象创建过程简化成复制粘贴的形式。需要注意的是我们在复制原型的时候使用深拷贝还是浅拷贝。此外该模式还经常和工厂模式一起使用，因为原型可以用工厂来构建。看了以下例子后可能会有一个疑问，为什么要提供一个clone方法，而不是直接调用拷贝构造函数？因为C++是静态语言，我们在复制原型时并不知道它是具体那个类型，而clone的话这个类自己负责拷贝，只需要返回一个基类类型的指针就可以了。</p>
 
-<figure class='code'><figcaption><span>main.cpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -320,7 +349,7 @@
 
 <p>我们已生成汽车做为例子。虽然不同的车厂生成不同品牌的汽车，但是很多零部件的通用的，不同品牌的汽车只是把他们组合起来。比如轮胎选择米其林或固特异，变速箱采用ZF或爱信。工厂在为某个新品牌新建生产线的时候只要选择不同的供应商就可以了，而不需要所有零件都自己从头生产。例子代码如下。</p>
 
-<figure class='code'><figcaption><span>main.cpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -565,7 +594,7 @@
 
 <p>解决方案和工厂方法很像，只不过现在的工厂提供了一组方法。先定义一个兵工厂接口，声明一系列方法告诉别人我要生产那些装备，剩下的就是各个具体兵工厂继承并实现这些方法。如果我们套定义的话，就是为一系列武器的创建提供了统一的接口，在需要的时候我们选择某个具体的兵工厂实现来完成任务。例子代码如下。</p>
 
-<figure class='code'><figcaption><span>main.cpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -722,7 +751,7 @@
 
 <p>以游戏红色警报为例，俄国美国都会生产坦克，如果我们需要一个生产坦克的函数负责所有坦克的生产，那么我们该怎么实现？很多同学第一反应是这样的：</p>
 
-<figure class='code'><figcaption><span>代码片段</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -751,7 +780,7 @@
 
 <p>先回忆一下面向对象的一条重要原则；开放－封闭。对修改封闭，对扩展开放。如果我们想生产新的坦克，应该采用扩展而不是修改的方式。工厂方法模式开始上场了，理论不多说，直接例子分析来解决现在的问题。首先我们需要一个工厂接口TankFactory，提供一个generate方法。然后继承这个接口，分别定义USTankFactory和RussiaTankFactory，各自实现generate方法生产不同的坦克。generateTank方法的参数由tankType改为TankFactory*，那么我们上层的代码在掌握了各种坦克工厂的信息后，只要把对应坦克工厂作为参数传下来就可以了。在工程实践里面一个最基本的要求就是下层代码改得越少越好。现在附上新的代码以供参考。</p>
 
-<figure class='code'><figcaption><span>main.cpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>

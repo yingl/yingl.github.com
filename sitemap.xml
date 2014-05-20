@@ -2,31 +2,31 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://yingl.github.io/blog/2014/03/18/kai-zhang-xian-da-ge-zhao-pin-guang-gao/</loc>
-        <lastmod>2014-05-04T13:36:32+08:00</lastmod>
+        <lastmod>2014-05-20T21:30:14+08:00</lastmod>
     </url>
     <url>
         <loc>http://yingl.github.io/blog/2014/03/30/38-movie-falsh-sale/</loc>
-        <lastmod>2014-05-04T13:36:32+08:00</lastmod>
+        <lastmod>2014-05-20T21:30:18+08:00</lastmod>
     </url>
     <url>
         <loc>http://yingl.github.io/blog/2014/03/31/dp-creational-factory-method/</loc>
-        <lastmod>2014-05-04T13:36:32+08:00</lastmod>
+        <lastmod>2014-05-20T21:33:17+08:00</lastmod>
     </url>
     <url>
         <loc>http://yingl.github.io/blog/2014/04/01/dp-creational-abstract-factory/</loc>
-        <lastmod>2014-05-04T13:36:32+08:00</lastmod>
+        <lastmod>2014-05-20T21:30:28+08:00</lastmod>
     </url>
     <url>
         <loc>http://yingl.github.io/blog/2014/04/05/dp-creational-builder/</loc>
-        <lastmod>2014-05-04T13:36:32+08:00</lastmod>
+        <lastmod>2014-05-20T21:30:44+08:00</lastmod>
     </url>
     <url>
         <loc>http://yingl.github.io/blog/2014/04/16/dp-creational-prototype/</loc>
-        <lastmod>2014-05-04T13:36:32+08:00</lastmod>
+        <lastmod>2014-05-20T21:31:48+08:00</lastmod>
     </url>
     <url>
         <loc>http://yingl.github.io/blog/2014/04/16/bug-macro/</loc>
-        <lastmod>2014-05-04T13:36:32+08:00</lastmod>
+        <lastmod>2014-05-20T21:31:34+08:00</lastmod>
     </url>
     <url>
         <loc>http://yingl.github.io/blog/2014/04/28/wuhan-interview/</loc>
@@ -38,15 +38,19 @@
     </url>
     <url>
         <loc>http://yingl.github.io/blog/2014/05/19/letter-from-student/</loc>
-        <lastmod>2014-05-19T22:39:04+08:00</lastmod>
+        <lastmod>2014-05-20T21:12:53+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://yingl.github.io/blog/2014/05/20/bug-price-convert/</loc>
+        <lastmod>2014-05-20T21:31:52+08:00</lastmod>
     </url>
     <url>
         <loc>http://yingl.github.io/blog/archives/</loc>
-        <lastmod>2014-05-19T22:39:04+08:00</lastmod>
+        <lastmod>2014-05-20T21:33:17+08:00</lastmod>
     </url>
     <url>
         <loc>http://yingl.github.io/</loc>
-        <lastmod>2014-05-19T22:39:04+08:00</lastmod>
+        <lastmod>2014-05-20T21:33:17+08:00</lastmod>
     </url>
     <url>
         <loc>http://yingl.github.io/robots.txt</loc>

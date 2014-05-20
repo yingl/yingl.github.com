@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 设计模式 | 怪兽说]]></title>
   <link href="http://yingl.github.io/blog/categories/she-ji-mo-shi/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-05-19T22:39:19+08:00</updated>
+  <updated>2014-05-20T21:34:10+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -31,46 +31,85 @@
 
 <p>Wiki已经讲的很清楚了。简单来说就是把一个复杂的对象创建过程简化成复制粘贴的形式。需要注意的是我们在复制原型的时候使用深拷贝还是浅拷贝。此外该模式还经常和工厂模式一起使用，因为原型可以用工厂来构建。看了以下例子后可能会有一个疑问，为什么要提供一个clone方法，而不是直接调用拷贝构造函数？因为C++是静态语言，我们在复制原型时并不知道它是具体那个类型，而clone的话这个类自己负责拷贝，只需要返回一个基类类型的指针就可以了。</p>
 
-<p>``` cpp main.cpp</p>
-
-<h1>include <iostream></h1>
-
-<h1>include <string></h1>
-
-<p>using namespace std;</p>
-
-<p>class Prototype {
-  public:</p>
-
-<pre><code>virtual Prototype* clone() const = 0;
-</code></pre>
-
-<p>};</p>
-
-<p>class Product : public Prototype {
-  public:</p>
-
-<pre><code>Product() {
-  cout &lt;&lt; "Take long time to create a product." &lt;&lt; endl;
-}   
-
-Product(const Product&amp; product) {
-  cout &lt;&lt; "Copy a product is so fast." &lt;&lt; endl;
-}   
-
-Prototype* clone() const {
-  return new Product(*this);
-}   
-</code></pre>
-
-<p>};</p>
-
-<p>int main(void) {
-  Prototype <em>p1 = new Product;
-  Prototype </em>p2 = p1->clone();
-  Prototype *p3 = p2->clone();
-}
-```</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">iostream</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">Prototype</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">virtual</span> <span class="n">Prototype</span><span class="o">*</span> <span class="n">clone</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">Product</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Prototype</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">Product</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s">&quot;Take long time to create a product.&quot;</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Product</span><span class="p">(</span><span class="k">const</span> <span class="n">Product</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span> <span class="n">product</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s">&quot;Copy a product is so fast.&quot;</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Prototype</span><span class="o">*</span> <span class="n">clone</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">new</span> <span class="n">Product</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">Prototype</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">p1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Product</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">Prototype</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">p2</span> <span class="o">=</span> <span class="n">p1</span><span class="o">-&gt;</span><span class="n">clone</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">Prototype</span> <span class="o">*</span><span class="n">p3</span> <span class="o">=</span> <span class="n">p2</span><span class="o">-&gt;</span><span class="n">clone</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   
@@ -92,139 +131,271 @@ Prototype* clone() const {
 
 <p>我们已生成汽车做为例子。虽然不同的车厂生成不同品牌的汽车，但是很多零部件的通用的，不同品牌的汽车只是把他们组合起来。比如轮胎选择米其林或固特异，变速箱采用ZF或爱信。工厂在为某个新品牌新建生产线的时候只要选择不同的供应商就可以了，而不需要所有零件都自己从头生产。例子代码如下。</p>
 
-<p>``` cpp main.cpp</p>
-
-<h1>include <iostream></h1>
-
-<h1>include <string></h1>
-
-<p>using namespace std;</p>
-
-<p>class Tire {};  // 轮胎
-class GoodYearTire : public Tire {};  // 固特异轮胎
-class MichelinTire : public Tire {};  // 米其林轮胎</p>
-
-<p>class GearBox {}; // 变速箱
-class ZFGearBox : public GearBox {};  // ZF变速箱
-class AWGearBox : public GearBox {};  // 爱信变速箱</p>
-
-<p>class Car {
-  public:</p>
-
-<pre><code>Car(string name, Tire *tires, GearBox *gearBox) {
-  _name = name;
-  _tires = tires;
-  _gearBox = gearBox;
-}
-
-Car() {
-  delete[] _tires;
-  delete _gearBox;
-}
-
-void showInfo() {
-  cout &lt;&lt; "I am a " &lt;&lt; _name &lt;&lt; " car." &lt;&lt; endl;
-}
-</code></pre>
-
-<p>protected:
-  string <em>name;
-  Tire *</em>tires;       // 轮胎
-  GearBox *_gearBox;  // 变速箱
-};</p>
-
-<p>// 生产线
-class CarBuilder {
-  public:</p>
-
-<pre><code>virtual Car* produce() = 0;
-</code></pre>
-
-<p>};</p>
-
-<p>// 高尔夫生产线
-class GolfCarBuilder : public CarBuilder {
-  public:</p>
-
-<pre><code>virtual Car* produce() {
-  // 使用固特异轮胎和ZF变速箱
-  return new Car(string("Golf"), new GoodYearTire[4], new ZFGearBox);
-}
-</code></pre>
-
-<p>};</p>
-
-<p>// 宝马生产线
-class BMWCarBuilder : public CarBuilder {
-  public:</p>
-
-<pre><code>virtual Car* produce() {
-  // 使用米其林轮胎和爱信变速箱
-  return new Car(string("BMW"), new MichelinTire[4], new AWGearBox);
-}
-</code></pre>
-
-<p>};</p>
-
-<p>// 汽车工厂
-class Factory {
-  public:</p>
-
-<pre><code>virtual Car* produce() = 0;
-virtual void setBuilder(CarBuilder*) = 0;
-</code></pre>
-
-<p>};</p>
-
-<p>// 大众工厂，我们有高尔夫和宝马两条生产线
-class VWFactory : public Factory {
-  public:</p>
-
-<pre><code>VWFactory(CarBuilder *carBuilder) {
-  _carBuilder = carBuilder;
-}
-
-void setBuilder(CarBuilder *carBuilder) {
-  if (_carBuilder != NULL) {
-    delete _carBuilder;
-  }
-
-  _carBuilder = carBuilder;
-}
-
-virtual Car* produce() {
-  return _carBuilder-&gt;produce();
-}
-</code></pre>
-
-<p>  protected:</p>
-
-<pre><code>CarBuilder *_carBuilder;
-</code></pre>
-
-<p>};</p>
-
-<p>int main(void) {
-  CarBuilder <em>golfCarBuilder = new GolfCarBuilder;
-  CarBuilder </em>bmwCarBuilder = new BMWCarBuilder;
-  Factory *vwFactory = new VWFactory(golfCarBuilder);</p>
-
-<p>  Car *golfCar = vwFactory->produce();</p>
-
-<p>  vwFactory->setBuilder(bmwCarBuilder);</p>
-
-<p>  Car *bmwCar = vwFactory->produce();</p>
-
-<p>  golfCar->showInfo();
-  bmwCar->showInfo();</p>
-
-<p>  delete bmwCar;
-  delete golfCar;
-  delete vwFactory;
-  delete bmwCarBuilder;
-  delete golfCarBuilder;
-}
-```</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">iostream</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">Tire</span> <span class="p">{};</span>  <span class="c1">// 轮胎</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">GoodYearTire</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Tire</span> <span class="p">{};</span>  <span class="c1">// 固特异轮胎</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">MichelinTire</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Tire</span> <span class="p">{};</span>  <span class="c1">// 米其林轮胎&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">GearBox</span> <span class="p">{};</span> <span class="c1">// 变速箱</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">ZFGearBox</span> <span class="o">:</span> <span class="k">public</span> <span class="n">GearBox</span> <span class="p">{};</span>  <span class="c1">// ZF变速箱</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">AWGearBox</span> <span class="o">:</span> <span class="k">public</span> <span class="n">GearBox</span> <span class="p">{};</span>  <span class="c1">// 爱信变速箱&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">Car</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">Car</span><span class="p">(</span><span class="n">string</span> <span class="n">name</span><span class="p">,</span> <span class="n">Tire</span> <span class="o">*</span><span class="n">tires</span><span class="p">,</span> <span class="n">GearBox</span> <span class="o">*</span><span class="n">gearBox</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">_name</span> <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">_tires</span> <span class="o">=</span> <span class="n">tires</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">_gearBox</span> <span class="o">=</span> <span class="n">gearBox</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Car</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">delete</span><span class="p">[]</span> <span class="n">_tires</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">_gearBox</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="n">showInfo</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s">&quot;I am a &quot;</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">_name</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s">&quot; car.&quot;</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">protected</span><span class="o">:</span>
+</span><span class='line'>  <span class="n">string</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">name</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">Tire</span> <span class="o">*&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">tires</span><span class="p">;</span>       <span class="c1">// 轮胎</span>
+</span><span class='line'>  <span class="n">GearBox</span> <span class="o">*</span><span class="n">_gearBox</span><span class="p">;</span>  <span class="c1">// 变速箱</span>
+</span><span class='line'><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// 生产线</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">CarBuilder</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">virtual</span> <span class="n">Car</span><span class="o">*</span> <span class="n">produce</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// 高尔夫生产线</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">GolfCarBuilder</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CarBuilder</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">virtual</span> <span class="n">Car</span><span class="o">*</span> <span class="n">produce</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// 使用固特异轮胎和ZF变速箱</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">new</span> <span class="n">Car</span><span class="p">(</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;Golf&quot;</span><span class="p">),</span> <span class="k">new</span> <span class="n">GoodYearTire</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="k">new</span> <span class="n">ZFGearBox</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// 宝马生产线</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">BMWCarBuilder</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CarBuilder</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">virtual</span> <span class="n">Car</span><span class="o">*</span> <span class="n">produce</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// 使用米其林轮胎和爱信变速箱</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">new</span> <span class="n">Car</span><span class="p">(</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;BMW&quot;</span><span class="p">),</span> <span class="k">new</span> <span class="n">MichelinTire</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="k">new</span> <span class="n">AWGearBox</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// 汽车工厂</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Factory</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">virtual</span> <span class="n">Car</span><span class="o">*</span> <span class="n">produce</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="k">virtual</span> <span class="kt">void</span> <span class="n">setBuilder</span><span class="p">(</span><span class="n">CarBuilder</span><span class="o">*</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// 大众工厂，我们有高尔夫和宝马两条生产线</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">VWFactory</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Factory</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">VWFactory</span><span class="p">(</span><span class="n">CarBuilder</span> <span class="o">*</span><span class="n">carBuilder</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">_carBuilder</span> <span class="o">=</span> <span class="n">carBuilder</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="n">setBuilder</span><span class="p">(</span><span class="n">CarBuilder</span> <span class="o">*</span><span class="n">carBuilder</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">_carBuilder</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">delete</span> <span class="n">_carBuilder</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">_carBuilder</span> <span class="o">=</span> <span class="n">carBuilder</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">virtual</span> <span class="n">Car</span><span class="o">*</span> <span class="n">produce</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">_carBuilder</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">produce</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="k">protected</span><span class="o">:&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">CarBuilder</span> <span class="o">*</span><span class="n">_carBuilder</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">CarBuilder</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">golfCarBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GolfCarBuilder</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">CarBuilder</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">bmwCarBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BMWCarBuilder</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">Factory</span> <span class="o">*</span><span class="n">vwFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">VWFactory</span><span class="p">(</span><span class="n">golfCarBuilder</span><span class="p">);</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="n">Car</span> <span class="o">*</span><span class="n">golfCar</span> <span class="o">=</span> <span class="n">vwFactory</span><span class="o">-&gt;</span><span class="n">produce</span><span class="p">();</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="n">vwFactory</span><span class="o">-&gt;</span><span class="n">setBuilder</span><span class="p">(</span><span class="n">bmwCarBuilder</span><span class="p">);</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="n">Car</span> <span class="o">*</span><span class="n">bmwCar</span> <span class="o">=</span> <span class="n">vwFactory</span><span class="o">-&gt;</span><span class="n">produce</span><span class="p">();</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="n">golfCar</span><span class="o">-&gt;</span><span class="n">showInfo</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">bmwCar</span><span class="o">-&gt;</span><span class="n">showInfo</span><span class="p">();</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="k">delete</span> <span class="n">bmwCar</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">golfCar</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">vwFactory</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">bmwCarBuilder</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">golfCarBuilder</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   
@@ -248,84 +419,161 @@ virtual Car* produce() {
 
 <p>解决方案和工厂方法很像，只不过现在的工厂提供了一组方法。先定义一个兵工厂接口，声明一系列方法告诉别人我要生产那些装备，剩下的就是各个具体兵工厂继承并实现这些方法。如果我们套定义的话，就是为一系列武器的创建提供了统一的接口，在需要的时候我们选择某个具体的兵工厂实现来完成任务。例子代码如下。</p>
 
-<p>``` cpp main.cpp</p>
-
-<h1>include <iostream></h1>
-
-<p>using namespace std;</p>
-
-<p>class Weapon {};</p>
-
-<p>class Tank : public Weapon {};
-class USTank : public Tank {};
-class RussiaTank : public Tank {};</p>
-
-<p>class Warship : public Weapon {};
-class USWarship : public Warship {};
-class RussiaWarship : public Warship {};</p>
-
-<p>// 兵工厂
-class Armory {
-  public:</p>
-
-<pre><code>virtual Tank* generateTank() = 0;
-virtual Warship* generateWarship() = 0;
-</code></pre>
-
-<p>};</p>
-
-<p>// 美国兵工厂
-class USArmory : public Armory {
-  public:</p>
-
-<pre><code>virtual Tank* generateTank() {
-  cout &lt;&lt; "US generates a Tank." &lt;&lt; endl;
-  return new USTank;
-}
-
-virtual Warship* generateWarship() {
-  cout &lt;&lt; "US generate a Warship." &lt;&lt; endl;
-  return new USWarship;
-}
-</code></pre>
-
-<p>};</p>
-
-<p>// 俄国兵工厂
-class RussiaArmory : public Armory {
-  public:</p>
-
-<pre><code>virtual Tank* generateTank() {
-  cout &lt;&lt; "Russia generates a Tank." &lt;&lt; endl;
-  return new RussiaTank;
-}
-
-virtual Warship* generateWarship() {
-  cout &lt;&lt; "Russia generate a Warship." &lt;&lt; endl;
-  return new RussiaWarship;
-}
-</code></pre>
-
-<p>};</p>
-
-<p>int main(void) {
-  Armory <em>pUSArmory = new USArmory;
-  Armory </em>pRussiaArmory = new RussiaArmory;</p>
-
-<p>  Tank <em>pUSTank = pUSArmory->generateTank();
-  Warship </em>pUSWarship = pUSArmory->generateWarship();</p>
-
-<p>  Tank <em>pRussiaTank = pRussiaArmory->generateTank();
-  Warship </em>pRussiaWarship = pRussiaArmory->generateWarship();</p>
-
-<p>  delete pRussiaWarship;
-  delete pRussiaTank;
-  delete pUSWarship;
-  delete pUSTank;
-  delete pRussiaArmory;
-  delete pUSArmory;
-}
-```</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">iostream</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">Weapon</span> <span class="p">{};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">Tank</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Weapon</span> <span class="p">{};</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">USTank</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Tank</span> <span class="p">{};</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">RussiaTank</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Tank</span> <span class="p">{};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">Warship</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Weapon</span> <span class="p">{};</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">USWarship</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Warship</span> <span class="p">{};</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">RussiaWarship</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Warship</span> <span class="p">{};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// 兵工厂</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Armory</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">virtual</span> <span class="n">Tank</span><span class="o">*</span> <span class="n">generateTank</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="k">virtual</span> <span class="n">Warship</span><span class="o">*</span> <span class="n">generateWarship</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// 美国兵工厂</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">USArmory</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Armory</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">virtual</span> <span class="n">Tank</span><span class="o">*</span> <span class="n">generateTank</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s">&quot;US generates a Tank.&quot;</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">new</span> <span class="n">USTank</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">virtual</span> <span class="n">Warship</span><span class="o">*</span> <span class="n">generateWarship</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s">&quot;US generate a Warship.&quot;</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">new</span> <span class="n">USWarship</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// 俄国兵工厂</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">RussiaArmory</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Armory</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">virtual</span> <span class="n">Tank</span><span class="o">*</span> <span class="n">generateTank</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s">&quot;Russia generates a Tank.&quot;</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">new</span> <span class="n">RussiaTank</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">virtual</span> <span class="n">Warship</span><span class="o">*</span> <span class="n">generateWarship</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s">&quot;Russia generate a Warship.&quot;</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">new</span> <span class="n">RussiaWarship</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">Armory</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">pUSArmory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">USArmory</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">Armory</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">pRussiaArmory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RussiaArmory</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="n">Tank</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">pUSTank</span> <span class="o">=</span> <span class="n">pUSArmory</span><span class="o">-&gt;</span><span class="n">generateTank</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">Warship</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">pUSWarship</span> <span class="o">=</span> <span class="n">pUSArmory</span><span class="o">-&gt;</span><span class="n">generateWarship</span><span class="p">();</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="n">Tank</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">pRussiaTank</span> <span class="o">=</span> <span class="n">pRussiaArmory</span><span class="o">-&gt;</span><span class="n">generateTank</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">Warship</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">pRussiaWarship</span> <span class="o">=</span> <span class="n">pRussiaArmory</span><span class="o">-&gt;</span><span class="n">generateWarship</span><span class="p">();</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="k">delete</span> <span class="n">pRussiaWarship</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">pRussiaTank</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">pUSWarship</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">pUSTank</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">pRussiaArmory</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">pUSArmory</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   
@@ -349,89 +597,163 @@ virtual Warship* generateWarship() {
 
 <p>以游戏红色警报为例，俄国美国都会生产坦克，如果我们需要一个生产坦克的函数负责所有坦克的生产，那么我们该怎么实现？很多同学第一反应是这样的：</p>
 
-<p>``` cpp 代码片段
-Tank* generateTank(int tankType) {
-  if (RUSSIA == tankType) {</p>
-
-<pre><code>return new RussiaTank;
-</code></pre>
-
-<p>  }
-  else if (US == tankType) {</p>
-
-<pre><code>return new USTank;
-</code></pre>
-
-<p>  }
-  else {</p>
-
-<pre><code>// ...
-</code></pre>
-
-<p>  }
-}
-```</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="n">Tank</span><span class="o">*</span> <span class="n">generateTank</span><span class="p">(</span><span class="kt">int</span> <span class="n">tankType</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">RUSSIA</span> <span class="o">==</span> <span class="n">tankType</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">return</span> <span class="k">new</span> <span class="n">RussiaTank</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">US</span> <span class="o">==</span> <span class="n">tankType</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">return</span> <span class="k">new</span> <span class="n">USTank</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">else</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="c1">// ...</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>看着也能正确运行。但是问题来了，如果我们想生产法国坦克怎么办？如果我们把代码以二进制库的形式打包在市场上卖给其它公司，别人想生产其它坦克怎么办？如果是我们自己的话还好办，改generateTank函数就可以了，可是买了我们引擎的其它公司怎么办？</p>
 
 <p>先回忆一下面向对象的一条重要原则；开放－封闭。对修改封闭，对扩展开放。如果我们想生产新的坦克，应该采用扩展而不是修改的方式。工厂方法模式开始上场了，理论不多说，直接例子分析来解决现在的问题。首先我们需要一个工厂接口TankFactory，提供一个generate方法。然后继承这个接口，分别定义USTankFactory和RussiaTankFactory，各自实现generate方法生产不同的坦克。generateTank方法的参数由tankType改为TankFactory*，那么我们上层的代码在掌握了各种坦克工厂的信息后，只要把对应坦克工厂作为参数传下来就可以了。在工程实践里面一个最基本的要求就是下层代码改得越少越好。现在附上新的代码以供参考。</p>
 
-<p>``` cpp main.cpp</p>
-
-<h1>include <iostream></h1>
-
-<p>using namespace std;</p>
-
-<p>class Tank {};
-class USTank : public Tank {};
-class RussiaTank : public Tank {};</p>
-
-<p>class TankFactory {
-  public:</p>
-
-<pre><code>virtual Tank* generate() = 0;
-</code></pre>
-
-<p>};</p>
-
-<p>class USTankFactory : public TankFactory {
-  public:</p>
-
-<pre><code>virtual Tank* generate() { 
-  cout &lt;&lt; "US generates a Tank." &lt;&lt; endl;
-  return new USTank; }
-</code></pre>
-
-<p>};</p>
-
-<p>class RussiaTankFactory : public TankFactory {
-  public:</p>
-
-<pre><code>virtual Tank* generate() { 
-  cout &lt;&lt; "Russia generates a Tank." &lt;&lt; endl;
-  return new RussiaTank;
-}
-</code></pre>
-
-<p>};</p>
-
-<p>Tank<em> generateTank(TankFactory </em>pTankFactory) {
-  return pTankFactory->generate();
-}</p>
-
-<p>int main(void) {
-  TankFactory <em>pUSTankFactory = new USTankFactory;
-  TankFactory </em>pRussiaTankFactory = new RussiaTankFactory;</p>
-
-<p>  Tank <em>pUSTank = generateTank(pUSTankFactory);
-  Tank </em>pRussiaTank = generateTank(pRussiaTankFactory);</p>
-
-<p>  delete pRussiaTank;
-  delete pUSTank;
-  delete pRussiaTankFactory;
-  delete pUSTankFactory;
-}
-```</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">iostream</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">Tank</span> <span class="p">{};</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">USTank</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Tank</span> <span class="p">{};</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">RussiaTank</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Tank</span> <span class="p">{};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">TankFactory</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">virtual</span> <span class="n">Tank</span><span class="o">*</span> <span class="n">generate</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">USTankFactory</span> <span class="o">:</span> <span class="k">public</span> <span class="n">TankFactory</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">virtual</span> <span class="n">Tank</span><span class="o">*</span> <span class="n">generate</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s">&quot;US generates a Tank.&quot;</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">new</span> <span class="n">USTank</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">RussiaTankFactory</span> <span class="o">:</span> <span class="k">public</span> <span class="n">TankFactory</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">virtual</span> <span class="n">Tank</span><span class="o">*</span> <span class="n">generate</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s">&quot;Russia generates a Tank.&quot;</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">new</span> <span class="n">RussiaTank</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">Tank</span><span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span> <span class="n">generateTank</span><span class="p">(</span><span class="n">TankFactory</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">pTankFactory</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">pTankFactory</span><span class="o">-&gt;</span><span class="n">generate</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">TankFactory</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">pUSTankFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">USTankFactory</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">TankFactory</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">pRussiaTankFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RussiaTankFactory</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="n">Tank</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">pUSTank</span> <span class="o">=</span> <span class="n">generateTank</span><span class="p">(</span><span class="n">pUSTankFactory</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Tank</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">pRussiaTank</span> <span class="o">=</span> <span class="n">generateTank</span><span class="p">(</span><span class="n">pRussiaTankFactory</span><span class="p">);</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="k">delete</span> <span class="n">pRussiaTank</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">pUSTank</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">pRussiaTankFactory</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">pUSTankFactory</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   
