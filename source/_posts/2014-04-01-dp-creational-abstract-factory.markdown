@@ -18,7 +18,7 @@ categories: 设计模式
 
 解决方案和工厂方法很像，只不过现在的工厂提供了一组方法。先定义一个兵工厂接口，声明一系列方法告诉别人我要生产那些装备，剩下的就是各个具体兵工厂继承并实现这些方法。如果我们套定义的话，就是为一系列武器的创建提供了统一的接口，在需要的时候我们选择某个具体的兵工厂实现来完成任务。例子代码如下。
 
-``` cpp main.cpp
+{% codeblock lang:cpp %}
 #include <iostream>
 
 using namespace std;
@@ -85,4 +85,4 @@ int main(void) {
   delete pRussiaArmory;
   delete pUSArmory;
 }
-```
+{% endcodeblock %}

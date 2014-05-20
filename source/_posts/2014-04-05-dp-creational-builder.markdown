@@ -15,7 +15,7 @@ categories: 设计模式
 
 我们已生成汽车做为例子。虽然不同的车厂生成不同品牌的汽车，但是很多零部件的通用的，不同品牌的汽车只是把他们组合起来。比如轮胎选择米其林或固特异，变速箱采用ZF或爱信。工厂在为某个新品牌新建生产线的时候只要选择不同的供应商就可以了，而不需要所有零件都自己从头生产。例子代码如下。
 
-``` cpp main.cpp
+{% codeblock lang:cpp %}
 #include <iostream>
 #include <string>
 
@@ -126,4 +126,4 @@ int main(void) {
   delete bmwCarBuilder;
   delete golfCarBuilder;
 }
-```
+{% endcodeblock %}

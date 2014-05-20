@@ -17,7 +17,7 @@ categories: 设计模式
 
 以游戏红色警报为例，俄国美国都会生产坦克，如果我们需要一个生产坦克的函数负责所有坦克的生产，那么我们该怎么实现？很多同学第一反应是这样的：
 
-``` cpp 代码片段
+{% codeblock lang:cpp %}
 Tank* generateTank(int tankType) {
   if (RUSSIA == tankType) {
     return new RussiaTank;
@@ -29,14 +29,14 @@ Tank* generateTank(int tankType) {
     // ...
   }
 }
-```
+{% endcodeblock %}
 
 看着也能正确运行。但是问题来了，如果我们想生产法国坦克怎么办？如果我们把代码以二进制库的形式打包在市场上卖给其它公司，别人想生产其它坦克怎么办？如果是我们自己的话还好办，改generateTank函数就可以了，可是买了我们引擎的其它公司怎么办？
 
 
 先回忆一下面向对象的一条重要原则；开放－封闭。对修改封闭，对扩展开放。如果我们想生产新的坦克，应该采用扩展而不是修改的方式。工厂方法模式开始上场了，理论不多说，直接例子分析来解决现在的问题。首先我们需要一个工厂接口TankFactory，提供一个generate方法。然后继承这个接口，分别定义USTankFactory和RussiaTankFactory，各自实现generate方法生产不同的坦克。generateTank方法的参数由tankType改为TankFactory*，那么我们上层的代码在掌握了各种坦克工厂的信息后，只要把对应坦克工厂作为参数传下来就可以了。在工程实践里面一个最基本的要求就是下层代码改得越少越好。现在附上新的代码以供参考。
 
-``` cpp main.cpp
+{% codeblock lang:cpp %}
 #include <iostream>
 
 using namespace std;
@@ -81,4 +81,4 @@ int main(void) {
   delete pRussiaTankFactory;
   delete pUSTankFactory;
 }
-```
+{% endcodeblock %}

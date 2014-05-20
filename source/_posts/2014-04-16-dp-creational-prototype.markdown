@@ -15,7 +15,7 @@ categories: 设计模式
 
 Wiki已经讲的很清楚了。简单来说就是把一个复杂的对象创建过程简化成复制粘贴的形式。需要注意的是我们在复制原型的时候使用深拷贝还是浅拷贝。此外该模式还经常和工厂模式一起使用，因为原型可以用工厂来构建。看了以下例子后可能会有一个疑问，为什么要提供一个clone方法，而不是直接调用拷贝构造函数？因为C++是静态语言，我们在复制原型时并不知道它是具体那个类型，而clone的话这个类自己负责拷贝，只需要返回一个基类类型的指针就可以了。
 
-``` cpp main.cpp
+{% codeblock lang:cpp %}
 #include <iostream>
 #include <string>
 
@@ -46,4 +46,4 @@ int main(void) {
   Prototype *p2 = p1->clone();
   Prototype *p3 = p2->clone();
 }
-```
+{% endcodeblock %}
