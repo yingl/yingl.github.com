@@ -8,6 +8,7 @@ categories: Bugs
 
 今天中午刚吃完饭正在一狼假寐，突然电话铃响起！什么？居然有价格为0的商品？立刻从睡梦中惊醒开始排查。啥都不说了，先把肇事代码拿出来：
 
+<!--more-->
 {% codeblock lang:javascript %}
 function getPriceStr(priceLong) {
   if (isNaN(priceLong)) {
