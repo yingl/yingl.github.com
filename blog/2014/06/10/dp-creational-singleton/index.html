@@ -5,11 +5,15 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>设计模式 创建型：原型 - 怪兽说</title>
+  <title>设计模式 创建型：单例 - 怪兽说</title>
   <meta name="author" content="窥基／无柳无酒／黑灯瞎火">
 
   
-  <meta name="description" content="原型 Prototype 定义 Wiki链接。通过“复制”一个已经存在的实例来返回新的实例,而不是新建实例。被复制的实例就是我们所称的“原型”，这个原型是可定制的。原型模式多用于创建复杂的或者耗时的实例，因为这种情况下，复制一个已经存在的实例使程序运行更高效；或者创建值相等， &hellip;">
+  <meta name="description" content="单例 ingleton 定义 Wiki链接。单例对象的类必须保证只有一个实例存在。 为什么需要单例，其实理由很简单，为避免重复建设。比如我们前面讲到的工厂模式，相同的工厂只要有一个就够了，多了就浪费了，管理起来也不方便。下面具体讲一下单例的实现。 实现一（一般面试的标准答案） 1
+2
+3
+4
+5 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +22,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://yingl.github.io/blog/2014/04/16/dp-creational-prototype">
+  <link rel="canonical" href="http://yingl.github.io/blog/2014/06/10/dp-creational-singleton">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="怪兽说" type="application/atom+xml">
@@ -68,7 +72,7 @@
   
   <header>
     
-      <h1 class="entry-title">设计模式 创建型：原型</h1>
+      <h1 class="entry-title">设计模式 创建型：单例</h1>
     
     
       <p class="meta">
@@ -84,25 +88,22 @@
   
 
 
-<time datetime="2014-04-16T01:53:44+08:00" pubdate data-updated="true">Apr 16<span>th</span>, 2014</time>
+<time datetime="2014-06-10T21:10:19+08:00" pubdate data-updated="true">Jun 10<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h3>原型 Prototype</h3>
+<div class="entry-content"><h3>单例 ingleton</h3>
 
 <p><strong>定义</strong></p>
 
-<p><a href="http://zh.wikipedia.org/wiki/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F">Wiki链接</a>。通过“复制”一个已经存在的实例来返回新的实例,而不是新建实例。被复制的实例就是我们所称的“原型”，这个原型是可定制的。原型模式多用于创建复杂的或者耗时的实例，因为这种情况下，复制一个已经存在的实例使程序运行更高效；或者创建值相等，只是命名不一样的同类数据。</p>
+<p><a href="http://zh.wikipedia.org/wiki/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">Wiki链接</a>。单例对象的类必须保证只有一个实例存在。</p>
 
-<!--more-->
+<p>为什么需要单例，其实理由很简单，为避免重复建设。比如我们前面讲到的工厂模式，相同的工厂只要有一个就够了，多了就浪费了，管理起来也不方便。下面具体讲一下单例的实现。</p>
 
-
-<p><strong>用户场景</strong></p>
-
-<p>Wiki已经讲的很清楚了。简单来说就是把一个复杂的对象创建过程简化成复制粘贴的形式。需要注意的是我们在复制原型的时候使用深拷贝还是浅拷贝。此外该模式还经常和工厂模式一起使用，因为原型可以用工厂来构建。看了以下例子后可能会有一个疑问，为什么要提供一个clone方法，而不是直接调用拷贝构造函数？因为C++是静态语言，我们在复制原型时并不知道它是具体那个类型，而clone的话这个类自己负责拷贝，只需要返回一个基类类型的指针就可以了。</p>
+<p>实现一（一般面试的标准答案）</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -128,42 +129,51 @@
 <span class='line-number'>22</span>
 <span class='line-number'>23</span>
 <span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
-</span><span class='line'><span class="cp">#include &lt;string&gt;</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="n">lock</span> <span class="n">g_lock</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Prototype</span> <span class="p">{</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Singeleton</span> <span class="p">{</span>
 </span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">virtual</span> <span class="n">Prototype</span><span class="o">*</span> <span class="n">clone</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">Obj</span><span class="o">*</span> <span class="n">getInstance</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nb">NULL</span> <span class="o">==</span> <span class="n">_instance</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// 加锁确保线程安全</span>
+</span><span class='line'>        <span class="n">lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">g_lock</span><span class="p">);</span>
+</span><span class='line'>        <span class="c1">// 这部判断很重要，很有可能其它线程刚调用完getInstance，_instance已被创建。</span>
+</span><span class='line'>        <span class="c1">// 如果这里不判断是否NULL，很可能又创建一个新的Obj对象。</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nb">NULL</span> <span class="o">==</span> <span class="n">_instance</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Obj</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="n">unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">g_lock</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">return</span> <span class="n">_instance</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">protected</span><span class="o">:</span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">Obj</span> <span class="o">*</span><span class="n">_instance</span><span class="p">;</span>
 </span><span class='line'><span class="p">};</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Product</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Prototype</span> <span class="p">{</span>
+</span><span class='line'><span class="n">Obj</span><span class="o">*</span> <span class="n">Singeleton</span><span class="o">::</span><span class="n">_instance</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>实现二（利用静态变量简化多线程的情况）</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span> <span class="k">class</span> <span class="nc">Singleton</span> <span class="p">{</span>
 </span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="n">Product</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Take long time to create a product.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">T</span><span class="o">*</span> <span class="n">getInstance</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">static</span> <span class="n">T</span> <span class="n">_instance</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">Product</span><span class="p">(</span><span class="k">const</span> <span class="n">Product</span><span class="o">&amp;</span> <span class="n">product</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Copy a product is so fast.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">Prototype</span><span class="o">*</span> <span class="n">clone</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="n">Product</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">return</span> <span class="o">&amp;</span><span class="n">_instance</span><span class="p">;</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="n">Prototype</span> <span class="o">*</span><span class="n">p1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Product</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">Prototype</span> <span class="o">*</span><span class="n">p2</span> <span class="o">=</span> <span class="n">p1</span><span class="o">-&gt;</span><span class="n">clone</span><span class="p">();</span>
-</span><span class='line'>  <span class="n">Prototype</span> <span class="o">*</span><span class="n">p3</span> <span class="o">=</span> <span class="n">p2</span><span class="o">-&gt;</span><span class="n">clone</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 </div>
@@ -188,7 +198,7 @@
   
 
 
-<time datetime="2014-04-16T01:53:44+08:00" pubdate data-updated="true">Apr 16<span>th</span>, 2014</time>
+<time datetime="2014-06-10T21:10:19+08:00" pubdate data-updated="true">Jun 10<span>th</span>, 2014</time>
       
 
 <span class="categories">
@@ -211,7 +221,7 @@
       scrolling="no" 
       height="16" 
       frameborder="0" 
-      src="http://hits.sinajs.cn/A1/weiboshare.html?title=写点什么&amp;url=http://yingl.github.io/blog/2014/04/16/dp-creational-prototype/&amp;type=6&amp;ralateUid=2607195824&amp;language=zh_cn" allowtransparency="true">
+      src="http://hits.sinajs.cn/A1/weiboshare.html?title=写点什么&amp;url=http://yingl.github.io/blog/2014/06/10/dp-creational-singleton/&amp;type=6&amp;ralateUid=2607195824&amp;language=zh_cn" allowtransparency="true">
     </iframe>
   </span>
   
@@ -220,10 +230,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/04/05/dp-creational-builder/" title="Previous Post: 设计模式 创建型：生成器">&laquo; 设计模式 创建型：生成器</a>
+        <a class="basic-alignment left" href="/blog/2014/05/20/bug-price-convert/" title="Previous Post: Bugs: 价格转换粗大事了">&laquo; Bugs: 价格转换粗大事了</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/04/16/bug-macro/" title="Next Post: Bugs: 小心Macro">Bugs: 小心Macro &raquo;</a>
       
     </p>
   </footer>

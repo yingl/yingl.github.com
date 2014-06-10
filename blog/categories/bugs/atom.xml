@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bugs | 怪兽说]]></title>
   <link href="http://yingl.github.io/blog/categories/bugs/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-05-20T21:34:10+08:00</updated>
+  <updated>2014-06-10T21:41:22+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -19,6 +19,9 @@
     <updated>2014-05-20T15:12:48+08:00</updated>
     <id>http://yingl.github.io/blog/2014/05/20/bug-price-convert</id>
     <content type="html"><![CDATA[<p>今天中午刚吃完饭正在一狼假寐，突然电话铃响起！什么？居然有价格为0的商品？立刻从睡梦中惊醒开始排查。啥都不说了，先把肇事代码拿出来：</p>
+
+<!--more-->
+
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>

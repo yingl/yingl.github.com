@@ -4,7 +4,7 @@
   <title><![CDATA[怪兽说]]></title>
   <link href="http://yingl.github.io/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-05-20T21:34:10+08:00</updated>
+  <updated>2014-06-10T21:41:22+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -14,11 +14,105 @@
 
   
   <entry>
+    <title type="html"><![CDATA[设计模式 创建型：单例]]></title>
+    <link href="http://yingl.github.io/blog/2014/06/10/dp-creational-singleton/"/>
+    <updated>2014-06-10T21:10:19+08:00</updated>
+    <id>http://yingl.github.io/blog/2014/06/10/dp-creational-singleton</id>
+    <content type="html"><![CDATA[<h3>单例 ingleton</h3>
+
+<p><strong>定义</strong></p>
+
+<p><a href="http://zh.wikipedia.org/wiki/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">Wiki链接</a>。单例对象的类必须保证只有一个实例存在。</p>
+
+<p>为什么需要单例，其实理由很简单，为避免重复建设。比如我们前面讲到的工厂模式，相同的工厂只要有一个就够了，多了就浪费了，管理起来也不方便。下面具体讲一下单例的实现。</p>
+
+<p>实现一（一般面试的标准答案）</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="n">lock</span> <span class="n">g_lock</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Singeleton</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">Obj</span><span class="o">*</span> <span class="n">getInstance</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nb">NULL</span> <span class="o">==</span> <span class="n">_instance</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// 加锁确保线程安全</span>
+</span><span class='line'>        <span class="n">lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">g_lock</span><span class="p">);</span>
+</span><span class='line'>        <span class="c1">// 这部判断很重要，很有可能其它线程刚调用完getInstance，_instance已被创建。</span>
+</span><span class='line'>        <span class="c1">// 如果这里不判断是否NULL，很可能又创建一个新的Obj对象。</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nb">NULL</span> <span class="o">==</span> <span class="n">_instance</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Obj</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="n">unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">g_lock</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">return</span> <span class="n">_instance</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">protected</span><span class="o">:</span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">Obj</span> <span class="o">*</span><span class="n">_instance</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Obj</span><span class="o">*</span> <span class="n">Singeleton</span><span class="o">::</span><span class="n">_instance</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>实现二（利用静态变量简化多线程的情况）</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span> <span class="k">class</span> <span class="nc">Singleton</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">T</span><span class="o">*</span> <span class="n">getInstance</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">static</span> <span class="n">T</span> <span class="n">_instance</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">return</span> <span class="o">&amp;</span><span class="n">_instance</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Bugs: 价格转换粗大事了]]></title>
     <link href="http://yingl.github.io/blog/2014/05/20/bug-price-convert/"/>
     <updated>2014-05-20T15:12:48+08:00</updated>
     <id>http://yingl.github.io/blog/2014/05/20/bug-price-convert</id>
     <content type="html"><![CDATA[<p>今天中午刚吃完饭正在一狼假寐，突然电话铃响起！什么？居然有价格为0的商品？立刻从睡梦中惊醒开始排查。啥都不说了，先把肇事代码拿出来：</p>
+
+<!--more-->
+
+
+
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
