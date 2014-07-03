@@ -5,7 +5,7 @@ date: 2014-06-10 21:10:19 +0800
 comments: true
 categories: 设计模式
 ---
-### 单例 ingleton
+### 单例 Singleton
 **定义**
 
 [Wiki链接](http://zh.wikipedia.org/wiki/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F)。单例对象的类必须保证只有一个实例存在。
