@@ -9,7 +9,7 @@
   <meta name="author" content="窥基／无柳无酒／黑灯瞎火">
 
   
-  <meta name="description" content="外观 Facade 定义 Wiki链接。它为子系统中的一组接口提供一个统一的高层接口，使得子系统更容易使用。。 这个模式估计是所有设计模式里最简单的了。我们以计算机为例，一个开机动作涉及到CPU启动，硬盘读取，内存装载等一系列动作，但是对于用户来说，只要按一下电源键就可以了。 &hellip;">
+  <meta name="description" content="阿里巴巴2015校招內推已经开始了，收到简历的同学我已录入系统，名单如下，大家可以自己对一下。如果有漏掉的，请直接在微博上@我。如果内部推荐电面不通过的话，抱着不落下任一个优秀同学的心态，针对于内部推荐面试不通过的同学，我们还会给予正常校招的笔试机会，笔试通过依然可以参加现场的面试哈。另外， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +71,68 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui/">2015阿里校招內推</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-14T13:50:58+08:00" pubdate data-updated="true">Jul 14<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>阿里巴巴2015校招內推已经开始了，收到简历的同学我已录入系统，名单如下，大家可以自己对一下。如果有漏掉的，请直接在微博上@我。如果内部推荐电面不通过的话，抱着不落下任一个优秀同学的心态，针对于内部推荐面试不通过的同学，我们还会给予正常校招的笔试机会，笔试通过依然可以参加现场的面试哈。另外，关于內推后的流程，安排如下：</p>
+
+<ol>
+<li>即日起至8月1日前完成推荐的简历：简历筛选通过者->安排电话面试</li>
+<li>8月1日至8月15日完成推荐的简历：笔试通过者->安排进校面试</li>
+<li>8月15日之后完成推荐的简历：我们将在有补招需求时处理</li>
+</ol>
+
+
+<h4>同学名单</h4>
+
+<p>曹昱：大连理工大学／本科<br/>
+陈峰：东南大学／硕士<br/>
+陈琼：湖南大学／硕士<br/>
+丁道贤：天津大学／硕士<br/>
+丁富刚：中南民族大学／本科<br/>
+郭婉：西北工业大学／硕士<br/>
+李志欣：西北工业大学／硕士<br/>
+黄帅：中国地质大学／本科<br/>
+刘德强：南阳理工学院／本科<br/>
+张友谊：南阳理工学院／本科<br/>
+王伟：南京邮电大学／硕士<br/>
+王玉萍：南京理工大学／硕士<br/>
+吴康伟：山东科技大学／本科<br/>
+杨沛超：北京航空航天大学／硕士<br/>
+张睿阳：浙江大学／硕士<br/>
+祝军：宁波大学／硕士</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/07/03/dp-structural-facade/">设计模式 结构型：外观</a></h1>
     
     
@@ -100,118 +162,12 @@
 
 <p><a href="http://zh.wikipedia.org/zh-cn/%E5%A4%96%E8%A7%80%E6%A8%A1%E5%BC%8F">Wiki链接</a>。它为子系统中的一组接口提供一个统一的高层接口，使得子系统更容易使用。。</p>
 
-<p>这个模式估计是所有设计模式里最简单的了。我们以计算机为例，一个开机动作涉及到CPU启动，硬盘读取，内存装载等一系列动作，但是对于用户来说，只要按一下电源键就可以了。我们可以把开机抽象成计算机对象的一个方法，为了完成一次开机，它完成了所有涉及CPU、内存和硬盘的相关操作。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">CPU</span> <span class="p">{</span>
-</span><span class='line'><span class="k">public</span><span class="o">:</span>
-</span><span class='line'>  <span class="kt">void</span> <span class="n">freeze</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;CPU freeze&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kt">void</span> <span class="n">jump</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;CPU jump&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kt">void</span> <span class="n">execute</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;CPU execute&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Memory</span> <span class="p">{</span>
-</span><span class='line'><span class="k">public</span><span class="o">:</span>
-</span><span class='line'>  <span class="kt">void</span> <span class="n">load</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Memory load&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">HardDisk</span> <span class="p">{</span>
-</span><span class='line'><span class="k">public</span><span class="o">:</span>
-</span><span class='line'>  <span class="kt">void</span> <span class="n">read</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;HardDisk read&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Computer</span> <span class="p">{</span>
-</span><span class='line'><span class="k">private</span><span class="o">:</span>
-</span><span class='line'>  <span class="n">CPU</span> <span class="n">cpu</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">Memory</span> <span class="n">memory</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">HardDisk</span> <span class="n">hard_disk</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">public</span><span class="o">:</span>
-</span><span class='line'>  <span class="kt">void</span> <span class="n">power_on</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">cpu</span><span class="p">.</span><span class="n">freeze</span><span class="p">();</span>
-</span><span class='line'>    <span class="n">hard_disk</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
-</span><span class='line'>    <span class="n">memory</span><span class="p">.</span><span class="n">load</span><span class="p">();</span>
-</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Computer power on&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="n">Computer</span> <span class="n">computer</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">computer</span><span class="p">.</span><span class="n">power_on</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/07/03/dp-structural-facade/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -251,83 +207,12 @@
 
 <p><a href="http://zh.wikipedia.org/wiki/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">Wiki链接</a>。单例对象的类必须保证只有一个实例存在。</p>
 
-<p>为什么需要单例，其实理由很简单，为避免重复建设。比如我们前面讲到的工厂模式，相同的工厂只要有一个就够了，多了就浪费了，管理起来也不方便。下面具体讲一下单例的实现。</p>
-
-<p>实现一（一般面试的标准答案）</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="n">lock</span> <span class="n">g_lock</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Singeleton</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">static</span> <span class="n">Obj</span><span class="o">*</span> <span class="n">getInstance</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nb">NULL</span> <span class="o">==</span> <span class="n">_instance</span><span class="p">())</span> <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// 加锁确保线程安全</span>
-</span><span class='line'>        <span class="n">lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">g_lock</span><span class="p">);</span>
-</span><span class='line'>        <span class="c1">// 这部判断很重要，很有可能其它线程刚调用完getInstance，_instance已被创建。</span>
-</span><span class='line'>        <span class="c1">// 如果这里不判断是否NULL，很可能又创建一个新的Obj对象。</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nb">NULL</span> <span class="o">==</span> <span class="n">_instance</span><span class="p">())</span> <span class="p">{</span>
-</span><span class='line'>          <span class="n">_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Obj</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="n">unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">g_lock</span><span class="p">);</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">return</span> <span class="n">_instance</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">protected</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">static</span> <span class="n">Obj</span> <span class="o">*</span><span class="n">_instance</span><span class="p">;</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">Obj</span><span class="o">*</span> <span class="n">Singeleton</span><span class="o">::</span><span class="n">_instance</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>实现二（利用静态变量简化多线程的情况）</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span> <span class="k">class</span> <span class="nc">Singleton</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">static</span> <span class="n">T</span><span class="o">*</span> <span class="n">getInstance</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">static</span> <span class="n">T</span> <span class="n">_instance</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">return</span> <span class="o">&amp;</span><span class="n">_instance</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/06/10/dp-creational-singleton/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -628,51 +513,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/04/01/dp-creational-abstract-factory/">设计模式 创建型：抽象工厂</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-04-01T21:46:00+08:00" pubdate data-updated="true">Apr 1<span>st</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>抽象工厂 Abstract Factory</h3>
-
-<p><strong>定义</strong></p>
-
-<p><a href="http://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F">Wiki链接</a>。为一个产品族提供了统一的创建接口。当需要这个产品族的某一系列的时候，可以从抽象工厂中选出相应的系列创建一个具体的工厂类。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/04/01/dp-creational-abstract-factory/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -696,6 +536,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui/">2015阿里校招內推</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/07/03/dp-structural-facade/">设计模式 结构型：外观</a>
       </li>
     
@@ -711,10 +555,6 @@
         <a href="/blog/2014/05/19/letter-from-student/">算法班学生来信及回复－鸡汤文！</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/05/13/leetcode/">Leetcode终于刷完了</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -722,7 +562,7 @@
   <ul id="categories">
     <li class='category'><a href='/blog/categories/bugs/'>Bugs (2)</a></li>
 <li class='category'><a href='/blog/categories/c-plus-plus/'>C++ (1)</a></li>
-<li class='category'><a href='/blog/categories/zhao-pin/'>招聘 (1)</a></li>
+<li class='category'><a href='/blog/categories/zhao-pin/'>招聘 (2)</a></li>
 <li class='category'><a href='/blog/categories/ce-shi-fen-xiang/'>测试分享 (1)</a></li>
 <li class='category'><a href='/blog/categories/suan-fa/'>算法 (1)</a></li>
 <li class='category'><a href='/blog/categories/zhi-ye-fa-zhan/'>职业发展 (1)</a></li>

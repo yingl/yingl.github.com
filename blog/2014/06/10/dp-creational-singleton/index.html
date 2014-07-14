@@ -101,6 +101,9 @@
 
 <p><a href="http://zh.wikipedia.org/wiki/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">Wiki链接</a>。单例对象的类必须保证只有一个实例存在。</p>
 
+<!--more-->
+
+
 <p>为什么需要单例，其实理由很简单，为避免重复建设。比如我们前面讲到的工厂模式，相同的工厂只要有一个就够了，多了就浪费了，管理起来也不方便。下面具体讲一下单例的实现。</p>
 
 <p>实现一（一般面试的标准答案）</p>
@@ -134,12 +137,12 @@
 </span><span class='line'><span class="k">class</span> <span class="nc">Singeleton</span> <span class="p">{</span>
 </span><span class='line'>  <span class="k">public</span><span class="o">:</span>
 </span><span class='line'>    <span class="k">static</span> <span class="n">Obj</span><span class="o">*</span> <span class="n">getInstance</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nb">NULL</span> <span class="o">==</span> <span class="n">_instance</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nb">NULL</span> <span class="o">==</span> <span class="n">_instance</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="c1">// 加锁确保线程安全</span>
 </span><span class='line'>        <span class="n">lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">g_lock</span><span class="p">);</span>
 </span><span class='line'>        <span class="c1">// 这部判断很重要，很有可能其它线程刚调用完getInstance，_instance已被创建。</span>
 </span><span class='line'>        <span class="c1">// 如果这里不判断是否NULL，很可能又创建一个新的Obj对象。</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nb">NULL</span> <span class="o">==</span> <span class="n">_instance</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nb">NULL</span> <span class="o">==</span> <span class="n">_instance</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>          <span class="n">_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Obj</span><span class="p">;</span>
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>        <span class="n">unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">g_lock</span><span class="p">);</span>
@@ -276,6 +279,10 @@ var duoshuoQuery = {short_name:"monstersay"};
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui/">2015阿里校招內推</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/07/03/dp-structural-facade/">设计模式 结构型：外观</a>
       </li>
     
@@ -291,10 +298,6 @@ var duoshuoQuery = {short_name:"monstersay"};
         <a href="/blog/2014/05/19/letter-from-student/">算法班学生来信及回复－鸡汤文！</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/05/13/leetcode/">Leetcode终于刷完了</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -302,7 +305,7 @@ var duoshuoQuery = {short_name:"monstersay"};
   <ul id="categories">
     <li class='category'><a href='/blog/categories/bugs/'>Bugs (2)</a></li>
 <li class='category'><a href='/blog/categories/c-plus-plus/'>C++ (1)</a></li>
-<li class='category'><a href='/blog/categories/zhao-pin/'>招聘 (1)</a></li>
+<li class='category'><a href='/blog/categories/zhao-pin/'>招聘 (2)</a></li>
 <li class='category'><a href='/blog/categories/ce-shi-fen-xiang/'>测试分享 (1)</a></li>
 <li class='category'><a href='/blog/categories/suan-fa/'>算法 (1)</a></li>
 <li class='category'><a href='/blog/categories/zhi-ye-fa-zhan/'>职业发展 (1)</a></li>
