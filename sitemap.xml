@@ -10,7 +10,7 @@
     </url>
     <url>
         <loc>http://yingl.github.io/blog/2014/03/31/dp-creational-factory-method/</loc>
-        <lastmod>2014-05-20T21:33:17+08:00</lastmod>
+        <lastmod>2014-08-12T21:03:39+08:00</lastmod>
     </url>
     <url>
         <loc>http://yingl.github.io/blog/2014/04/01/dp-creational-abstract-factory/</loc>
@@ -50,7 +50,7 @@
     </url>
     <url>
         <loc>http://yingl.github.io/blog/2014/07/03/dp-structural-facade/</loc>
-        <lastmod>2014-07-14T14:07:28+08:00</lastmod>
+        <lastmod>2014-08-12T20:44:54+08:00</lastmod>
     </url>
     <url>
         <loc>http://yingl.github.io/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui/</loc>
@@ -58,15 +58,23 @@
     </url>
     <url>
         <loc>http://yingl.github.io/blog/2014/07/31/james-bach-rapid-test/</loc>
-        <lastmod>2014-08-04T15:16:01+08:00</lastmod>
+        <lastmod>2014-08-12T21:06:15+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://yingl.github.io/blog/2014/08/12/dp-structural-adapter/</loc>
+        <lastmod>2014-08-12T21:06:19+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://yingl.github.io/blog/2014/08/12/bug-cache/</loc>
+        <lastmod>2014-08-12T22:06:59+08:00</lastmod>
     </url>
     <url>
         <loc>http://yingl.github.io/blog/archives/</loc>
-        <lastmod>2014-08-04T15:16:01+08:00</lastmod>
+        <lastmod>2014-08-12T22:06:59+08:00</lastmod>
     </url>
     <url>
         <loc>http://yingl.github.io/</loc>
-        <lastmod>2014-08-04T15:16:01+08:00</lastmod>
+        <lastmod>2014-08-12T22:06:59+08:00</lastmod>
     </url>
     <url>
         <loc>http://yingl.github.io/robots.txt</loc>

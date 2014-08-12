@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>2015阿里校招內推 - 怪兽说</title>
+  <title>Bugs: 小缓存大问题 - 怪兽说</title>
   <meta name="author" content="窥基／无柳无酒／黑灯瞎火">
 
   
-  <meta name="description" content="阿里巴巴2015校招內推已经开始了，收到简历的同学我已录入系统，名单如下，大家可以自己对一下。如果有漏掉的，请直接在微博上@我。如果内部推荐电面不通过的话，抱着不落下任一个优秀同学的心态，针对于内部推荐面试不通过的同学，我们还会给予正常校招的笔试机会，笔试通过依然可以参加现场的面试哈。另外， &hellip;">
+  <meta name="description" content="具体业务细节不方便公开，但是这个问题警告我们在使用缓存的时候必须非常重视一致性问题。 首先来研究一下我们的缓存设计，我们选择了双机房双集群模式。也就是理论上说，每个机房都有一个独立的缓存集群，每次根据响应速度随机挑选一个比较快的集群访问，如果读取到数据，那么直接返回，如果没有读取到， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://yingl.github.io/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui">
+  <link rel="canonical" href="http://yingl.github.io/blog/2014/08/12/bug-cache">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="怪兽说" type="application/atom+xml">
@@ -68,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">2015阿里校招內推</h1>
+      <h1 class="entry-title">Bugs: 小缓存大问题</h1>
     
     
       <p class="meta">
@@ -84,58 +84,34 @@
   
 
 
-<time datetime="2014-07-14T13:50:58+08:00" pubdate data-updated="true">Jul 14<span>th</span>, 2014</time>
+<time datetime="2014-08-12T20:40:05+08:00" pubdate data-updated="true">Aug 12<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>阿里巴巴2015校招內推已经开始了，收到简历的同学我已录入系统，名单如下，大家可以自己对一下。如果有漏掉的，请直接在微博上@我。如果内部推荐电面不通过的话，抱着不落下任一个优秀同学的心态，针对于内部推荐面试不通过的同学，我们还会给予正常校招的笔试机会，笔试通过依然可以参加现场的面试哈。另外，关于內推后的流程，安排如下：</p>
+<div class="entry-content"><p>具体业务细节不方便公开，但是这个问题警告我们在使用缓存的时候必须非常重视一致性问题。</p>
+
+<p>首先来研究一下我们的缓存设计，我们选择了双机房双集群模式。也就是理论上说，每个机房都有一个独立的缓存集群，每次根据响应速度随机挑选一个比较快的集群访问，如果读取到数据，那么直接返回，如果没有读取到，那么从检查数据库并更新缓存记录。如果数据库里没有记录，那么先调用一个失效操作，然后写入缓存。整个系统看着没什么问题，但是天有不测风云～～～</p>
+
+<p>现在看看我们的系统问题出在哪里，大胆假设，小心求证后，我发现我们的数据只写了缓存，并没有写到数据库记录。现在来还原案发现场：</p>
 
 <ol>
-<li>即日起至8月1日前完成推荐的简历：简历筛选通过者->安排电话面试</li>
-<li>8月1日至8月15日完成推荐的简历：笔试通过者->安排进校面试</li>
-<li>8月15日之后完成推荐的简历：我们将在有补招需求时处理</li>
+<li>集群A和B都没有记录。</li>
+<li>集群A选中，没有记录，写入记录。</li>
+<li>集群A选中，读取记录成功。</li>
+<li>集群A选中，&hellip;&hellip;</li>
+<li>集群B选中，写入A中的记录读取不到（因为2个集群是相互独立的，而且我们只写缓存，所以没有从数据库读取更新缓存这一步），写入之前调用了一次失效操作，导致集群A的记录也失效，这时B集群记录写入。</li>
+<li>集群B选中，读取记录成功。</li>
+<li>集群B选中，&hellip;&hellip;</li>
+<li>集群A选中，第5步的情况又出现了。</li>
 </ol>
 
 
-<!--more-->
+<p>每次状况5和8出现的时候，因为该读的缓存记录我们没有读取到，所以做了一个特定的操作。然后因为我们应用的访问量特别大，这个操作出现的次数也忒多了些，然后就悲剧了。</p>
 
-
-<h4>同学名单</h4>
-
-<p>曹昱：大连理工大学／本科<br/>
-陈峰：东南大学／硕士<br/>
-陈琼：湖南大学／硕士<br/>
-丁道贤：天津大学／硕士<br/>
-丁富刚：中南民族大学／本科<br/>
-郭婉：西北工业大学／硕士<br/>
-李志欣：西北工业大学／硕士<br/>
-黄帅：中国地质大学／本科<br/>
-刘德强：南阳理工学院／本科<br/>
-张友谊：南阳理工学院／本科<br/>
-王伟：南京邮电大学／硕士<br/>
-王玉萍：南京理工大学／硕士<br/>
-吴康伟：山东科技大学／本科<br/>
-杨沛超：北京航空航天大学／硕士<br/>
-张睿阳：浙江大学／硕士<br/>
-徐勤劼：浙江工业大学<br/>
-柯姣：宁波大学／硕士<br/>
-祝军：宁波大学／硕士<br/>
-李木军：宁波大学／硕士<br/>
-曹茵茵：北京理工大学／硕士<br/>
-李贺：中国科技大学／硕士<br/>
-王磊：东华大学／硕士<br/>
-王梦丝：西安电子科技大学／硕士<br/>
-刘宝：大连理工大学／硕士<br/>
-王秀林：大连理工大学／硕士<br/>
-姚淑慧：四川大学／本科<br/>
-冯博炜：广东工业大学／硕士<br/>
-胡为：湖南大学／硕士<br/>
-刘斌：湖南大学／硕士<br/>
-李中坤：湖南大学／本科<br/>
-黄晋：中山大学／本科<br/></p>
+<p>最后怎么解决的？代码一行没改，缓存配置为双机房单集群，只要记录写入了缓存就不存在两个机房不一致的问题。所以使用缓存，特别是分布式缓存，有没有持久化记录对于保证记录一致性的影响还是很重要的。</p>
 </div>
 
 
@@ -158,12 +134,12 @@
   
 
 
-<time datetime="2014-07-14T13:50:58+08:00" pubdate data-updated="true">Jul 14<span>th</span>, 2014</time>
+<time datetime="2014-08-12T20:40:05+08:00" pubdate data-updated="true">Aug 12<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/zhao-pin/'>招聘</a>
+    <a class='category' href='/blog/categories/bugs/'>Bugs</a>
   
 </span>
 
@@ -181,7 +157,7 @@
       scrolling="no" 
       height="16" 
       frameborder="0" 
-      src="http://hits.sinajs.cn/A1/weiboshare.html?title=写点什么&amp;url=http://yingl.github.io/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui/&amp;type=6&amp;ralateUid=2607195824&amp;language=zh_cn" allowtransparency="true">
+      src="http://hits.sinajs.cn/A1/weiboshare.html?title=写点什么&amp;url=http://yingl.github.io/blog/2014/08/12/bug-cache/&amp;type=6&amp;ralateUid=2607195824&amp;language=zh_cn" allowtransparency="true">
     </iframe>
   </span>
   
@@ -190,10 +166,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/07/03/dp-structural-facade/" title="Previous Post: 设计模式 结构型：外观">&laquo; 设计模式 结构型：外观</a>
+        <a class="basic-alignment left" href="/blog/2014/08/12/dp-structural-adapter/" title="Previous Post: 设计模式 结构型：适配器">&laquo; 设计模式 结构型：适配器</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/07/31/james-bach-rapid-test/" title="Next Post: James Bach的Rapid Test培训总结">James Bach的Rapid Test培训总结 &raquo;</a>
       
     </p>
   </footer>
@@ -202,7 +176,7 @@
 
   <section>
     <h1>评论</h1>
-    <div id="ds_thread" aria-live="polite"><div class="ds-thread" data-title="2015阿里校招內推"></div>
+    <div id="ds_thread" aria-live="polite"><div class="ds-thread" data-title="Bugs: 小缓存大问题"></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">

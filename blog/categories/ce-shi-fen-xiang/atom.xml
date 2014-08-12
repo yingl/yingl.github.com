@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 测试分享 | 怪兽说]]></title>
   <link href="http://yingl.github.io/blog/categories/ce-shi-fen-xiang/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-08-04T17:12:40+08:00</updated>
+  <updated>2014-08-12T22:07:16+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -21,6 +21,9 @@
     <content type="html"><![CDATA[<p>首先感谢阿里巴巴邀请James大神在北京办公室组织了Rapid Test的培训。本来报名的目的只是想和兄弟部门的同事找机会一起交流交流，对测试本身并没有抱太大的期望。结果课程开始之后，只能说不服不行。另外，哥活生生的被大神当作了教学道具&hellip;</p>
 
 <p>虽然James大神脱离项目一线专注培训很多年了，而且也没有互联网项目经验，但是一上来就抓住了问题的本质，项目需求不清楚，进度紧张，资源有限，这都是当年项目情况活生生的写照啊！所谓的Rapid Test就是针对这些问题的。为什么这里不说敏捷Agile？因为这里只谈测试，而且谈的是普遍真理，不管你用Agile还是瀑布流，测试都必须解决的一些共性问题。</p>
+
+<!--more-->
+
 
 <p>培训过程就不具体描述了，这里就谈几点总结：</p>
 

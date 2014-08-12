@@ -4,7 +4,7 @@
   <title><![CDATA[怪兽说]]></title>
   <link href="http://yingl.github.io/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-08-04T17:12:40+08:00</updated>
+  <updated>2014-08-12T22:07:16+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -14,6 +14,128 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Bugs: 小缓存大问题]]></title>
+    <link href="http://yingl.github.io/blog/2014/08/12/bug-cache/"/>
+    <updated>2014-08-12T20:40:05+08:00</updated>
+    <id>http://yingl.github.io/blog/2014/08/12/bug-cache</id>
+    <content type="html"><![CDATA[<p>具体业务细节不方便公开，但是这个问题警告我们在使用缓存的时候必须非常重视一致性问题。</p>
+
+<p>首先来研究一下我们的缓存设计，我们选择了双机房双集群模式。也就是理论上说，每个机房都有一个独立的缓存集群，每次根据响应速度随机挑选一个比较快的集群访问，如果读取到数据，那么直接返回，如果没有读取到，那么从检查数据库并更新缓存记录。如果数据库里没有记录，那么先调用一个失效操作，然后写入缓存。整个系统看着没什么问题，但是天有不测风云～～～</p>
+
+<p>现在看看我们的系统问题出在哪里，大胆假设，小心求证后，我发现我们的数据只写了缓存，并没有写到数据库记录。现在来还原案发现场：</p>
+
+<ol>
+<li>集群A和B都没有记录。</li>
+<li>集群A选中，没有记录，写入记录。</li>
+<li>集群A选中，读取记录成功。</li>
+<li>集群A选中，&hellip;&hellip;</li>
+<li>集群B选中，写入A中的记录读取不到（因为2个集群是相互独立的，而且我们只写缓存，所以没有从数据库读取更新缓存这一步），写入之前调用了一次失效操作，导致集群A的记录也失效，这时B集群记录写入。</li>
+<li>集群B选中，读取记录成功。</li>
+<li>集群B选中，&hellip;&hellip;</li>
+<li>集群A选中，第5步的情况又出现了。</li>
+</ol>
+
+
+<p>每次状况5和8出现的时候，因为该读的缓存记录我们没有读取到，所以做了一个特定的操作。然后因为我们应用的访问量特别大，这个操作出现的次数也忒多了些，然后就悲剧了。</p>
+
+<p>最后怎么解决的？代码一行没改，缓存配置为双机房单集群，只要记录写入了缓存就不存在两个机房不一致的问题。所以使用缓存，特别是分布式缓存，有没有持久化记录对于保证记录一致性的影响还是很重要的。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[设计模式 结构型：适配器]]></title>
+    <link href="http://yingl.github.io/blog/2014/08/12/dp-structural-adapter/"/>
+    <updated>2014-08-12T20:39:40+08:00</updated>
+    <id>http://yingl.github.io/blog/2014/08/12/dp-structural-adapter</id>
+    <content type="html"><![CDATA[<h3>适配器 Adapter</h3>
+
+<p><strong>定义</strong></p>
+
+<p><a href="http://zh.wikipedia.org/wiki/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F">Wiki链接</a>。将一个类的接口转接成用户所期待的。一个适配使得因接口不兼容而不能在一起工作的类工作在一起，做法是将类别自己的接口包裹在一个已存在的类中。</p>
+
+<!--more-->
+
+
+<p>这个简单来说就像Mac接显示器需要一个额外的转接头一样，这个转接头扮演的就是适配器的角色。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Monitor</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">monitor_display</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Monitor display.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Adapter</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">display</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">_monitor</span><span class="p">.</span><span class="n">monitor_display</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">protected</span><span class="o">:</span>
+</span><span class='line'>  <span class="n">Monitor</span> <span class="n">_monitor</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Mac</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">display</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">_adapter</span><span class="p">.</span><span class="n">display</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">protected</span><span class="o">:</span>
+</span><span class='line'>  <span class="n">Adapter</span> <span class="n">_adapter</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">Mac</span> <span class="n">mac</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mac</span><span class="p">.</span><span class="n">display</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[James Bach的Rapid Test培训总结]]></title>
     <link href="http://yingl.github.io/blog/2014/07/31/james-bach-rapid-test/"/>
     <updated>2014-07-31T20:41:01+08:00</updated>
@@ -21,6 +143,9 @@
     <content type="html"><![CDATA[<p>首先感谢阿里巴巴邀请James大神在北京办公室组织了Rapid Test的培训。本来报名的目的只是想和兄弟部门的同事找机会一起交流交流，对测试本身并没有抱太大的期望。结果课程开始之后，只能说不服不行。另外，哥活生生的被大神当作了教学道具&hellip;</p>
 
 <p>虽然James大神脱离项目一线专注培训很多年了，而且也没有互联网项目经验，但是一上来就抓住了问题的本质，项目需求不清楚，进度紧张，资源有限，这都是当年项目情况活生生的写照啊！所谓的Rapid Test就是针对这些问题的。为什么这里不说敏捷Agile？因为这里只谈测试，而且谈的是普遍真理，不管你用Agile还是瀑布流，测试都必须解决的一些共性问题。</p>
+
+<!--more-->
+
 
 <p>培训过程就不具体描述了，这里就谈几点总结：</p>
 
@@ -100,7 +225,7 @@
 
 <p><strong>定义</strong></p>
 
-<p><a href="http://zh.wikipedia.org/zh-cn/%E5%A4%96%E8%A7%80%E6%A8%A1%E5%BC%8F">Wiki链接</a>。它为子系统中的一组接口提供一个统一的高层接口，使得子系统更容易使用。。</p>
+<p><a href="http://zh.wikipedia.org/zh-cn/%E5%A4%96%E8%A7%80%E6%A8%A1%E5%BC%8F">Wiki链接</a>。它为子系统中的一组接口提供一个统一的高层接口，使得子系统更容易使用。</p>
 
 <!--more-->
 
