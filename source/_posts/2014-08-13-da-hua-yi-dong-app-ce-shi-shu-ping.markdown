@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "大话移动APP测试书评"
+title: "《大话移动APP测试》书评"
 date: 2014-08-13 10:10:04 +0800
 comments: true
 categories: 书评
