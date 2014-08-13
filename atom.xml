@@ -4,7 +4,7 @@
   <title><![CDATA[怪兽说]]></title>
   <link href="http://yingl.github.io/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-08-12T22:07:16+08:00</updated>
+  <updated>2014-08-13T10:18:49+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -14,6 +14,17 @@
 
   
   <entry>
+    <title type="html"><![CDATA[大话移动APP测试书评]]></title>
+    <link href="http://yingl.github.io/blog/2014/08/13/da-hua-yi-dong-app-ce-shi-shu-ping/"/>
+    <updated>2014-08-13T10:10:04+08:00</updated>
+    <id>http://yingl.github.io/blog/2014/08/13/da-hua-yi-dong-app-ce-shi-shu-ping</id>
+    <content type="html"><![CDATA[<p><a href="http://book.douban.com/subject/25923638/">豆瓣链接</a></p>
+
+<p>Monkey可以称得上是中国移动互联网测试的先驱人物，今日做为同事为他的新书推荐，倍感荣幸。正如书名包含“大话”二字，所以你不要期望它是一本严肃的、学院派的技术书籍（据说2会是一本技术著作）。但是你如果是一个想进入移动测试领域的新人，又或者是一个想了解移动产品测试的产品经理、开发者、投资人，那么这本书是一本再好不过的教材。从针对专业技术人员的工具、框架、性能和自动化测试，到针对产品的用户体验测试，基本涵盖了移动产品测试的方方面面。另外作者还分享了大量亲身经历的案例，使得本书更具有可操作性，看完之后可以立刻投入到实际工作中去。除了严肃的技术内容，还有幽默风趣的吐槽和心灵鸡汤式的职业生涯指点。不管你式测试老兵还是行业新人，读完相信都能让你会心一笑，豁然开朗。</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Bugs: 小缓存大问题]]></title>
     <link href="http://yingl.github.io/blog/2014/08/12/bug-cache/"/>
     <updated>2014-08-12T20:40:05+08:00</updated>
@@ -21,6 +32,9 @@
     <content type="html"><![CDATA[<p>具体业务细节不方便公开，但是这个问题警告我们在使用缓存的时候必须非常重视一致性问题。</p>
 
 <p>首先来研究一下我们的缓存设计，我们选择了双机房双集群模式。也就是理论上说，每个机房都有一个独立的缓存集群，每次根据响应速度随机挑选一个比较快的集群访问，如果读取到数据，那么直接返回，如果没有读取到，那么从检查数据库并更新缓存记录。如果数据库里没有记录，那么先调用一个失效操作，然后写入缓存。整个系统看着没什么问题，但是天有不测风云～～～</p>
+
+<!--more-->
+
 
 <p>现在看看我们的系统问题出在哪里，大胆假设，小心求证后，我发现我们的数据只写了缓存，并没有写到数据库记录。现在来还原案发现场：</p>
 

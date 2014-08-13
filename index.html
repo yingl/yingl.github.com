@@ -9,7 +9,7 @@
   <meta name="author" content="窥基／无柳无酒／黑灯瞎火">
 
   
-  <meta name="description" content="具体业务细节不方便公开，但是这个问题警告我们在使用缓存的时候必须非常重视一致性问题。 首先来研究一下我们的缓存设计，我们选择了双机房双集群模式。也就是理论上说，每个机房都有一个独立的缓存集群，每次根据响应速度随机挑选一个比较快的集群访问，如果读取到数据，那么直接返回，如果没有读取到， &hellip;">
+  <meta name="description" content="豆瓣链接 Monkey可以称得上是中国移动互联网测试的先驱人物，今日做为同事为他的新书推荐，倍感荣幸。正如书名包含“大话”二字，所以你不要期望它是一本严肃的、学院派的技术书籍（据说2会是一本技术著作）。但是你如果是一个想进入移动测试领域的新人，又或者是一个想了解移动产品测试的产品经理、开发者、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +71,44 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/08/13/da-hua-yi-dong-app-ce-shi-shu-ping/">大话移动APP测试书评</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-13T10:10:04+08:00" pubdate data-updated="true">Aug 13<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://book.douban.com/subject/25923638/">豆瓣链接</a></p>
+
+<p>Monkey可以称得上是中国移动互联网测试的先驱人物，今日做为同事为他的新书推荐，倍感荣幸。正如书名包含“大话”二字，所以你不要期望它是一本严肃的、学院派的技术书籍（据说2会是一本技术著作）。但是你如果是一个想进入移动测试领域的新人，又或者是一个想了解移动产品测试的产品经理、开发者、投资人，那么这本书是一本再好不过的教材。从针对专业技术人员的工具、框架、性能和自动化测试，到针对产品的用户体验测试，基本涵盖了移动产品测试的方方面面。另外作者还分享了大量亲身经历的案例，使得本书更具有可操作性，看完之后可以立刻投入到实际工作中去。除了严肃的技术内容，还有幽默风趣的吐槽和心灵鸡汤式的职业生涯指点。不管你式测试老兵还是行业新人，读完相信都能让你会心一笑，豁然开朗。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/08/12/bug-cache/">Bugs: 小缓存大问题</a></h1>
     
     
@@ -98,25 +136,12 @@
 
 <p>首先来研究一下我们的缓存设计，我们选择了双机房双集群模式。也就是理论上说，每个机房都有一个独立的缓存集群，每次根据响应速度随机挑选一个比较快的集群访问，如果读取到数据，那么直接返回，如果没有读取到，那么从检查数据库并更新缓存记录。如果数据库里没有记录，那么先调用一个失效操作，然后写入缓存。整个系统看着没什么问题，但是天有不测风云～～～</p>
 
-<p>现在看看我们的系统问题出在哪里，大胆假设，小心求证后，我发现我们的数据只写了缓存，并没有写到数据库记录。现在来还原案发现场：</p>
-
-<ol>
-<li>集群A和B都没有记录。</li>
-<li>集群A选中，没有记录，写入记录。</li>
-<li>集群A选中，读取记录成功。</li>
-<li>集群A选中，&hellip;&hellip;</li>
-<li>集群B选中，写入A中的记录读取不到（因为2个集群是相互独立的，而且我们只写缓存，所以没有从数据库读取更新缓存这一步），写入之前调用了一次失效操作，导致集群A的记录也失效，这时B集群记录写入。</li>
-<li>集群B选中，读取记录成功。</li>
-<li>集群B选中，&hellip;&hellip;</li>
-<li>集群A选中，第5步的情况又出现了。</li>
-</ol>
-
-
-<p>每次状况5和8出现的时候，因为该读的缓存记录我们没有读取到，所以做了一个特定的操作。然后因为我们应用的访问量特别大，这个操作出现的次数也忒多了些，然后就悲剧了。</p>
-
-<p>最后怎么解决的？代码一行没改，缓存配置为双机房单集群，只要记录写入了缓存就不存在两个机房不一致的问题。所以使用缓存，特别是分布式缓存，有没有持久化记录对于保证记录一致性的影响还是很重要的。</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/12/bug-cache/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -471,47 +496,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/04/28/wuhan-interview/">2014年阿里巴巴实习生面试武汉站总结</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-04-28T18:59:08+08:00" pubdate data-updated="true">Apr 28<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>4月24、25两天奔赴武汉参加了2014年阿里巴巴实习生面试，感触不少，写下来和大家分享一下，希望今年找工作的学生能借鉴一二。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/04/28/wuhan-interview/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -535,6 +519,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/08/13/da-hua-yi-dong-app-ce-shi-shu-ping/">大话移动APP测试书评</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/08/12/bug-cache/">Bugs: 小缓存大问题</a>
       </li>
     
@@ -550,10 +538,6 @@
         <a href="/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui/">2015阿里校招內推</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/07/03/dp-structural-facade/">设计模式 结构型：外观</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -561,6 +545,7 @@
   <ul id="categories">
     <li class='category'><a href='/blog/categories/bugs/'>Bugs (3)</a></li>
 <li class='category'><a href='/blog/categories/c-plus-plus/'>C++ (1)</a></li>
+<li class='category'><a href='/blog/categories/shu-ping/'>书评 (1)</a></li>
 <li class='category'><a href='/blog/categories/zhao-pin/'>招聘 (2)</a></li>
 <li class='category'><a href='/blog/categories/ce-shi-fen-xiang/'>测试分享 (2)</a></li>
 <li class='category'><a href='/blog/categories/suan-fa/'>算法 (1)</a></li>

@@ -95,6 +95,9 @@
 
 <p>首先来研究一下我们的缓存设计，我们选择了双机房双集群模式。也就是理论上说，每个机房都有一个独立的缓存集群，每次根据响应速度随机挑选一个比较快的集群访问，如果读取到数据，那么直接返回，如果没有读取到，那么从检查数据库并更新缓存记录。如果数据库里没有记录，那么先调用一个失效操作，然后写入缓存。整个系统看着没什么问题，但是天有不测风云～～～</p>
 
+<!--more-->
+
+
 <p>现在看看我们的系统问题出在哪里，大胆假设，小心求证后，我发现我们的数据只写了缓存，并没有写到数据库记录。现在来还原案发现场：</p>
 
 <ol>
@@ -169,6 +172,8 @@
         <a class="basic-alignment left" href="/blog/2014/08/12/dp-structural-adapter/" title="Previous Post: 设计模式 结构型：适配器">&laquo; 设计模式 结构型：适配器</a>
       
       
+        <a class="basic-alignment right" href="/blog/2014/08/13/da-hua-yi-dong-app-ce-shi-shu-ping/" title="Next Post: 大话移动APP测试书评">大话移动APP测试书评 &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -210,6 +215,10 @@ var duoshuoQuery = {short_name:"monstersay"};
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/08/13/da-hua-yi-dong-app-ce-shi-shu-ping/">大话移动APP测试书评</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/08/12/bug-cache/">Bugs: 小缓存大问题</a>
       </li>
     
@@ -225,10 +234,6 @@ var duoshuoQuery = {short_name:"monstersay"};
         <a href="/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui/">2015阿里校招內推</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/07/03/dp-structural-facade/">设计模式 结构型：外观</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -236,6 +241,7 @@ var duoshuoQuery = {short_name:"monstersay"};
   <ul id="categories">
     <li class='category'><a href='/blog/categories/bugs/'>Bugs (3)</a></li>
 <li class='category'><a href='/blog/categories/c-plus-plus/'>C++ (1)</a></li>
+<li class='category'><a href='/blog/categories/shu-ping/'>书评 (1)</a></li>
 <li class='category'><a href='/blog/categories/zhao-pin/'>招聘 (2)</a></li>
 <li class='category'><a href='/blog/categories/ce-shi-fen-xiang/'>测试分享 (2)</a></li>
 <li class='category'><a href='/blog/categories/suan-fa/'>算法 (1)</a></li>

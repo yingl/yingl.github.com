@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bugs | 怪兽说]]></title>
   <link href="http://yingl.github.io/blog/categories/bugs/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-08-12T22:07:16+08:00</updated>
+  <updated>2014-08-13T10:18:49+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -21,6 +21,9 @@
     <content type="html"><![CDATA[<p>具体业务细节不方便公开，但是这个问题警告我们在使用缓存的时候必须非常重视一致性问题。</p>
 
 <p>首先来研究一下我们的缓存设计，我们选择了双机房双集群模式。也就是理论上说，每个机房都有一个独立的缓存集群，每次根据响应速度随机挑选一个比较快的集群访问，如果读取到数据，那么直接返回，如果没有读取到，那么从检查数据库并更新缓存记录。如果数据库里没有记录，那么先调用一个失效操作，然后写入缓存。整个系统看着没什么问题，但是天有不测风云～～～</p>
+
+<!--more-->
+
 
 <p>现在看看我们的系统问题出在哪里，大胆假设，小心求证后，我发现我们的数据只写了缓存，并没有写到数据库记录。现在来还原案发现场：</p>
 
