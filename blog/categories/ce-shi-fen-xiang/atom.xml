@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 测试分享 | 怪兽说]]></title>
   <link href="http://yingl.github.io/blog/categories/ce-shi-fen-xiang/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-08-13T10:20:29+08:00</updated>
+  <updated>2014-09-15T21:11:12+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -12,6 +12,327 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[PowerMock使用小结]]></title>
+    <link href="http://yingl.github.io/blog/2014/09/15/powermockshi-yong-xiao-jie/"/>
+    <updated>2014-09-15T16:48:05+08:00</updated>
+    <id>http://yingl.github.io/blog/2014/09/15/powermockshi-yong-xiao-jie</id>
+    <content type="html"><![CDATA[<p>最近在写单元测试的时候大量使用了PowerMock，遇到不少问题，通过google逐一解决，在这里和大家分享一下。关于为什么使用PowerMock，最主要的优势在于它支持mock静态和私有成员函数。</p>
+
+<p>首先我们实现一个被测类，包含公有、私有和静态方法。</p>
+
+<p>关于为什么要mock在这里做一下简单的解释，大家不嫌啰嗦的话可以看一看。单元测试的要点在于快和简单。快在于执行速度快，简单在用例简单和发现问题后定位简单。所以为达到这个目标，我们在测试的时候可以把所有不相关的部分都做一个信任假设（这里信任指按期望工作，可以期望正确，也可以期望错误），通过mock，我们可以轻松控制这些偶尔对象的行为，快速的构造测试场景。比如我们在测试displayFullUsername方法时可以假设其引用的私有和静态方法总是按期望工作的，对于私有方法toUpperCase我们再另外写单元测试来保证正确性，这样当displayFullUsername单元测试失败时，我们不用去debug私有方法toUpperCase相关的代码，只用关心当前的代码逻辑就可以了。另外，一些函数依赖的方法背后可能有个非常复杂的系统，测试环境的配置就直接把你搞晕，这种时候mock就可以把问题大大简化了。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Demo</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">private</span> <span class="n">String</span> <span class="n">username</span><span class="o">;</span>
+</span><span class='line'><span class="kd">private</span> <span class="kt">int</span> <span class="n">userId</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUsername</span><span class="o">(</span><span class="n">String</span> <span class="n">username</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">username</span> <span class="o">=</span> <span class="n">username</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="n">String</span> <span class="nf">getUsername</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">username</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUserId</span><span class="o">(</span><span class="kt">int</span> <span class="n">userId</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">userId</span> <span class="o">=</span> <span class="n">userId</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">int</span> <span class="nf">getUserId</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">userId</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">generateRandomPrefix</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s">&quot;Random&quot;</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">private</span> <span class="n">String</span> <span class="nf">toUpperCase</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">str</span><span class="o">.</span><span class="na">toUpperCase</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">int</span> <span class="nf">hackUserId</span><span class="o">(</span><span class="kt">int</span> <span class="n">userId</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">userId</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="mi">7</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="n">String</span> <span class="nf">displayFullUsername</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">fullUsername</span> <span class="o">=</span> <span class="n">generateRandomPrefix</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">toUpperCase</span><span class="o">(</span><span class="n">username</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">hackUserId</span><span class="o">(</span><span class="n">userId</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">fullUsername</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="n">String</span> <span class="nf">handleMiniType</span><span class="o">(</span><span class="n">MiniType</span> <span class="n">miniType</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s">&quot;randomString&quot;</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">Demo</span> <span class="n">demo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Demo</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">demo</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&quot;monster&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">demo</span><span class="o">.</span><span class="na">setUserId</span><span class="o">(</span><span class="mi">1234</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">demo</span><span class="o">.</span><span class="na">displayFullUsername</span><span class="o">());</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>记得先在POM文件里添加以下依赖：
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>groupId<span class="ni">&amp;gt;</span>junit<span class="ni">&amp;lt;</span>/groupId<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>artifactId<span class="ni">&amp;gt;</span>junit<span class="ni">&amp;lt;</span>/artifactId<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>version<span class="ni">&amp;gt;</span>4.8.1<span class="ni">&amp;lt;</span>/version<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>scope<span class="ni">&amp;gt;</span>test<span class="ni">&amp;lt;</span>/scope<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;/dependency&gt;</span>
+</span><span class='line'><span class="nt">&lt;dependency&gt;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>groupId<span class="ni">&amp;gt;</span>org.powermock<span class="ni">&amp;lt;</span>/groupId<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>artifactId<span class="ni">&amp;gt;</span>powermock-api-mockito<span class="ni">&amp;lt;</span>/artifactId<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>version<span class="ni">&amp;gt;</span>1.5.5<span class="ni">&amp;lt;</span>/version<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>scope<span class="ni">&amp;gt;</span>test<span class="ni">&amp;lt;</span>/scope<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;/dependency&gt;</span>
+</span><span class='line'><span class="nt">&lt;dependency&gt;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>groupId<span class="ni">&amp;gt;</span>org.powermock<span class="ni">&amp;lt;</span>/groupId<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>artifactId<span class="ni">&amp;gt;</span>powermock-module-junit4<span class="ni">&amp;lt;</span>/artifactId<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>version<span class="ni">&amp;gt;</span>1.5.5<span class="ni">&amp;lt;</span>/version<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>scope<span class="ni">&amp;gt;</span>test<span class="ni">&amp;lt;</span>/scope<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;/dependency&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>首先我们在测试类前面添加2个注解，告诉JUnit我们要使用PowerMock的Runner，以及需要mock的类。
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@RunWith</span><span class="o">(</span><span class="n">PowerMockRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+</span><span class='line'><span class="nd">@PrepareForTest</span><span class="o">({</span><span class="n">Demo</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoTest</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="c1">// ...</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>在setUp函数里初始化我们要mock的测试对象，测试类里声明了一个private Demo demo对象
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Before</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">demo</span> <span class="o">=</span> <span class="n">PowerMockito</span><span class="o">.</span><span class="na">spy</span><span class="o">(</span><span class="k">new</span> <span class="n">Demo</span><span class="o">());</span>
+</span><span class='line'><span class="n">PowerMockito</span><span class="o">.</span><span class="na">mockStatic</span><span class="o">(</span><span class="n">Demo</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+注意，如果不用spy的话对于未mock的正常函数就无法执行。另外我们需要mock静态方法generateRandomPrefix所以调用了mockStatic。</p>
+
+<p>现在我们第一个测试用例展示了如何mock不同类型的方法。
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Test</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDisplayFullUsername_001</span><span class="o">()</span>  <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="c1">// mock私有方法</span>
+</span><span class='line'><span class="n">PowerMockito</span><span class="o">.</span><span class="na">doReturn</span><span class="o">(</span><span class="s">&quot;ABCD&quot;</span><span class="o">).</span><span class="na">when</span><span class="o">(</span><span class="n">demo</span><span class="o">,</span> <span class="s">&quot;toUpperCase&quot;</span><span class="o">,</span> <span class="s">&quot;abcd&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="c1">// mock静态方法</span>
+</span><span class='line'><span class="n">PowerMockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">Demo</span><span class="o">.</span><span class="na">generateRandomPrefix</span><span class="o">()).</span><span class="na">thenReturn</span><span class="o">(</span><span class="s">&quot;Random_001&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="c1">// mock公有方法，anyInt表示接受任何int类型参数。</span>
+</span><span class='line'><span class="n">PowerMockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">demo</span><span class="o">.</span><span class="na">hackUserId</span><span class="o">(</span><span class="n">anyInt</span><span class="o">())).</span><span class="na">thenReturn</span><span class="o">(</span><span class="mi">3000</span><span class="o">);</span>
+</span><span class='line'><span class="n">demo</span><span class="o">.</span><span class="na">setUserId</span><span class="o">(</span><span class="mi">1234</span><span class="o">);</span>
+</span><span class='line'><span class="n">demo</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&quot;monster&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="n">demo</span><span class="o">.</span><span class="na">displayFullUsername</span><span class="o">();</span>
+</span><span class='line'><span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">&quot;Random_001_MONSTER_3000&quot;</span><span class="o">,</span> <span class="n">str</span><span class="o">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>对私有方法的测试也很简单。
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Test</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">testToUpperCase_001</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="n">Whitebox</span><span class="o">.&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">String</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span><span class="n">invokeMethod</span><span class="o">(</span><span class="n">demo</span><span class="o">,</span> <span class="s">&quot;toUpperCase&quot;</span><span class="o">,</span> <span class="s">&quot;xyz&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">&quot;XYZ&quot;</span><span class="o">,</span> <span class="n">str</span><span class="o">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>如果需要用到输入参数，可以考虑使用Answer，例子代码如下：
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Test</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">testHackUserId_001</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">PowerMockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">demo</span><span class="o">.</span><span class="na">hackUserId</span><span class="o">(</span><span class="n">anyInt</span><span class="o">())).</span><span class="na">thenAnswer</span><span class="o">(</span><span class="k">new</span> <span class="n">Answer</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Object</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">answer</span><span class="o">(</span><span class="n">InvocationOnMock</span> <span class="n">invocation</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">Object</span><span class="o">[]</span> <span class="n">args</span> <span class="o">=</span> <span class="n">invocation</span><span class="o">.</span><span class="na">getArguments</span><span class="o">();</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="na">toString</span><span class="o">())</span> <span class="o">*</span> <span class="mi">3</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="mi">3005</span><span class="o">,</span> <span class="n">demo</span><span class="o">.</span><span class="na">hackUserId</span><span class="o">(</span><span class="mi">1000</span><span class="o">));</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>另外，在使用PowerMock的时候注意以下几个地方：</p>
+
+<ol>
+<li>对私有函数的mock尽量写成PowerMockito.doReturn(返回值).when(对象名, 方法名, 参数列表)的形式，不要写成PowerMockito.when(&hellip;).thenReturn(&hellip;)，不然会有可能返回各种奇奇怪怪的错误。</li>
+<li>如果函数参数是自定义的类，比如要mock方法handleMiniType，我们就需要使用ArgumentCaptor，如果我们mock的时候是希望对于某个任意值。代码如下：
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="nd">@Test</span>
+</span><span class='line'> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testHandleMiniType</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>     <span class="n">ArgumentCaptor</span><span class="o">&lt;</span><span class="n">MiniType</span><span class="o">&gt;</span> <span class="n">arg</span> <span class="o">=</span> <span class="n">ArgumentCaptor</span><span class="o">.</span><span class="na">forClass</span><span class="o">(</span><span class="n">MiniType</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>     <span class="n">PowerMockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">demo</span><span class="o">.</span><span class="na">handleMiniType</span><span class="o">(</span><span class="n">arg</span><span class="o">.</span><span class="na">capture</span><span class="o">())).</span><span class="na">thenReturn</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">Idonotknow</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;)</span>
+</span><span class='line'>     <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">randomString</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;,</span> <span class="n">demo</span><span class="o">.</span><span class="na">handleMiniType</span><span class="o">(</span><span class="k">new</span> <span class="n">MiniType</span><span class="o">()));</span>
+</span><span class='line'> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[James Bach的Rapid Test培训总结]]></title>
