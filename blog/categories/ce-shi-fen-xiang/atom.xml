@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 测试分享 | 怪兽说]]></title>
   <link href="http://yingl.github.io/blog/categories/ce-shi-fen-xiang/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-09-15T21:11:12+08:00</updated>
+  <updated>2014-09-24T10:21:23+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -19,6 +19,11 @@
     <updated>2014-09-15T16:48:05+08:00</updated>
     <id>http://yingl.github.io/blog/2014/09/15/powermockshi-yong-xiao-jie</id>
     <content type="html"><![CDATA[<p>最近在写单元测试的时候大量使用了PowerMock，遇到不少问题，通过google逐一解决，在这里和大家分享一下。关于为什么使用PowerMock，最主要的优势在于它支持mock静态和私有成员函数。</p>
+
+<p>持续更新中&hellip;</p>
+
+<!--more-->
+
 
 <p>首先我们实现一个被测类，包含公有、私有和静态方法。</p>
 

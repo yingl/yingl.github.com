@@ -4,7 +4,7 @@
   <title><![CDATA[怪兽说]]></title>
   <link href="http://yingl.github.io/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-09-15T21:11:12+08:00</updated>
+  <updated>2014-09-24T10:21:23+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -14,11 +14,119 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Bugs: 控制逻辑要小心]]></title>
+    <link href="http://yingl.github.io/blog/2014/09/24/bug-control-flow/"/>
+    <updated>2014-09-24T09:40:02+08:00</updated>
+    <id>http://yingl.github.io/blog/2014/09/24/bug-control-flow</id>
+    <content type="html"><![CDATA[<p>最近在给某项目写单元测试，话说这单元测试应该开发来写，但是项目紧张人手不足也就没这么多讲究了。遇到一个函数，看着逻辑很简单，不可能出错，但是一测就发现了问题。问题函数代码简化后如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="n">Info</span> <span class="nf">getInfoById</span><span class="o">(</span><span class="n">Long</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">Info</span> <span class="n">result</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">((</span><span class="n">id</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">id</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// 是否被初始化</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(!</span><span class="n">INIT</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="c1">// 初始化程序是否正在运行</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(!</span><span class="n">RUNNING</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">init</span><span class="o">();</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// 直接查询数据库</span>
+</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>          <span class="n">result</span> <span class="o">=</span> <span class="n">infoDAO</span><span class="o">.</span><span class="na">getById</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="n">Logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&quot;...&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">infoDOMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>原理看着很简单，如果已经初始化，就直接从缓存map里查找并返回数据，否则检查是否有其它线程在运行init程序，没有的话先init初始化缓存然后从map里查找并返回数据并返回数据。可是单元测试一跑，问题立马暴露，当我直接查询数据库获得结果或者异常抛出后没有直接返回，而是去返回缓存里的结果。这会导致一个问题，当某个线程在初始化的时候，另一个线程去访问了一个没有完全初始化的缓存。要问这个bug怎么发现的？在单元测试里使用mock很容易模拟初始化的各种状态遍历各种控制路径。开发自己测试的时候只走了一条标准路径自然没有发现问题。修改后的代码如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="n">Info</span> <span class="nf">getInfoById</span><span class="o">(</span><span class="n">Long</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">((</span><span class="n">id</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">id</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// 是否被初始化</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(!</span><span class="n">INIT</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="c1">// 初始化程序是否正在运行</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(!</span><span class="n">RUNNING</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">init</span><span class="o">();</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// 直接查询数据库</span>
+</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="n">infoDAO</span><span class="o">.</span><span class="na">getById</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">DAOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="n">Logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&quot;...&quot;</span><span class="o">);</span>
+</span><span class='line'>          <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">infoDOMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[PowerMock使用小结]]></title>
     <link href="http://yingl.github.io/blog/2014/09/15/powermockshi-yong-xiao-jie/"/>
     <updated>2014-09-15T16:48:05+08:00</updated>
     <id>http://yingl.github.io/blog/2014/09/15/powermockshi-yong-xiao-jie</id>
     <content type="html"><![CDATA[<p>最近在写单元测试的时候大量使用了PowerMock，遇到不少问题，通过google逐一解决，在这里和大家分享一下。关于为什么使用PowerMock，最主要的优势在于它支持mock静态和私有成员函数。</p>
+
+<p>持续更新中&hellip;</p>
+
+<!--more-->
+
 
 <p>首先我们实现一个被测类，包含公有、私有和静态方法。</p>
 
