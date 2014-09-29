@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bugs | 怪兽说]]></title>
   <link href="http://yingl.github.io/blog/categories/bugs/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-09-24T10:21:23+08:00</updated>
+  <updated>2014-09-29T10:02:38+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -19,6 +19,9 @@
     <updated>2014-09-24T09:40:02+08:00</updated>
     <id>http://yingl.github.io/blog/2014/09/24/bug-control-flow</id>
     <content type="html"><![CDATA[<p>最近在给某项目写单元测试，话说这单元测试应该开发来写，但是项目紧张人手不足也就没这么多讲究了。遇到一个函数，看着逻辑很简单，不可能出错，但是一测就发现了问题。问题函数代码简化后如下：</p>
+
+<!--more-->
+
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>

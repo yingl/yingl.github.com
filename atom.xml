@@ -4,7 +4,7 @@
   <title><![CDATA[怪兽说]]></title>
   <link href="http://yingl.github.io/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-09-24T10:21:23+08:00</updated>
+  <updated>2014-09-29T10:02:38+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -14,11 +14,27 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Maven-小技巧]]></title>
+    <link href="http://yingl.github.io/blog/2014/09/29/maven-xiao-ji-qiao/"/>
+    <updated>2014-09-29T09:34:53+08:00</updated>
+    <id>http://yingl.github.io/blog/2014/09/29/maven-xiao-ji-qiao</id>
+    <content type="html"><![CDATA[<p>最近在使用maven过程中发现一个问题，在更新了pom.xml文件后在idea中重新导入，但是相关的包还是没有找到。检查了一下发现jar包没有下载到本地。好吧，检查服务器，发现jar包是存在的，也能下载到本地。那问题就好办了，在本地用命令行方式安装就可以了。</p>
+
+<p>mvn install:install-file -DgroupId=cn.monstersay.blog -DartifactId=blog-web -Dversion=1.0.0 -Dpackaging=jar -Dfile=blog-web-1.0.0-20140915.053502-20.jar</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Bugs: 控制逻辑要小心]]></title>
     <link href="http://yingl.github.io/blog/2014/09/24/bug-control-flow/"/>
     <updated>2014-09-24T09:40:02+08:00</updated>
     <id>http://yingl.github.io/blog/2014/09/24/bug-control-flow</id>
     <content type="html"><![CDATA[<p>最近在给某项目写单元测试，话说这单元测试应该开发来写，但是项目紧张人手不足也就没这么多讲究了。遇到一个函数，看着逻辑很简单，不可能出错，但是一测就发现了问题。问题函数代码简化后如下：</p>
+
+<!--more-->
+
+
+
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1824,53 +1840,6 @@
 <h3>效果怎么样？</h3>
 
 <p>不谈最后结果的分享都是耍流氓！关于效果吗，参考淘宝官方公布的数字！而且由于对线下测试及时的发现了各类问题，最后3月8号活动当天，核销进展顺利。客服的妹子们只接到了少数几个咨询电话。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[开张先打个招聘广告]]></title>
-    <link href="http://yingl.github.io/blog/2014/03/18/kai-zhang-xian-da-ge-zhao-pin-guang-gao/"/>
-    <updated>2014-03-18T19:24:02+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/03/18/kai-zhang-xian-da-ge-zhao-pin-guang-gao</id>
-    <content type="html"><![CDATA[<h2>怪兽说开张了！</h2>
-
-<p>WordPress太笨重，Drupal的插件太不友好，折腾了一晚上决定还是拥抱Octopress。今天别的什么就不说了，先打个招聘广告，杭州淘宝技术质量部招聘高级测试开发工程师，上市前最好的机会， 待遇你懂的，而且还有大把水灵灵的妹子等着你哦！级别P6起，能力强P8也是能搞定的。有互联网行业经验的同学优先，没有也不要紧，只要你表现出了足够的技术力或业务洞察力，机会一样大大的。要求如下，仅供参考。</p>
-
-<!--more-->
-
-
-<h4>岗位描述</h4>
-
-<ol>
-<li>参与互联网软件产品测试的全流程，包括参与需求分析、设计评审，制定测试计划，设计和执行测试用例，进行缺陷跟踪和软件质量分析等。</li>
-<li>带领其他测试开发工程师执行项目测试，包括制定测试计划，分配测试资源，构建测试环境，执行集成测试，回归测试等。</li>
-<li>保证被测系统的质量，并通过测试流程和方法创新，努力提升研发的质量和效率。</li>
-</ol>
-
-
-<h4>岗位要求</h4>
-
-<ol>
-<li>工科、计算机或其他相关专业本科以上学历。</li>
-<li>熟悉C/C++/Java等至少一种编程语言，有Shell或Ruby/PHP/Perl/Python等使用经验者优先。</li>
-<li>至少3年以上软件开发、自动化测试工作经验。</li>
-<li>有性能、安全、白盒测试等专业测试领域经验者优先。</li>
-<li>具备Android/IOS无线产品、互联网广告、搜索、大数据处理、分布式系统、数据库和网络等业务领域测试经验者优先。</li>
-<li>熟悉Linux或Unix操作系统。</li>
-<li>精通测试流程和测试用例设计方法,能主动进行技术钻研。</li>
-<li>解决复杂问题和编写自动测试工具和系统的能力。</li>
-<li>很强的逻辑思维能力，谈判的能力和冲突管理的能力。</li>
-<li>善于团队合作，理解和适应变化，以结果和行动为准则，努力追求成功。</li>
-</ol>
-
-
-<h4>联系方式：</h4>
-
-<ol>
-<li>微博私信</li>
-<li>旺旺：窥基</li>
-</ol>
-
 ]]></content>
   </entry>
   

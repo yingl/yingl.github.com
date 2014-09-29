@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 小技巧 | 怪兽说]]></title>
+  <link href="http://yingl.github.io/blog/categories/xiao-ji-qiao/atom.xml" rel="self"/>
+  <link href="http://yingl.github.io/"/>
+  <updated>2014-09-29T10:02:38+08:00</updated>
+  <id>http://yingl.github.io/</id>
+  <author>
+    <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Maven-小技巧]]></title>
+    <link href="http://yingl.github.io/blog/2014/09/29/maven-xiao-ji-qiao/"/>
+    <updated>2014-09-29T09:34:53+08:00</updated>
+    <id>http://yingl.github.io/blog/2014/09/29/maven-xiao-ji-qiao</id>
+    <content type="html"><![CDATA[<p>最近在使用maven过程中发现一个问题，在更新了pom.xml文件后在idea中重新导入，但是相关的包还是没有找到。检查了一下发现jar包没有下载到本地。好吧，检查服务器，发现jar包是存在的，也能下载到本地。那问题就好办了，在本地用命令行方式安装就可以了。</p>
+
+<p>mvn install:install-file -DgroupId=cn.monstersay.blog -DartifactId=blog-web -Dversion=1.0.0 -Dpackaging=jar -Dfile=blog-web-1.0.0-20140915.053502-20.jar</p>
+]]></content>
+  </entry>
+  
+</feed>
