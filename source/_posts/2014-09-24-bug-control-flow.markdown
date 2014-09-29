@@ -8,6 +8,7 @@ categories: Bugs
 
 最近在给某项目写单元测试，话说这单元测试应该开发来写，但是项目紧张人手不足也就没这么多讲究了。遇到一个函数，看着逻辑很简单，不可能出错，但是一测就发现了问题。问题函数代码简化后如下：
 
+<!--more-->
 {% codeblock lang:java %}
 public Info getInfoById(Long id) {
   Info result = null;
