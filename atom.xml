@@ -4,7 +4,7 @@
   <title><![CDATA[怪兽说]]></title>
   <link href="http://yingl.github.io/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-09-29T10:02:38+08:00</updated>
+  <updated>2014-10-14T20:05:49+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -12,6 +12,45 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[分层自动化测试]]></title>
+    <link href="http://yingl.github.io/blog/2014/10/14/fen-ceng-zi-dong-hua-ce-shi/"/>
+    <updated>2014-10-14T15:47:51+08:00</updated>
+    <id>http://yingl.github.io/blog/2014/10/14/fen-ceng-zi-dong-hua-ce-shi</id>
+    <content type="html"><![CDATA[<p>工作多年以来发现很多团队对自动化测试的理解就是写脚本，单元测试就是用XUnit框架写脚本。团队话费了大量精力去写自动化脚本但取得的实际价值确不容乐观，但很多人乐此不彼，觉得写代码就是白盒测试，是高大上的体现。其实这完全是个误区，首先我们看下白盒测试的定义：白盒测试（white-box testing）又称透明盒测试（glass box testing）、结构测试（structural testing）等，软件测试的主要方法之一，也称结构测试、逻辑驱动测试或基于程序本身的测试。测试应用程序的内部结构或运作，而不是测试应用程序的功能（即黑盒测试）。所以说我们平时写的大量功能测试脚本也属于黑盒测试的范畴。另外先强调一点，不管黑盒测试还是白盒测试，手工测试还是自动化测试，都属于革命工作分工不同，没有高低贵贱的区别，能发现bug，能保证产品按时发布，用户满意就是硬道理。</p>
+
+<p>先来谈谈我在工作中看到的自动化测试的误区：</p>
+
+<ol>
+<li>自动化测试脚本在完成后因为产品更新导致大量测试用例失效，由于团队忙于新功能开发，当失效的用例积累越来越多时，这些测试用例就慢慢失去维护。如果开发这些用例同学在的时候可能还好办，看一眼就知道是用例过期还是真有bug，可是当新同学接手的时候就迷茫了。记得刚进入微软我们团队接手一个项目的时候，跑一轮测试有5000个左右的用例，每次都有几百个随机错误，最后花了7个人近半年时间才清理干净。对于大多数团队来说是不会有如此奢侈的资源的。</li>
+<li>大量的自动化测试脚本没有发现问题，上线后仍然问题不断。在测试中我们主要针对正常流程进行测试，但是在线上出故障的都是非正常流程，而在测试环境里由于种种限制，我们很难模拟服务请求失败，数据库访问异常，队列数据丢失，磁盘失效等等各种小概率异常。</li>
+<li>代码质量问题严重。很多人写的单元测试只是构造一个输入然后检查返回值，结果是测试通过了但是问题却遗漏了。之前抽查某项目代码的时候发现这样一个问题：一个函数对它的输入做了处理后把结果写数据库，只要写成功了就返回true，反之则false。自动化脚本每次运行都通过，貌似皆大欢喜，但是问题来了，处理后写入数据库的内容正确吗？分析代码后发现对输入处理的逻辑有问题，写入数据库的内容本身就有问题。</li>
+<li>重复轮子制造。大量的团队都在开发自己的自动化测试框架，实际上只是对各种开源框架进行裁剪完善。面试的时候经常有人说自动化测试经验丰富，一问就是开发某某自动化测试框架，再问产品测试的细节就很茫然了。其实对于大多数公司来说，开源的产品已经够用了，测试框架本身并不能提高产品质量。</li>
+</ol>
+
+
+<p>下面在谈分层测试之前先复习一下几个名词：</p>
+
+<ol>
+<li>单元测试：开发者编写的一小段代码，用于检验被测代码的一个很小的、很明确的功能是否正确。通常而言，一个单元测试是用于判断某个特定条件（或者场景）下某个特定函数的行为。</li>
+<li>集成测试：也叫组装测试或联合测试。在单元测试的基础上，将所有模块按照设计要求（如根据结构图〕组装成为子系统或系统，进行集成测试。实践表明，一些模块虽然能够单独地工作，但并不能保证连接起来也能正常的工作。程序在某些局部反映不出来的问题，在全局上很可能暴露出来，影响功能的实现。</li>
+<li>系统测试：将需测试的软件，作为整个基于计算机系统的一个元素，与计算机硬件、外设、某些支持软件、数据和人员等其他系统元素及环境结合在一起测试。在实际运行(使用)环境下，对计算机系统进行一系列的组装测试和确认测试。系统测试的目的在于通过与系统的需求定义作比较，发现软件与系统定义不符合或与之矛盾的地方。</li>
+</ol>
+
+
+<p>另外我们还要牢记一个概念：bug发现得越早修复成本越低。这里有个惨痛的教训，当年在fix了一个ADO的bug之后由于代码评审的一个失误，用户在运行了2年之后发现存在内存泄露，虽然修复很容易，加一行代码释放资源就解决了，但是沟通成本，修复和验证投入的人力成本，客户的信任成本等综合起来就非常可观了。</p>
+
+<p>现在我们来看自动化测试如何分层（从低到高）：</p>
+
+<ol>
+<li>单元测试：开发人员在实现完代码之后或者在重构代码之前编写单元测试，用来确保功能正确或者保持一致。在这一层，我们可以把测试做到很细的粒度。通过<a href="http://baike.so.com/doc/2249429.html">mock</a>框架（在这里推荐PowerMock，能有效支持静态和私有方法的mock，具体使用可以参考这个<a href="https://github.com/yingl/PowerMockDemo">例子</a>）能模拟各种异常情况，大大降低测试的外部依赖，使得单元测试尽可能做到随时随地可以运行。另外根据程序模块的划分，单元测试本身可以继续分层。比如服务层会调用数据库访问层读写数据库，我们可以在数据库访问层检查SQL脚本是否正确，数据写入是否正确（曾经遇到过分库分表逻辑设计错误）。在服务层的测试用例编写时我们就可以假设数据库访问层是正确工作的，通过mock我们可以简化测试程序的配置和用例编写，比如模拟数据库访问失败抛出异常等场景，另外对于网络层的很多功能也能进行mock。一般来说，单元测试由开发同学负责实现，写单元测试的过程也是对自己代码进行检查的一个过程。通过代码层有效的单元测试，相当于我们把生产的零部件都做了一遍检测，可以进入下一层了。这一层也是自动化测试投入产出比最高的地方，代码变动带来的维护成本也最低。通过接入持续集成，可以及时有效的发现代码层的问题并完成修复。</li>
+<li>集成测试：在每个零部件通过检测之后，我们可以把他们装配起来了，对每一个模块进行检测。在这个层面我们更关心输入输出功能是否正确，对于常见的错误场景能否正确处理。结合我厂实际经验来说，可以理解成代码部署到日常环境后，通过直接访问HSF或者MTOP服务，在这里我们只关心对于输入能否有正确的响应，至于一些比较难模拟的错误场景，因为我们在单元测试里通过mock进行了覆盖，所以在这里不用过于操心，除非有特别需求我们再做特别处理。这一层应当是测试人员大展身手的地方，我们不需要了解代码的细节，但是我们对系统的结构，模块之间关系等等的理解充分体现你的测试代码里了。至于XUnit框架，它只是一个框架，方便我们组织测试代码而已。</li>
+<li>系统测试：这个级别的测试是最接近用户实际场景的，同时也是自动化成本最高的。具体原因已经有很多论述了，在这里我就不细说了。所以在这一层做自动化测试，进可能能去实现那些已经标准化的流程，对于其它部分，通过手工测试或者一些辅助工具半自动化测试也未尝不是一种好的选择。</li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Maven-小技巧]]></title>
@@ -133,121 +172,20 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[PowerMock使用小结]]></title>
-    <link href="http://yingl.github.io/blog/2014/09/15/powermockshi-yong-xiao-jie/"/>
+    <title type="html"><![CDATA[PowerMock简介]]></title>
+    <link href="http://yingl.github.io/blog/2014/09/15/powermock-jie-shao/"/>
     <updated>2014-09-15T16:48:05+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/09/15/powermockshi-yong-xiao-jie</id>
-    <content type="html"><![CDATA[<p>最近在写单元测试的时候大量使用了PowerMock，遇到不少问题，通过google逐一解决，在这里和大家分享一下。关于为什么使用PowerMock，最主要的优势在于它支持mock静态和私有成员函数。</p>
-
-<p>持续更新中&hellip;</p>
+    <id>http://yingl.github.io/blog/2014/09/15/powermock-jie-shao</id>
+    <content type="html"><![CDATA[<p>工作多年以来发现很多团队对自动化测试的理解就是写脚本，单元测试就是用XUnit框架写脚本。团队话费了大量精力去写脚本但取得的实际价值确不容乐观。比如在测试中我想测试数据库读写异常，网络请求返回特定的错误等等&hellip;</p>
 
 <!--more-->
 
 
-<p>首先我们实现一个被测类，包含公有、私有和静态方法。</p>
+<p>以上这些想法如果通过正常手段去模拟会遇到很多困难，而且会导致测试对外部组件、环境有很强的依赖，还会导致代码难以维护。为了方便起见，我在单元测试的编写过程中选用了PowerMock框架来实现mock功能。</p>
 
-<p>关于为什么要mock在这里做一下简单的解释，大家不嫌啰嗦的话可以看一看。单元测试的要点在于快和简单。快在于执行速度快，简单在用例简单和发现问题后定位简单。所以为达到这个目标，我们在测试的时候可以把所有不相关的部分都做一个信任假设（这里信任指按期望工作，可以期望正确，也可以期望错误），通过mock，我们可以轻松控制这些偶尔对象的行为，快速的构造测试场景。比如我们在测试displayFullUsername方法时可以假设其引用的私有和静态方法总是按期望工作的，对于私有方法toUpperCase我们再另外写单元测试来保证正确性，这样当displayFullUsername单元测试失败时，我们不用去debug私有方法toUpperCase相关的代码，只用关心当前的代码逻辑就可以了。另外，一些函数依赖的方法背后可能有个非常复杂的系统，测试环境的配置就直接把你搞晕，这种时候mock就可以把问题大大简化了。</p>
+<p>之所以选用PowerMock是因为它弥补了iMock, EasyMock和Mockito框架等的一个共同缺点：不支持静态，私有和final方法。具体使用的时候非常方便，因为PowerMock是对现有框架进行扩展，基本遵循相同的语法。我在github上放了一个<a href="https://github.com/yingl/PowerMockDemo">例子</a>，演示了几个常用的场景。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Demo</span> <span class="o">{</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">username</span><span class="o">;</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="kt">int</span> <span class="n">userId</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUsername</span><span class="o">(</span><span class="n">String</span> <span class="n">username</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">username</span> <span class="o">=</span> <span class="n">username</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getUsername</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">username</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUserId</span><span class="o">(</span><span class="kt">int</span> <span class="n">userId</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">userId</span> <span class="o">=</span> <span class="n">userId</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getUserId</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">userId</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">generateRandomPrefix</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="s">&quot;Random&quot;</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="nf">toUpperCase</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">str</span><span class="o">.</span><span class="na">toUpperCase</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">hackUserId</span><span class="o">(</span><span class="kt">int</span> <span class="n">userId</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">userId</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="mi">7</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">displayFullUsername</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">String</span> <span class="n">fullUsername</span> <span class="o">=</span> <span class="n">generateRandomPrefix</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">toUpperCase</span><span class="o">(</span><span class="n">username</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">hackUserId</span><span class="o">(</span><span class="n">userId</span><span class="o">);</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">fullUsername</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">handleMiniType</span><span class="o">(</span><span class="n">MiniType</span> <span class="n">miniType</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="s">&quot;randomString&quot;</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">Demo</span> <span class="n">demo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Demo</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">demo</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&quot;monster&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">demo</span><span class="o">.</span><span class="na">setUserId</span><span class="o">(</span><span class="mi">1234</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">demo</span><span class="o">.</span><span class="na">displayFullUsername</span><span class="o">());</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>记得先在POM文件里添加以下依赖：</p>
+<p>Maven配置：在pom.xml中添加以下引用，这里使用了基于Mockito的实现。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -261,19 +199,7 @@
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
 </pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>junit<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>junit<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;version&gt;</span>4.8.1<span class="nt">&lt;/version&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
-</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
-</span><span class='line'><span class="nt">&lt;dependency&gt;</span>
 </span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>org.powermock<span class="nt">&lt;/groupId&gt;</span>
 </span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>powermock-api-mockito<span class="nt">&lt;/artifactId&gt;</span>
 </span><span class='line'>    <span class="nt">&lt;version&gt;</span>1.5.5<span class="nt">&lt;/version&gt;</span>
@@ -288,7 +214,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>首先我们在测试类前面添加2个注解，告诉JUnit我们要使用PowerMock的Runner，以及需要mock的类。</p>
+<p>测试代码前添加如下注解，把你需要mock的类放在PrepareForTest里，不然运行时会报错。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -296,125 +222,10 @@
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 </pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@RunWith</span><span class="o">(</span><span class="n">PowerMockRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-</span><span class='line'><span class="nd">@PrepareForTest</span><span class="o">({</span><span class="n">Demo</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoTest</span> <span class="o">{</span>
-</span><span class='line'>    <span class="c1">// ...</span>
+</span><span class='line'><span class="nd">@PrepareForTest</span><span class="o">({</span><span class="n">DemoSpy</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoSpyTest</span> <span class="o">{</span>
+</span><span class='line'>  <span class="o">...</span>
 </span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>在setUp函数里初始化我们要mock的测试对象，测试类里声明了一个private Demo demo对象</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Before</span>
-</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">demo</span> <span class="o">=</span> <span class="n">PowerMockito</span><span class="o">.</span><span class="na">spy</span><span class="o">(</span><span class="k">new</span> <span class="n">Demo</span><span class="o">());</span>
-</span><span class='line'>    <span class="n">PowerMockito</span><span class="o">.</span><span class="na">mockStatic</span><span class="o">(</span><span class="n">Demo</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>注意，如果不用spy的话对于未mock的正常函数就无法执行。另外我们需要mock静态方法generateRandomPrefix所以调用了mockStatic。</p>
-
-<p>现在我们第一个测试用例展示了如何mock不同类型的方法。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Test</span>
-</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDisplayFullUsername_001</span><span class="o">()</span>  <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-</span><span class='line'>    <span class="c1">// mock私有方法</span>
-</span><span class='line'>    <span class="n">PowerMockito</span><span class="o">.</span><span class="na">doReturn</span><span class="o">(</span><span class="s">&quot;ABCD&quot;</span><span class="o">).</span><span class="na">when</span><span class="o">(</span><span class="n">demo</span><span class="o">,</span> <span class="s">&quot;toUpperCase&quot;</span><span class="o">,</span> <span class="s">&quot;abcd&quot;</span><span class="o">);</span>
-</span><span class='line'>    <span class="c1">// mock静态方法</span>
-</span><span class='line'>    <span class="n">PowerMockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">Demo</span><span class="o">.</span><span class="na">generateRandomPrefix</span><span class="o">()).</span><span class="na">thenReturn</span><span class="o">(</span><span class="s">&quot;Random_001&quot;</span><span class="o">);</span>
-</span><span class='line'>    <span class="c1">// mock公有方法，anyInt表示接受任何int类型参数。</span>
-</span><span class='line'>    <span class="n">PowerMockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">demo</span><span class="o">.</span><span class="na">hackUserId</span><span class="o">(</span><span class="n">anyInt</span><span class="o">())).</span><span class="na">thenReturn</span><span class="o">(</span><span class="mi">3000</span><span class="o">);</span>
-</span><span class='line'>    <span class="n">demo</span><span class="o">.</span><span class="na">setUserId</span><span class="o">(</span><span class="mi">1234</span><span class="o">);</span>
-</span><span class='line'>    <span class="n">demo</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&quot;monster&quot;</span><span class="o">);</span>
-</span><span class='line'>    <span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="n">demo</span><span class="o">.</span><span class="na">displayFullUsername</span><span class="o">();</span>
-</span><span class='line'>    <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">&quot;Random_001_MONSTER_3000&quot;</span><span class="o">,</span> <span class="n">str</span><span class="o">);</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>对私有方法的测试也很简单。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Test</span>
-</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">testToUpperCase_001</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="n">Whitebox</span><span class="o">.&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="n">invokeMethod</span><span class="o">(</span><span class="n">demo</span><span class="o">,</span> <span class="s">&quot;toUpperCase&quot;</span><span class="o">,</span> <span class="s">&quot;xyz&quot;</span><span class="o">);</span>
-</span><span class='line'>    <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">&quot;XYZ&quot;</span><span class="o">,</span> <span class="n">str</span><span class="o">);</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果需要用到输入参数，可以考虑使用Answer，例子代码如下：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Test</span>
-</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">testHackUserId_001</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">PowerMockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">demo</span><span class="o">.</span><span class="na">hackUserId</span><span class="o">(</span><span class="n">anyInt</span><span class="o">())).</span><span class="na">thenAnswer</span><span class="o">(</span><span class="k">new</span> <span class="n">Answer</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="nd">@Override</span>
-</span><span class='line'>        <span class="kd">public</span> <span class="n">Object</span> <span class="nf">answer</span><span class="o">(</span><span class="n">InvocationOnMock</span> <span class="n">invocation</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
-</span><span class='line'>            <span class="n">Object</span><span class="o">[]</span> <span class="n">args</span> <span class="o">=</span> <span class="n">invocation</span><span class="o">.</span><span class="na">getArguments</span><span class="o">();</span>
-</span><span class='line'>            <span class="k">return</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="na">toString</span><span class="o">())</span> <span class="o">*</span> <span class="mi">3</span><span class="o">;</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>    <span class="o">});</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="mi">3005</span><span class="o">,</span> <span class="n">demo</span><span class="o">.</span><span class="na">hackUserId</span><span class="o">(</span><span class="mi">1000</span><span class="o">));</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>另外，在使用PowerMock的时候注意以下几个地方：</p>
-
-<ol>
-<li>对私有函数的mock尽量写成PowerMockito.doReturn(返回值).when(对象名, 方法名, 参数列表)的形式，不要写成PowerMockito.when(&hellip;).thenReturn(&hellip;)，不然会有可能返回各种奇奇怪怪的错误。</li>
-<li>如果函数参数是自定义的类，比如要mock方法handleMiniType，我们就需要使用ArgumentCaptor，如果我们mock的时候是希望对于某个任意值。代码如下：</li>
-</ol>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="nd">@Test</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testHandleMiniType</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">ArgumentCaptor</span><span class="o">&lt;</span><span class="n">MiniType</span><span class="o">&gt;</span> <span class="n">arg</span> <span class="o">=</span> <span class="n">ArgumentCaptor</span><span class="o">.</span><span class="na">forClass</span><span class="o">(</span><span class="n">MiniType</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">PowerMockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">demo</span><span class="o">.</span><span class="na">handleMiniType</span><span class="o">(</span><span class="n">arg</span><span class="o">.</span><span class="na">capture</span><span class="o">())).</span><span class="na">thenReturn</span><span class="o">(</span><span class="s">&quot;Idonotknow&quot;</span><span class="o">)</span>
-</span><span class='line'>        <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">&quot;randomString&quot;</span><span class="o">,</span> <span class="n">demo</span><span class="o">.</span><span class="na">handleMiniType</span><span class="o">(</span><span class="k">new</span> <span class="n">MiniType</span><span class="o">()));</span>
-</span><span class='line'>    <span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 ]]></content>
@@ -1721,125 +1532,6 @@
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[38电影抢票活动测试分享]]></title>
-    <link href="http://yingl.github.io/blog/2014/03/30/38-movie-falsh-sale/"/>
-    <updated>2014-03-30T21:01:15+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/03/30/38-movie-falsh-sale</id>
-    <content type="html"><![CDATA[<p>4月12日拔丝活动（buzz.cn）在上海有一场关于移动测试交流的活动，我会分享淘宝手机生活节测试的一些心得和经验。在这里先分享我直接负责的38电影抢票活动的总结。</p>
-
-<!--more-->
-
-
-<h3>项目时间点</h3>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th align="left"><em>日期</em></th>
-<th align="left"><em>事件</em></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td align="left">1/25 &ndash; 1/27 </td>
-<td align="left">测试人员投入，开始编写测试用例，准备数据。</td>
-</tr>
-<tr>
-<td></td>
-<td align="left">1/28 </td>
-<td align="left">冒烟测试完成</td>
-</tr>
-<tr>
-<td></td>
-<td align="left">2/12 &ndash; 2/11 </td>
-<td align="left">日常环境测试完成</td>
-</tr>
-<tr>
-<td></td>
-<td align="left">2/12 &ndash; 3/1 </td>
-<td align="left">1. 预发环境功能测试<br>2. 性能测试<br>3. 影院现场测试<br>4. 影院排期数据生成</td>
-</tr>
-<tr>
-<td></td>
-<td align="left">3/2 </td>
-<td align="left">活动预热页面上线</td>
-</tr>
-<tr>
-<td></td>
-<td align="left">3/5 </td>
-<td align="left">抢票活动开始，晚上有新需求大改版</td>
-</tr>
-<tr>
-<td></td>
-<td align="left">3/6 </td>
-<td align="left">下午新版页面上线</td>
-</tr>
-<tr>
-<td></td>
-<td align="left">3/9 </td>
-<td align="left">活动顺利结束</td>
-</tr>
-</tbody>
-</table>
-
-
-<p>虽然测因为其它项目的原因晚两天投入项目，但整个项目基本还是按照计划的时间节点前进，虽然预热页面上线时间晚了一天，但主要是线下影院无法准确提供3/8当天的准确排期。</p>
-
-<h3>活动型项目的特点</h3>
-
-<ol>
-<li>短平快。整个项目扣除春节长假和额外休假，实际施工时间仅为1个月。包含了从需求分析、设计评审到开发测试整个流程。</li>
-<li>投入资源有限。活动只投入一个后端、一个前端和一个测试。</li>
-<li>一次性代码多。很多代码针对活动的特殊场景做了特殊的逻辑和硬编码处理，基本不考虑重用性。</li>
-<li>测试链路长，上下游组件依赖关系复杂。</li>
-<li>非技术因素影响复杂。必须对线下数据进行清洗。而且活动分线上线下部分，线下部分有很多不可控风险因素需要考虑。</li>
-<li>及时响应前线反馈。</li>
-</ol>
-
-
-<h3>测试经验分享</h3>
-
-<ol>
-<li>Web UI自动化测试这种高大上东西基本就不考虑了。等这套东西能稳定跑起来活动都结束了，放到下次活动又是另一套玩法了。</li>
-<li>测试模块化。由于测试链路长，依赖组件多，等各组件联调完成再展开测试时间已经不够。对此我们做了如下处理：
-
-<ol>
-<li>前后端分别生成mock数据进行单元测试。因为即使在测试环境的数据库里生成测试数据也是一件很复杂的工作，所以我们可以用mock数据检查各种复杂场景。这样在联调通过后对系统进行集成测试只要选取少数典型场景进行测试就可以了，大大减少了测试工作量。而且对于后端，可以直接在开发的项目里编写Java单元测试脚本，每次可以自动回归。</li>
-<li>坐在一起工作。发现问题提交到bug系统后不要等待对方回复然后修复，直接抓人当面交流。如果已经清楚bug原因和修复方案的话，直接修改然后拉对方做代码评审是效率最高的做法。</li>
-<li>对于上下游组件的测试，一定要约定好数据交换格式和接口。因为是o2o活动，我们输入的影院数据要经过引擎的处理展现给附近页面，但是这个流程连续三天没有走通，最好发现是数据格式约定有问题，有一个字段引擎默认我们会正确设定所以没有告知，而实际上我们根本不知道这个字段的作用。这个教训值得深刻总结。</li>
-</ol>
-</li>
-<li>对于抢购／秒杀类的活动，一定要注意以下两个问题：
-
-<ol>
-<li>性能测试。在第一次性能测试的时候我们发现了缓存没有被正确使用，导致预定的性能指标远远不能达到。</li>
-<li>潜在的死锁问题。在一个被精心构造的场景里，我们发现当所有座位被选，即使因为有人因为15分钟内为付款导致座位被释放，其他人也无法进入选座页面选择被释放的座位。后来经过排查，是判断座位释放和更新座位状态的代码逻辑有问题。如果等活动发生时再注意到这个问题，那么很多座位会因为这个原因导致无法被售出。</li>
-</ol>
-</li>
-<li>O2O活动的offline要非常重视，为了保证线下核销能正常进行，我们专门组织了影院实地测试，发现了一系列原来没有充分考虑的问题：
-
-<ol>
-<li>影院不认短信核销，必须检查淘宝的卡券包。</li>
-<li>现场没有wifi，而且有些影院2G/3G信号不大好，部分影院完全没有信号。</li>
-<li>卡券包没有做本地缓存，弱网络情况下花了至少5分钟才打开。考虑活动当天影院淘宝全部包场，如果核销速度慢的话肯定会影响入场进度。</li>
-<li>给影院的培训资料全是基于iOS版淘宝的，有些服务员不会使用Android版的客户端。</li>
-</ol>
-</li>
-<li>自动化工具很重要。当天共有超过200家影院超过7000场电影需要排期，运营和影院交流后给出了一套复杂的规则，但是如果人肉做的话至少2人天的工作量，测试在了解需求后主动为运营编写的一个自动排期脚本，几秒钟就能完成排期并生成数据订正脚本。</li>
-<li>线下数据靠不住。影院方提供的数据不能100%相信，经常会出现一些莫名其妙的问题。比如座位给多了，场次排重了等。必须根据已有的数据及时核对并反馈。</li>
-<li>敏捷！前线的需求就是我们的任务，凌晨2点下班不算太晚，即使在活动最后一天还是有各种突发状况，比如某个影院突然停电，我们必须赶快安排退票补偿事宜。</li>
-</ol>
-
-
-<h3>效果怎么样？</h3>
-
-<p>不谈最后结果的分享都是耍流氓！关于效果吗，参考淘宝官方公布的数字！而且由于对线下测试及时的发现了各类问题，最后3月8号活动当天，核销进展顺利。客服的妹子们只接到了少数几个咨询电话。</p>
 ]]></content>
   </entry>
   

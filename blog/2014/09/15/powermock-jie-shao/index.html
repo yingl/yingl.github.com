@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Maven-小技巧 - 怪兽说</title>
+  <title>PowerMock简介 - 怪兽说</title>
   <meta name="author" content="窥基／无柳无酒／黑灯瞎火">
 
   
-  <meta name="description" content="最近在使用maven过程中发现一个问题，在更新了pom.xml文件后在idea中重新导入，但是相关的包还是没有找到。检查了一下发现jar包没有下载到本地。好吧，检查服务器，发现jar包是存在的，也能下载到本地。那问题就好办了，在本地用命令行方式安装就可以了。 mvn install:install &hellip;">
+  <meta name="description" content="工作多年以来发现很多团队对自动化测试的理解就是写脚本，单元测试就是用XUnit框架写脚本。团队话费了大量精力去写脚本但取得的实际价值确不容乐观。比如在测试中我想测试数据库读写异常，网络请求返回特定的错误等等&hellip; 以上这些想法如果通过正常手段去模拟会遇到很多困难，而且会导致测试对外部组件 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://yingl.github.io/blog/2014/09/29/maven-xiao-ji-qiao">
+  <link rel="canonical" href="http://yingl.github.io/blog/2014/09/15/powermock-jie-shao">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="怪兽说" type="application/atom+xml">
@@ -68,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">Maven-小技巧</h1>
+      <h1 class="entry-title">PowerMock简介</h1>
     
     
       <p class="meta">
@@ -84,16 +84,65 @@
   
 
 
-<time datetime="2014-09-29T09:34:53+08:00" pubdate data-updated="true">Sep 29<span>th</span>, 2014</time>
+<time datetime="2014-09-15T16:48:05+08:00" pubdate data-updated="true">Sep 15<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>最近在使用maven过程中发现一个问题，在更新了pom.xml文件后在idea中重新导入，但是相关的包还是没有找到。检查了一下发现jar包没有下载到本地。好吧，检查服务器，发现jar包是存在的，也能下载到本地。那问题就好办了，在本地用命令行方式安装就可以了。</p>
+<div class="entry-content"><p>工作多年以来发现很多团队对自动化测试的理解就是写脚本，单元测试就是用XUnit框架写脚本。团队话费了大量精力去写脚本但取得的实际价值确不容乐观。比如在测试中我想测试数据库读写异常，网络请求返回特定的错误等等&hellip;</p>
 
-<p>mvn install:install-file -DgroupId=cn.monstersay.blog -DartifactId=blog-web -Dversion=1.0.0 -Dpackaging=jar -Dfile=blog-web-1.0.0-20140915.053502-20.jar</p>
+<!--more-->
+
+
+<p>以上这些想法如果通过正常手段去模拟会遇到很多困难，而且会导致测试对外部组件、环境有很强的依赖，还会导致代码难以维护。为了方便起见，我在单元测试的编写过程中选用了PowerMock框架来实现mock功能。</p>
+
+<p>之所以选用PowerMock是因为它弥补了iMock, EasyMock和Mockito框架等的一个共同缺点：不支持静态，私有和final方法。具体使用的时候非常方便，因为PowerMock是对现有框架进行扩展，基本遵循相同的语法。我在github上放了一个<a href="https://github.com/yingl/PowerMockDemo">例子</a>，演示了几个常用的场景。</p>
+
+<p>Maven配置：在pom.xml中添加以下引用，这里使用了基于Mockito的实现。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>org.powermock<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>powermock-api-mockito<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>1.5.5<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'><span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>org.powermock<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>powermock-module-junit4<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>1.5.5<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>测试代码前添加如下注解，把你需要mock的类放在PrepareForTest里，不然运行时会报错。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@RunWith</span><span class="o">(</span><span class="n">PowerMockRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+</span><span class='line'><span class="nd">@PrepareForTest</span><span class="o">({</span><span class="n">DemoSpy</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoSpyTest</span> <span class="o">{</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 </div>
 
 
@@ -116,12 +165,12 @@
   
 
 
-<time datetime="2014-09-29T09:34:53+08:00" pubdate data-updated="true">Sep 29<span>th</span>, 2014</time>
+<time datetime="2014-09-15T16:48:05+08:00" pubdate data-updated="true">Sep 15<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/xiao-ji-qiao/'>小技巧</a>
+    <a class='category' href='/blog/categories/ce-shi-fen-xiang/'>测试分享</a>
   
 </span>
 
@@ -139,7 +188,7 @@
       scrolling="no" 
       height="16" 
       frameborder="0" 
-      src="http://hits.sinajs.cn/A1/weiboshare.html?title=写点什么&amp;url=http://yingl.github.io/blog/2014/09/29/maven-xiao-ji-qiao/&amp;type=6&amp;ralateUid=2607195824&amp;language=zh_cn" allowtransparency="true">
+      src="http://hits.sinajs.cn/A1/weiboshare.html?title=写点什么&amp;url=http://yingl.github.io/blog/2014/09/15/powermock-jie-shao/&amp;type=6&amp;ralateUid=2607195824&amp;language=zh_cn" allowtransparency="true">
     </iframe>
   </span>
   
@@ -148,10 +197,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/09/24/bug-control-flow/" title="Previous Post: Bugs: 控制逻辑要小心">&laquo; Bugs: 控制逻辑要小心</a>
+        <a class="basic-alignment left" href="/blog/2014/08/13/da-hua-yi-dong-app-ce-shi-shu-ping/" title="Previous Post: 《大话移动APP测试》书评">&laquo; 《大话移动APP测试》书评</a>
       
       
-        <a class="basic-alignment right" href="/blog/2014/10/14/fen-ceng-zi-dong-hua-ce-shi/" title="Next Post: 分层自动化测试">分层自动化测试 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2014/09/24/bug-control-flow/" title="Next Post: Bugs: 控制逻辑要小心">Bugs: 控制逻辑要小心 &raquo;</a>
       
     </p>
   </footer>
@@ -160,7 +209,7 @@
 
   <section>
     <h1>评论</h1>
-    <div id="ds_thread" aria-live="polite"><div class="ds-thread" data-title="Maven-小技巧"></div>
+    <div id="ds_thread" aria-live="polite"><div class="ds-thread" data-title="PowerMock简介"></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
