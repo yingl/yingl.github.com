@@ -4,7 +4,7 @@
   <title><![CDATA[怪兽说]]></title>
   <link href="http://yingl.github.io/atom.xml" rel="self"/>
   <link href="http://yingl.github.io/"/>
-  <updated>2014-10-14T20:05:49+08:00</updated>
+  <updated>2014-10-16T09:30:23+08:00</updated>
   <id>http://yingl.github.io/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -12,6 +12,40 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[互联网招聘黑话]]></title>
+    <link href="http://yingl.github.io/blog/2014/10/16/hu-lian-wang-zhao-pin-hei-hua/"/>
+    <updated>2014-10-16T09:25:26+08:00</updated>
+    <id>http://yingl.github.io/blog/2014/10/16/hu-lian-wang-zhao-pin-hei-hua</id>
+    <content type="html"><![CDATA[<p>在水木上看到转的。</p>
+
+<p>期权激励拿到手软 &ndash;> 希望能弥补你看到基本工资后的脚软
+有活力的技术团队 &ndash;> 团队平均工作经验&lt;1年
+千亿市场的探索者 &ndash;> 目前尚没看清具体市场在哪
+扁平化管理 &ndash;> 公司还没招到HR
+典型欧美创业工作环境 &ndash;> 办公室现处于毛坯房状态
+新技术+新方向+新团队 &ndash;> 嗯，目前这三样都没有
+直进核心团队 &ndash;> 公司尚未设置非核心团队岗
+全方位成长机会 &ndash;> 你有很大机会成为外卖超人
+提供各种福利 &ndash;> 每样细说咱就伤感情了
+提供住宿、班车及两餐 &ndash;> 每周提供数小时时间与家人团聚
+底薪+岗位绩效+职称奖+管理绩效+提成+五险 &ndash;> 和在一块您看看够不够付这个月房租
+加入我们，给你足够大的发展空间！ &ndash;> 目前公司规模&lt;10人
+大牛云集 &ndash;> 我司属牛的同事比较多
+公司计划短期内上市 &ndash;> 您也知道计划一般赶不上变化
+徘徊在牛A和牛C之间一群人！ &ndash;> 永不止步，从来没在牛B上停驻过</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Robolectric-user-guide-getting-started]]></title>
+    <link href="http://yingl.github.io/blog/2014/10/15/robolectric-user-guide-getting-started/"/>
+    <updated>2014-10-15T13:39:22+08:00</updated>
+    <id>http://yingl.github.io/blog/2014/10/15/robolectric-user-guide-getting-started</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[分层自动化测试]]></title>
@@ -1230,305 +1264,6 @@
 </span><span class='line'>  <span class="k">delete</span> <span class="n">vwFactory</span><span class="p">;</span>
 </span><span class='line'>  <span class="k">delete</span> <span class="n">bmwCarBuilder</span><span class="p">;</span>
 </span><span class='line'>  <span class="k">delete</span> <span class="n">golfCarBuilder</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[设计模式 创建型：抽象工厂]]></title>
-    <link href="http://yingl.github.io/blog/2014/04/01/dp-creational-abstract-factory/"/>
-    <updated>2014-04-01T21:46:00+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/04/01/dp-creational-abstract-factory</id>
-    <content type="html"><![CDATA[<h3>抽象工厂 Abstract Factory</h3>
-
-<p><strong>定义</strong></p>
-
-<p><a href="http://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F">Wiki链接</a>。为一个产品族提供了统一的创建接口。当需要这个产品族的某一系列的时候，可以从抽象工厂中选出相应的系列创建一个具体的工厂类。</p>
-
-<!--more-->
-
-
-<p><strong>用户场景</strong></p>
-
-<p>还是继续“<a href="">工厂模式</a>”关于坦克生产的话题。话说我们准备修改代码，不再搞单独的坦克工厂、军舰厂和其它厂了，取而代之的是统一的兵工厂。也就是说俄国的兵工厂生产苏联的武器，美国的兵工厂生产美国的武器。反面例子就不举了，要问的还是两个老问题：1、新增加一个国家的兵工厂怎么处理？2、如果代码已二进制发布，别人如何方便的进行扩展？</p>
-
-<p>解决方案和工厂方法很像，只不过现在的工厂提供了一组方法。先定义一个兵工厂接口，声明一系列方法告诉别人我要生产那些装备，剩下的就是各个具体兵工厂继承并实现这些方法。如果我们套定义的话，就是为一系列武器的创建提供了统一的接口，在需要的时候我们选择某个具体的兵工厂实现来完成任务。例子代码如下。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Weapon</span> <span class="p">{};</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Tank</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Weapon</span> <span class="p">{};</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">USTank</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Tank</span> <span class="p">{};</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">RussiaTank</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Tank</span> <span class="p">{};</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Warship</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Weapon</span> <span class="p">{};</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">USWarship</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Warship</span> <span class="p">{};</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">RussiaWarship</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Warship</span> <span class="p">{};</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 兵工厂</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">Armory</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">virtual</span> <span class="n">Tank</span><span class="o">*</span> <span class="n">generateTank</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">virtual</span> <span class="n">Warship</span><span class="o">*</span> <span class="n">generateWarship</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 美国兵工厂</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">USArmory</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Armory</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">virtual</span> <span class="n">Tank</span><span class="o">*</span> <span class="n">generateTank</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;US generates a Tank.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="n">USTank</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">virtual</span> <span class="n">Warship</span><span class="o">*</span> <span class="n">generateWarship</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;US generate a Warship.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="n">USWarship</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 俄国兵工厂</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">RussiaArmory</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Armory</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">virtual</span> <span class="n">Tank</span><span class="o">*</span> <span class="n">generateTank</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Russia generates a Tank.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="n">RussiaTank</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">virtual</span> <span class="n">Warship</span><span class="o">*</span> <span class="n">generateWarship</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Russia generate a Warship.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="n">RussiaWarship</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="n">Armory</span> <span class="o">*</span><span class="n">pUSArmory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">USArmory</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">Armory</span> <span class="o">*</span><span class="n">pRussiaArmory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RussiaArmory</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">Tank</span> <span class="o">*</span><span class="n">pUSTank</span> <span class="o">=</span> <span class="n">pUSArmory</span><span class="o">-&gt;</span><span class="n">generateTank</span><span class="p">();</span>
-</span><span class='line'>  <span class="n">Warship</span> <span class="o">*</span><span class="n">pUSWarship</span> <span class="o">=</span> <span class="n">pUSArmory</span><span class="o">-&gt;</span><span class="n">generateWarship</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">Tank</span> <span class="o">*</span><span class="n">pRussiaTank</span> <span class="o">=</span> <span class="n">pRussiaArmory</span><span class="o">-&gt;</span><span class="n">generateTank</span><span class="p">();</span>
-</span><span class='line'>  <span class="n">Warship</span> <span class="o">*</span><span class="n">pRussiaWarship</span> <span class="o">=</span> <span class="n">pRussiaArmory</span><span class="o">-&gt;</span><span class="n">generateWarship</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">delete</span> <span class="n">pRussiaWarship</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">delete</span> <span class="n">pRussiaTank</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">delete</span> <span class="n">pUSWarship</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">delete</span> <span class="n">pUSTank</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">delete</span> <span class="n">pRussiaArmory</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">delete</span> <span class="n">pUSArmory</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[设计模式 创建型：工厂方法]]></title>
-    <link href="http://yingl.github.io/blog/2014/03/31/dp-creational-factory-method/"/>
-    <updated>2014-03-31T22:00:59+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/03/31/dp-creational-factory-method</id>
-    <content type="html"><![CDATA[<p>上周日给振华港机做了一个关于设计模式的培训，同学们反响还不错。我把相关材料整理了一下，将以连载的形式发布在这里与大家一起分享。从我个人的角度并不推荐四人帮的那本经典著作，太理论，太学术。对于大多数人来说，结合实际场景简单快速上手才是王道。淘宝黎叔就说过：技术是要落地的，不然就成了学术。即使是一个好东西，学习成本太高的话，对企业来说性价比就不高了。我们做培训也是，半天就结合实例把3类23种设计模式讲明白。如果看书的话，我推荐《<a href="http://book.douban.com/subject/2334288/">大话设计模式</a>》。</p>
-
-<h3>工厂方法 Factory Method</h3>
-
-<p><strong>定义</strong></p>
-
-<p><a href="http://zh.wikipedia.org/wiki/%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F">Wiki链接</a>。定义一个接口用于创建对象，但是让子类决定初始化哪个类。工厂方法把一个类的初始化下放到子类。</p>
-
-<!--more-->
-
-
-<p><strong>用户场景</strong></p>
-
-<p>以游戏红色警报为例，俄国美国都会生产坦克，如果我们需要一个生产坦克的函数负责所有坦克的生产，那么我们该怎么实现？很多同学第一反应是这样的：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="n">Tank</span><span class="o">*</span> <span class="n">generateTank</span><span class="p">(</span><span class="kt">int</span> <span class="n">tankType</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">RUSSIA</span> <span class="o">==</span> <span class="n">tankType</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="k">new</span> <span class="n">RussiaTank</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">US</span> <span class="o">==</span> <span class="n">tankType</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="k">new</span> <span class="n">USTank</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">// ...</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>看着也能正确运行。但是问题来了，如果我们想生产法国坦克怎么办？如果我们把代码以二进制库的形式打包在市场上卖给其它公司，别人想生产其它坦克怎么办？如果是我们自己的话还好办，改generateTank函数就可以了，可是买了我们引擎的其它公司怎么办？</p>
-
-<p>先回忆一下面向对象的一条重要原则；开放－封闭。对修改封闭，对扩展开放。如果我们想生产新的坦克，应该采用扩展而不是修改的方式。工厂方法模式开始上场了，理论不多说，直接例子分析来解决现在的问题。首先我们需要一个工厂接口TankFactory，提供一个generate方法。然后继承这个接口，分别定义USTankFactory和RussiaTankFactory，各自实现generate方法生产不同的坦克。generateTank方法的参数由tankType改为TankFactory*，那么我们上层的代码在掌握了各种坦克工厂的信息后，只要把对应坦克工厂作为参数传下来就可以了。在工程实践里面一个最基本的要求就是下层代码改得越少越好。现在附上新的代码以供参考。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Tank</span> <span class="p">{};</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">USTank</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Tank</span> <span class="p">{};</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">RussiaTank</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Tank</span> <span class="p">{};</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">TankFactory</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">virtual</span> <span class="n">Tank</span><span class="o">*</span> <span class="n">generate</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">USTankFactory</span> <span class="o">:</span> <span class="k">public</span> <span class="n">TankFactory</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">virtual</span> <span class="n">Tank</span><span class="o">*</span> <span class="n">generate</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;US generates a Tank.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="n">USTank</span><span class="p">;</span> <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">RussiaTankFactory</span> <span class="o">:</span> <span class="k">public</span> <span class="n">TankFactory</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">virtual</span> <span class="n">Tank</span><span class="o">*</span> <span class="n">generate</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Russia generates a Tank.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="n">RussiaTank</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">Tank</span><span class="o">*</span> <span class="n">generateTank</span><span class="p">(</span><span class="n">TankFactory</span> <span class="o">*</span><span class="n">pTankFactory</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="n">pTankFactory</span><span class="o">-&gt;</span><span class="n">generate</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="n">TankFactory</span> <span class="o">*</span><span class="n">pUSTankFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">USTankFactory</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">TankFactory</span> <span class="o">*</span><span class="n">pRussiaTankFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RussiaTankFactory</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">Tank</span> <span class="o">*</span><span class="n">pUSTank</span> <span class="o">=</span> <span class="n">generateTank</span><span class="p">(</span><span class="n">pUSTankFactory</span><span class="p">);</span>
-</span><span class='line'>  <span class="n">Tank</span> <span class="o">*</span><span class="n">pRussiaTank</span> <span class="o">=</span> <span class="n">generateTank</span><span class="p">(</span><span class="n">pRussiaTankFactory</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">delete</span> <span class="n">pRussiaTank</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">delete</span> <span class="n">pUSTank</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">delete</span> <span class="n">pRussiaTankFactory</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">delete</span> <span class="n">pUSTankFactory</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
