@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: 设计模式 | 怪兽说]]></title>
-  <link href="http://yingl.github.io/blog/categories/she-ji-mo-shi/atom.xml" rel="self"/>
-  <link href="http://yingl.github.io/"/>
-  <updated>2014-10-16T09:34:21+08:00</updated>
-  <id>http://yingl.github.io/</id>
+  <link href="http://blog.monstersay.cn/blog/categories/she-ji-mo-shi/atom.xml" rel="self"/>
+  <link href="http://blog.monstersay.cn/"/>
+  <updated>2015-01-15T10:18:13+08:00</updated>
+  <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[设计模式 结构型：适配器]]></title>
-    <link href="http://yingl.github.io/blog/2014/08/12/dp-structural-adapter/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/08/12/dp-structural-adapter/"/>
     <updated>2014-08-12T20:39:40+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/08/12/dp-structural-adapter</id>
+    <id>http://blog.monstersay.cn/blog/2014/08/12/dp-structural-adapter</id>
     <content type="html"><![CDATA[<h3>适配器 Adapter</h3>
 
 <p><strong>定义</strong></p>
@@ -133,9 +133,9 @@
   
   <entry>
     <title type="html"><![CDATA[设计模式 结构型：外观]]></title>
-    <link href="http://yingl.github.io/blog/2014/07/03/dp-structural-facade/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/07/03/dp-structural-facade/"/>
     <updated>2014-07-03T21:22:17+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/07/03/dp-structural-facade</id>
+    <id>http://blog.monstersay.cn/blog/2014/07/03/dp-structural-facade</id>
     <content type="html"><![CDATA[<h3>外观 Facade</h3>
 
 <p><strong>定义</strong></p>
@@ -299,9 +299,9 @@
   
   <entry>
     <title type="html"><![CDATA[设计模式 创建型：单例]]></title>
-    <link href="http://yingl.github.io/blog/2014/06/10/dp-creational-singleton/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/06/10/dp-creational-singleton/"/>
     <updated>2014-06-10T21:10:19+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/06/10/dp-creational-singleton</id>
+    <id>http://blog.monstersay.cn/blog/2014/06/10/dp-creational-singleton</id>
     <content type="html"><![CDATA[<h3>单例 Singleton</h3>
 
 <p><strong>定义</strong></p>
@@ -403,9 +403,9 @@
   
   <entry>
     <title type="html"><![CDATA[设计模式 创建型：原型]]></title>
-    <link href="http://yingl.github.io/blog/2014/04/16/dp-creational-prototype/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/04/16/dp-creational-prototype/"/>
     <updated>2014-04-16T01:53:44+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/04/16/dp-creational-prototype</id>
+    <id>http://blog.monstersay.cn/blog/2014/04/16/dp-creational-prototype</id>
     <content type="html"><![CDATA[<h3>原型 Prototype</h3>
 
 <p><strong>定义</strong></p>
@@ -503,9 +503,9 @@
   
   <entry>
     <title type="html"><![CDATA[设计模式 创建型：生成器]]></title>
-    <link href="http://yingl.github.io/blog/2014/04/05/dp-creational-builder/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/04/05/dp-creational-builder/"/>
     <updated>2014-04-05T16:29:57+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/04/05/dp-creational-builder</id>
+    <id>http://blog.monstersay.cn/blog/2014/04/05/dp-creational-builder</id>
     <content type="html"><![CDATA[<h3>生成器 Builder</h3>
 
 <p><strong>定义</strong></p>

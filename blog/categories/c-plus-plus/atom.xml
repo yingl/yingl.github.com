@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: C++ | 怪兽说]]></title>
-  <link href="http://yingl.github.io/blog/categories/c-plus-plus/atom.xml" rel="self"/>
-  <link href="http://yingl.github.io/"/>
-  <updated>2014-10-16T09:34:21+08:00</updated>
-  <id>http://yingl.github.io/</id>
+  <link href="http://blog.monstersay.cn/blog/categories/c-plus-plus/atom.xml" rel="self"/>
+  <link href="http://blog.monstersay.cn/"/>
+  <updated>2015-01-15T10:18:13+08:00</updated>
+  <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Leetcode终于刷完了]]></title>
-    <link href="http://yingl.github.io/blog/2014/05/13/leetcode/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/05/13/leetcode/"/>
     <updated>2014-05-13T21:33:45+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/05/13/leetcode</id>
+    <id>http://blog.monstersay.cn/blog/2014/05/13/leetcode</id>
     <content type="html"><![CDATA[<p>当年准备面试FLAG时开工的，后来断断续续做了一点，这次终于痛下决心刷完整理上传到github上了。参考链接：<a href="https://github.com/yingl/leetcode_in_cpp">https://github.com/yingl/leetcode_in_cpp</a></p>
 
 <!--more-->

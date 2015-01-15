@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Bugs | 怪兽说]]></title>
-  <link href="http://yingl.github.io/blog/categories/bugs/atom.xml" rel="self"/>
-  <link href="http://yingl.github.io/"/>
-  <updated>2014-10-16T09:34:21+08:00</updated>
-  <id>http://yingl.github.io/</id>
+  <link href="http://blog.monstersay.cn/blog/categories/bugs/atom.xml" rel="self"/>
+  <link href="http://blog.monstersay.cn/"/>
+  <updated>2015-01-15T10:18:13+08:00</updated>
+  <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Bugs: 控制逻辑要小心]]></title>
-    <link href="http://yingl.github.io/blog/2014/09/24/bug-control-flow/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/09/24/bug-control-flow/"/>
     <updated>2014-09-24T09:40:02+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/09/24/bug-control-flow</id>
+    <id>http://blog.monstersay.cn/blog/2014/09/24/bug-control-flow</id>
     <content type="html"><![CDATA[<p>最近在给某项目写单元测试，话说这单元测试应该开发来写，但是项目紧张人手不足也就没这么多讲究了。遇到一个函数，看着逻辑很简单，不可能出错，但是一测就发现了问题。问题函数代码简化后如下：</p>
 
 <!--more-->
@@ -131,9 +131,9 @@
   
   <entry>
     <title type="html"><![CDATA[Bugs: 小缓存大问题]]></title>
-    <link href="http://yingl.github.io/blog/2014/08/12/bug-cache/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/08/12/bug-cache/"/>
     <updated>2014-08-12T20:40:05+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/08/12/bug-cache</id>
+    <id>http://blog.monstersay.cn/blog/2014/08/12/bug-cache</id>
     <content type="html"><![CDATA[<p>具体业务细节不方便公开，但是这个问题警告我们在使用缓存的时候必须非常重视一致性问题。</p>
 
 <p>首先来研究一下我们的缓存设计，我们选择了双机房双集群模式。也就是理论上说，每个机房都有一个独立的缓存集群，每次根据响应速度随机挑选一个比较快的集群访问，如果读取到数据，那么直接返回，如果没有读取到，那么从检查数据库并更新缓存记录。如果数据库里没有记录，那么先调用一个失效操作，然后写入缓存。整个系统看着没什么问题，但是天有不测风云～～～</p>
@@ -163,9 +163,9 @@
   
   <entry>
     <title type="html"><![CDATA[Bugs: 价格转换粗大事了]]></title>
-    <link href="http://yingl.github.io/blog/2014/05/20/bug-price-convert/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/05/20/bug-price-convert/"/>
     <updated>2014-05-20T15:12:48+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/05/20/bug-price-convert</id>
+    <id>http://blog.monstersay.cn/blog/2014/05/20/bug-price-convert</id>
     <content type="html"><![CDATA[<p>今天中午刚吃完饭正在一狼假寐，突然电话铃响起！什么？居然有价格为0的商品？立刻从睡梦中惊醒开始排查。啥都不说了，先把肇事代码拿出来：</p>
 
 <!--more-->
@@ -197,9 +197,9 @@
   
   <entry>
     <title type="html"><![CDATA[Bugs: 小心Macro]]></title>
-    <link href="http://yingl.github.io/blog/2014/04/16/bug-macro/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/04/16/bug-macro/"/>
     <updated>2014-04-16T20:24:59+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/04/16/bug-macro</id>
+    <id>http://blog.monstersay.cn/blog/2014/04/16/bug-macro</id>
     <content type="html"><![CDATA[<p>以前在微软做数据库连接组件测试时曾遇到这么一个问题，为了提高测试的真实性，所有测试用例在编译时取消了_DEBUG/DEBUG的定义，结果在执行测试用例的时候出现一个从未见过的错误，经调试发现if/else工作不正常，在if已经判断为false之后还是继续执行，没有跳转。经过对代码反复排查，最终发现是宏的不恰当使用导致了这个问题。</p>
 
 <!--more-->

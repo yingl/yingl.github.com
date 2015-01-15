@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: 测试分享 | 怪兽说]]></title>
-  <link href="http://yingl.github.io/blog/categories/ce-shi-fen-xiang/atom.xml" rel="self"/>
-  <link href="http://yingl.github.io/"/>
-  <updated>2014-10-16T09:34:21+08:00</updated>
-  <id>http://yingl.github.io/</id>
+  <link href="http://blog.monstersay.cn/blog/categories/ce-shi-fen-xiang/atom.xml" rel="self"/>
+  <link href="http://blog.monstersay.cn/"/>
+  <updated>2015-01-15T10:18:13+08:00</updated>
+  <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[分层自动化测试]]></title>
-    <link href="http://yingl.github.io/blog/2014/10/14/fen-ceng-zi-dong-hua-ce-shi/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/10/14/fen-ceng-zi-dong-hua-ce-shi/"/>
     <updated>2014-10-14T15:47:51+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/10/14/fen-ceng-zi-dong-hua-ce-shi</id>
+    <id>http://blog.monstersay.cn/blog/2014/10/14/fen-ceng-zi-dong-hua-ce-shi</id>
     <content type="html"><![CDATA[<p>工作多年以来发现很多团队对自动化测试的理解就是写脚本，单元测试就是用XUnit框架写脚本。团队话费了大量精力去写自动化脚本但取得的实际价值确不容乐观，但很多人乐此不彼，觉得写代码就是白盒测试，是高大上的体现。其实这完全是个误区，首先我们看下白盒测试的定义：白盒测试（white-box testing）又称透明盒测试（glass box testing）、结构测试（structural testing）等，软件测试的主要方法之一，也称结构测试、逻辑驱动测试或基于程序本身的测试。测试应用程序的内部结构或运作，而不是测试应用程序的功能（即黑盒测试）。所以说我们平时写的大量功能测试脚本也属于黑盒测试的范畴。另外先强调一点，不管黑盒测试还是白盒测试，手工测试还是自动化测试，都属于革命工作分工不同，没有高低贵贱的区别，能发现bug，能保证产品按时发布，用户满意就是硬道理。</p>
 
 <p>先来谈谈我在工作中看到的自动化测试的误区：</p>
@@ -54,9 +54,9 @@
   
   <entry>
     <title type="html"><![CDATA[PowerMock简介]]></title>
-    <link href="http://yingl.github.io/blog/2014/09/15/powermock-jie-shao/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/09/15/powermock-jie-shao/"/>
     <updated>2014-09-15T16:48:05+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/09/15/powermock-jie-shao</id>
+    <id>http://blog.monstersay.cn/blog/2014/09/15/powermock-jie-shao</id>
     <content type="html"><![CDATA[<p>工作多年以来发现很多团队对自动化测试的理解就是写脚本，单元测试就是用XUnit框架写脚本。团队话费了大量精力去写脚本但取得的实际价值确不容乐观。比如在测试中我想测试数据库读写异常，网络请求返回特定的错误等等&hellip;</p>
 
 <!--more-->
@@ -122,9 +122,9 @@
   
   <entry>
     <title type="html"><![CDATA[James Bach的Rapid Test培训总结]]></title>
-    <link href="http://yingl.github.io/blog/2014/07/31/james-bach-rapid-test/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/07/31/james-bach-rapid-test/"/>
     <updated>2014-07-31T20:41:01+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/07/31/james-bach-rapid-test</id>
+    <id>http://blog.monstersay.cn/blog/2014/07/31/james-bach-rapid-test</id>
     <content type="html"><![CDATA[<p>首先感谢阿里巴巴邀请James大神在北京办公室组织了Rapid Test的培训。本来报名的目的只是想和兄弟部门的同事找机会一起交流交流，对测试本身并没有抱太大的期望。结果课程开始之后，只能说不服不行。另外，哥活生生的被大神当作了教学道具&hellip;</p>
 
 <p>虽然James大神脱离项目一线专注培训很多年了，而且也没有互联网项目经验，但是一上来就抓住了问题的本质，项目需求不清楚，进度紧张，资源有限，这都是当年项目情况活生生的写照啊！所谓的Rapid Test就是针对这些问题的。为什么这里不说敏捷Agile？因为这里只谈测试，而且谈的是普遍真理，不管你用Agile还是瀑布流，测试都必须解决的一些共性问题。</p>
@@ -150,9 +150,9 @@
   
   <entry>
     <title type="html"><![CDATA[38电影抢票活动测试分享]]></title>
-    <link href="http://yingl.github.io/blog/2014/03/30/38-movie-falsh-sale/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/03/30/38-movie-falsh-sale/"/>
     <updated>2014-03-30T21:01:15+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/03/30/38-movie-falsh-sale</id>
+    <id>http://blog.monstersay.cn/blog/2014/03/30/38-movie-falsh-sale</id>
     <content type="html"><![CDATA[<p>4月12日拔丝活动（buzz.cn）在上海有一场关于移动测试交流的活动，我会分享淘宝手机生活节测试的一些心得和经验。在这里先分享我直接负责的38电影抢票活动的总结。</p>
 
 <!--more-->

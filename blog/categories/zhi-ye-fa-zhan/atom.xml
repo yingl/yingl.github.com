@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: 职业发展 | 怪兽说]]></title>
-  <link href="http://yingl.github.io/blog/categories/zhi-ye-fa-zhan/atom.xml" rel="self"/>
-  <link href="http://yingl.github.io/"/>
-  <updated>2014-10-16T09:34:21+08:00</updated>
-  <id>http://yingl.github.io/</id>
+  <link href="http://blog.monstersay.cn/blog/categories/zhi-ye-fa-zhan/atom.xml" rel="self"/>
+  <link href="http://blog.monstersay.cn/"/>
+  <updated>2015-01-15T10:18:13+08:00</updated>
+  <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[互联网招聘黑话]]></title>
-    <link href="http://yingl.github.io/blog/2014/10/16/hu-lian-wang-zhao-pin-hei-hua/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/10/16/hu-lian-wang-zhao-pin-hei-hua/"/>
     <updated>2014-10-16T09:25:26+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/10/16/hu-lian-wang-zhao-pin-hei-hua</id>
+    <id>http://blog.monstersay.cn/blog/2014/10/16/hu-lian-wang-zhao-pin-hei-hua</id>
     <content type="html"><![CDATA[<p>在水木上看到转的。</p>
 
 <ul>
@@ -43,9 +43,9 @@
   
   <entry>
     <title type="html"><![CDATA[算法班学生来信及回复－鸡汤文！]]></title>
-    <link href="http://yingl.github.io/blog/2014/05/19/letter-from-student/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/05/19/letter-from-student/"/>
     <updated>2014-05-19T21:09:26+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/05/19/letter-from-student</id>
+    <id>http://blog.monstersay.cn/blog/2014/05/19/letter-from-student</id>
     <content type="html"><![CDATA[<p>在July，Ben，高博老师等一干同志的努力下，上海算法班终于开课了。第一次课比较成功，学生们求知若渴，积极互动。除了算法方面的入门讲座外，也分享了一些职业发展相关的话题。课后，有个同学给我发了消息，经与他确认后，我把这篇文章和我的回复一起贴出来分享一下。</p>
 
 <!--more-->

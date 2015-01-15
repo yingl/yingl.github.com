@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[怪兽说]]></title>
-  <link href="http://yingl.github.io/atom.xml" rel="self"/>
-  <link href="http://yingl.github.io/"/>
-  <updated>2014-10-16T09:34:21+08:00</updated>
-  <id>http://yingl.github.io/</id>
+  <link href="http://blog.monstersay.cn/atom.xml" rel="self"/>
+  <link href="http://blog.monstersay.cn/"/>
+  <updated>2015-01-15T10:18:13+08:00</updated>
+  <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[互联网招聘黑话]]></title>
-    <link href="http://yingl.github.io/blog/2014/10/16/hu-lian-wang-zhao-pin-hei-hua/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/10/16/hu-lian-wang-zhao-pin-hei-hua/"/>
     <updated>2014-10-16T09:25:26+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/10/16/hu-lian-wang-zhao-pin-hei-hua</id>
+    <id>http://blog.monstersay.cn/blog/2014/10/16/hu-lian-wang-zhao-pin-hei-hua</id>
     <content type="html"><![CDATA[<p>在水木上看到转的。</p>
 
 <ul>
@@ -42,19 +42,10 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Robolectric-user-guide-getting-started]]></title>
-    <link href="http://yingl.github.io/blog/2014/10/15/robolectric-user-guide-getting-started/"/>
-    <updated>2014-10-15T13:39:22+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/10/15/robolectric-user-guide-getting-started</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
-  
-  <entry>
     <title type="html"><![CDATA[分层自动化测试]]></title>
-    <link href="http://yingl.github.io/blog/2014/10/14/fen-ceng-zi-dong-hua-ce-shi/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/10/14/fen-ceng-zi-dong-hua-ce-shi/"/>
     <updated>2014-10-14T15:47:51+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/10/14/fen-ceng-zi-dong-hua-ce-shi</id>
+    <id>http://blog.monstersay.cn/blog/2014/10/14/fen-ceng-zi-dong-hua-ce-shi</id>
     <content type="html"><![CDATA[<p>工作多年以来发现很多团队对自动化测试的理解就是写脚本，单元测试就是用XUnit框架写脚本。团队话费了大量精力去写自动化脚本但取得的实际价值确不容乐观，但很多人乐此不彼，觉得写代码就是白盒测试，是高大上的体现。其实这完全是个误区，首先我们看下白盒测试的定义：白盒测试（white-box testing）又称透明盒测试（glass box testing）、结构测试（structural testing）等，软件测试的主要方法之一，也称结构测试、逻辑驱动测试或基于程序本身的测试。测试应用程序的内部结构或运作，而不是测试应用程序的功能（即黑盒测试）。所以说我们平时写的大量功能测试脚本也属于黑盒测试的范畴。另外先强调一点，不管黑盒测试还是白盒测试，手工测试还是自动化测试，都属于革命工作分工不同，没有高低贵贱的区别，能发现bug，能保证产品按时发布，用户满意就是硬道理。</p>
 
 <p>先来谈谈我在工作中看到的自动化测试的误区：</p>
@@ -91,9 +82,9 @@
   
   <entry>
     <title type="html"><![CDATA[Maven-小技巧]]></title>
-    <link href="http://yingl.github.io/blog/2014/09/29/maven-xiao-ji-qiao/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/09/29/maven-xiao-ji-qiao/"/>
     <updated>2014-09-29T09:34:53+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/09/29/maven-xiao-ji-qiao</id>
+    <id>http://blog.monstersay.cn/blog/2014/09/29/maven-xiao-ji-qiao</id>
     <content type="html"><![CDATA[<p>最近在使用maven过程中发现一个问题，在更新了pom.xml文件后在idea中重新导入，但是相关的包还是没有找到。检查了一下发现jar包没有下载到本地。好吧，检查服务器，发现jar包是存在的，也能下载到本地。那问题就好办了，在本地用命令行方式安装就可以了。</p>
 
 <p>mvn install:install-file -DgroupId=cn.monstersay.blog -DartifactId=blog-web -Dversion=1.0.0 -Dpackaging=jar -Dfile=blog-web-1.0.0-20140915.053502-20.jar</p>
@@ -102,9 +93,9 @@
   
   <entry>
     <title type="html"><![CDATA[Bugs: 控制逻辑要小心]]></title>
-    <link href="http://yingl.github.io/blog/2014/09/24/bug-control-flow/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/09/24/bug-control-flow/"/>
     <updated>2014-09-24T09:40:02+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/09/24/bug-control-flow</id>
+    <id>http://blog.monstersay.cn/blog/2014/09/24/bug-control-flow</id>
     <content type="html"><![CDATA[<p>最近在给某项目写单元测试，话说这单元测试应该开发来写，但是项目紧张人手不足也就没这么多讲究了。遇到一个函数，看着逻辑很简单，不可能出错，但是一测就发现了问题。问题函数代码简化后如下：</p>
 
 <!--more-->
@@ -210,9 +201,9 @@
   
   <entry>
     <title type="html"><![CDATA[PowerMock简介]]></title>
-    <link href="http://yingl.github.io/blog/2014/09/15/powermock-jie-shao/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/09/15/powermock-jie-shao/"/>
     <updated>2014-09-15T16:48:05+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/09/15/powermock-jie-shao</id>
+    <id>http://blog.monstersay.cn/blog/2014/09/15/powermock-jie-shao</id>
     <content type="html"><![CDATA[<p>工作多年以来发现很多团队对自动化测试的理解就是写脚本，单元测试就是用XUnit框架写脚本。团队话费了大量精力去写脚本但取得的实际价值确不容乐观。比如在测试中我想测试数据库读写异常，网络请求返回特定的错误等等&hellip;</p>
 
 <!--more-->
@@ -270,9 +261,9 @@
   
   <entry>
     <title type="html"><![CDATA[《大话移动APP测试》书评]]></title>
-    <link href="http://yingl.github.io/blog/2014/08/13/da-hua-yi-dong-app-ce-shi-shu-ping/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/08/13/da-hua-yi-dong-app-ce-shi-shu-ping/"/>
     <updated>2014-08-13T10:10:04+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/08/13/da-hua-yi-dong-app-ce-shi-shu-ping</id>
+    <id>http://blog.monstersay.cn/blog/2014/08/13/da-hua-yi-dong-app-ce-shi-shu-ping</id>
     <content type="html"><![CDATA[<p><a href="http://book.douban.com/subject/25923638/">豆瓣链接</a></p>
 
 <!--more-->
@@ -284,9 +275,9 @@
   
   <entry>
     <title type="html"><![CDATA[Bugs: 小缓存大问题]]></title>
-    <link href="http://yingl.github.io/blog/2014/08/12/bug-cache/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/08/12/bug-cache/"/>
     <updated>2014-08-12T20:40:05+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/08/12/bug-cache</id>
+    <id>http://blog.monstersay.cn/blog/2014/08/12/bug-cache</id>
     <content type="html"><![CDATA[<p>具体业务细节不方便公开，但是这个问题警告我们在使用缓存的时候必须非常重视一致性问题。</p>
 
 <p>首先来研究一下我们的缓存设计，我们选择了双机房双集群模式。也就是理论上说，每个机房都有一个独立的缓存集群，每次根据响应速度随机挑选一个比较快的集群访问，如果读取到数据，那么直接返回，如果没有读取到，那么从检查数据库并更新缓存记录。如果数据库里没有记录，那么先调用一个失效操作，然后写入缓存。整个系统看着没什么问题，但是天有不测风云～～～</p>
@@ -316,9 +307,9 @@
   
   <entry>
     <title type="html"><![CDATA[设计模式 结构型：适配器]]></title>
-    <link href="http://yingl.github.io/blog/2014/08/12/dp-structural-adapter/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/08/12/dp-structural-adapter/"/>
     <updated>2014-08-12T20:39:40+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/08/12/dp-structural-adapter</id>
+    <id>http://blog.monstersay.cn/blog/2014/08/12/dp-structural-adapter</id>
     <content type="html"><![CDATA[<h3>适配器 Adapter</h3>
 
 <p><strong>定义</strong></p>
@@ -409,9 +400,9 @@
   
   <entry>
     <title type="html"><![CDATA[James Bach的Rapid Test培训总结]]></title>
-    <link href="http://yingl.github.io/blog/2014/07/31/james-bach-rapid-test/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/07/31/james-bach-rapid-test/"/>
     <updated>2014-07-31T20:41:01+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/07/31/james-bach-rapid-test</id>
+    <id>http://blog.monstersay.cn/blog/2014/07/31/james-bach-rapid-test</id>
     <content type="html"><![CDATA[<p>首先感谢阿里巴巴邀请James大神在北京办公室组织了Rapid Test的培训。本来报名的目的只是想和兄弟部门的同事找机会一起交流交流，对测试本身并没有抱太大的期望。结果课程开始之后，只能说不服不行。另外，哥活生生的被大神当作了教学道具&hellip;</p>
 
 <p>虽然James大神脱离项目一线专注培训很多年了，而且也没有互联网项目经验，但是一上来就抓住了问题的本质，项目需求不清楚，进度紧张，资源有限，这都是当年项目情况活生生的写照啊！所谓的Rapid Test就是针对这些问题的。为什么这里不说敏捷Agile？因为这里只谈测试，而且谈的是普遍真理，不管你用Agile还是瀑布流，测试都必须解决的一些共性问题。</p>
@@ -437,9 +428,9 @@
   
   <entry>
     <title type="html"><![CDATA[2015阿里校招內推]]></title>
-    <link href="http://yingl.github.io/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui/"/>
     <updated>2014-07-14T13:50:58+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui</id>
+    <id>http://blog.monstersay.cn/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui</id>
     <content type="html"><![CDATA[<p>阿里巴巴2015校招內推已经开始了，收到简历的同学我已录入系统，名单如下，大家可以自己对一下。如果有漏掉的，请直接在微博上@我。如果内部推荐电面不通过的话，抱着不落下任一个优秀同学的心态，针对于内部推荐面试不通过的同学，我们还会给予正常校招的笔试机会，笔试通过依然可以参加现场的面试哈。另外，关于內推后的流程，安排如下：</p>
 
 <ol>
@@ -490,9 +481,9 @@
   
   <entry>
     <title type="html"><![CDATA[设计模式 结构型：外观]]></title>
-    <link href="http://yingl.github.io/blog/2014/07/03/dp-structural-facade/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/07/03/dp-structural-facade/"/>
     <updated>2014-07-03T21:22:17+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/07/03/dp-structural-facade</id>
+    <id>http://blog.monstersay.cn/blog/2014/07/03/dp-structural-facade</id>
     <content type="html"><![CDATA[<h3>外观 Facade</h3>
 
 <p><strong>定义</strong></p>
@@ -617,9 +608,9 @@
   
   <entry>
     <title type="html"><![CDATA[设计模式 创建型：单例]]></title>
-    <link href="http://yingl.github.io/blog/2014/06/10/dp-creational-singleton/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/06/10/dp-creational-singleton/"/>
     <updated>2014-06-10T21:10:19+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/06/10/dp-creational-singleton</id>
+    <id>http://blog.monstersay.cn/blog/2014/06/10/dp-creational-singleton</id>
     <content type="html"><![CDATA[<h3>单例 Singleton</h3>
 
 <p><strong>定义</strong></p>
@@ -709,9 +700,9 @@
   
   <entry>
     <title type="html"><![CDATA[Bugs: 价格转换粗大事了]]></title>
-    <link href="http://yingl.github.io/blog/2014/05/20/bug-price-convert/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/05/20/bug-price-convert/"/>
     <updated>2014-05-20T15:12:48+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/05/20/bug-price-convert</id>
+    <id>http://blog.monstersay.cn/blog/2014/05/20/bug-price-convert</id>
     <content type="html"><![CDATA[<p>今天中午刚吃完饭正在一狼假寐，突然电话铃响起！什么？居然有价格为0的商品？立刻从睡梦中惊醒开始排查。啥都不说了，先把肇事代码拿出来：</p>
 
 <!--more-->
@@ -740,9 +731,9 @@
   
   <entry>
     <title type="html"><![CDATA[算法班学生来信及回复－鸡汤文！]]></title>
-    <link href="http://yingl.github.io/blog/2014/05/19/letter-from-student/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/05/19/letter-from-student/"/>
     <updated>2014-05-19T21:09:26+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/05/19/letter-from-student</id>
+    <id>http://blog.monstersay.cn/blog/2014/05/19/letter-from-student</id>
     <content type="html"><![CDATA[<p>在July，Ben，高博老师等一干同志的努力下，上海算法班终于开课了。第一次课比较成功，学生们求知若渴，积极互动。除了算法方面的入门讲座外，也分享了一些职业发展相关的话题。课后，有个同学给我发了消息，经与他确认后，我把这篇文章和我的回复一起贴出来分享一下。</p>
 
 <!--more-->
@@ -778,9 +769,9 @@
   
   <entry>
     <title type="html"><![CDATA[Leetcode终于刷完了]]></title>
-    <link href="http://yingl.github.io/blog/2014/05/13/leetcode/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/05/13/leetcode/"/>
     <updated>2014-05-13T21:33:45+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/05/13/leetcode</id>
+    <id>http://blog.monstersay.cn/blog/2014/05/13/leetcode</id>
     <content type="html"><![CDATA[<p>当年准备面试FLAG时开工的，后来断断续续做了一点，这次终于痛下决心刷完整理上传到github上了。参考链接：<a href="https://github.com/yingl/leetcode_in_cpp">https://github.com/yingl/leetcode_in_cpp</a></p>
 
 <!--more-->
@@ -794,9 +785,9 @@
   
   <entry>
     <title type="html"><![CDATA[2014年阿里巴巴实习生面试武汉站总结]]></title>
-    <link href="http://yingl.github.io/blog/2014/04/28/wuhan-interview/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/04/28/wuhan-interview/"/>
     <updated>2014-04-28T18:59:08+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/04/28/wuhan-interview</id>
+    <id>http://blog.monstersay.cn/blog/2014/04/28/wuhan-interview</id>
     <content type="html"><![CDATA[<p>4月24、25两天奔赴武汉参加了2014年阿里巴巴实习生面试，感触不少，写下来和大家分享一下，希望今年找工作的学生能借鉴一二。</p>
 
 <!--more-->
@@ -832,9 +823,9 @@
   
   <entry>
     <title type="html"><![CDATA[Bugs: 小心Macro]]></title>
-    <link href="http://yingl.github.io/blog/2014/04/16/bug-macro/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/04/16/bug-macro/"/>
     <updated>2014-04-16T20:24:59+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/04/16/bug-macro</id>
+    <id>http://blog.monstersay.cn/blog/2014/04/16/bug-macro</id>
     <content type="html"><![CDATA[<p>以前在微软做数据库连接组件测试时曾遇到这么一个问题，为了提高测试的真实性，所有测试用例在编译时取消了_DEBUG/DEBUG的定义，结果在执行测试用例的时候出现一个从未见过的错误，经调试发现if/else工作不正常，在if已经判断为false之后还是继续执行，没有跳转。经过对代码反复排查，最终发现是宏的不恰当使用导致了这个问题。</p>
 
 <!--more-->
@@ -949,9 +940,9 @@
   
   <entry>
     <title type="html"><![CDATA[设计模式 创建型：原型]]></title>
-    <link href="http://yingl.github.io/blog/2014/04/16/dp-creational-prototype/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/04/16/dp-creational-prototype/"/>
     <updated>2014-04-16T01:53:44+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/04/16/dp-creational-prototype</id>
+    <id>http://blog.monstersay.cn/blog/2014/04/16/dp-creational-prototype</id>
     <content type="html"><![CDATA[<h3>原型 Prototype</h3>
 
 <p><strong>定义</strong></p>
@@ -1032,9 +1023,9 @@
   
   <entry>
     <title type="html"><![CDATA[设计模式 创建型：生成器]]></title>
-    <link href="http://yingl.github.io/blog/2014/04/05/dp-creational-builder/"/>
+    <link href="http://blog.monstersay.cn/blog/2014/04/05/dp-creational-builder/"/>
     <updated>2014-04-05T16:29:57+08:00</updated>
-    <id>http://yingl.github.io/blog/2014/04/05/dp-creational-builder</id>
+    <id>http://blog.monstersay.cn/blog/2014/04/05/dp-creational-builder</id>
     <content type="html"><![CDATA[<h3>生成器 Builder</h3>
 
 <p><strong>定义</strong></p>
@@ -1267,6 +1258,163 @@
 </span><span class='line'>  <span class="k">delete</span> <span class="n">vwFactory</span><span class="p">;</span>
 </span><span class='line'>  <span class="k">delete</span> <span class="n">bmwCarBuilder</span><span class="p">;</span>
 </span><span class='line'>  <span class="k">delete</span> <span class="n">golfCarBuilder</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[设计模式 创建型：抽象工厂]]></title>
+    <link href="http://blog.monstersay.cn/blog/2014/04/01/dp-creational-abstract-factory/"/>
+    <updated>2014-04-01T21:46:00+08:00</updated>
+    <id>http://blog.monstersay.cn/blog/2014/04/01/dp-creational-abstract-factory</id>
+    <content type="html"><![CDATA[<h3>抽象工厂 Abstract Factory</h3>
+
+<p><strong>定义</strong></p>
+
+<p><a href="http://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F">Wiki链接</a>。为一个产品族提供了统一的创建接口。当需要这个产品族的某一系列的时候，可以从抽象工厂中选出相应的系列创建一个具体的工厂类。</p>
+
+<!--more-->
+
+
+<p><strong>用户场景</strong></p>
+
+<p>还是继续“<a href="">工厂模式</a>”关于坦克生产的话题。话说我们准备修改代码，不再搞单独的坦克工厂、军舰厂和其它厂了，取而代之的是统一的兵工厂。也就是说俄国的兵工厂生产苏联的武器，美国的兵工厂生产美国的武器。反面例子就不举了，要问的还是两个老问题：1、新增加一个国家的兵工厂怎么处理？2、如果代码已二进制发布，别人如何方便的进行扩展？</p>
+
+<p>解决方案和工厂方法很像，只不过现在的工厂提供了一组方法。先定义一个兵工厂接口，声明一系列方法告诉别人我要生产那些装备，剩下的就是各个具体兵工厂继承并实现这些方法。如果我们套定义的话，就是为一系列武器的创建提供了统一的接口，在需要的时候我们选择某个具体的兵工厂实现来完成任务。例子代码如下。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Weapon</span> <span class="p">{};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Tank</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Weapon</span> <span class="p">{};</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">USTank</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Tank</span> <span class="p">{};</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">RussiaTank</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Tank</span> <span class="p">{};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Warship</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Weapon</span> <span class="p">{};</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">USWarship</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Warship</span> <span class="p">{};</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">RussiaWarship</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Warship</span> <span class="p">{};</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 兵工厂</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Armory</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="k">virtual</span> <span class="n">Tank</span><span class="o">*</span> <span class="n">generateTank</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">virtual</span> <span class="n">Warship</span><span class="o">*</span> <span class="n">generateWarship</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 美国兵工厂</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">USArmory</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Armory</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="k">virtual</span> <span class="n">Tank</span><span class="o">*</span> <span class="n">generateTank</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;US generates a Tank.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="n">USTank</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">virtual</span> <span class="n">Warship</span><span class="o">*</span> <span class="n">generateWarship</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;US generate a Warship.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="n">USWarship</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 俄国兵工厂</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">RussiaArmory</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Armory</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="k">virtual</span> <span class="n">Tank</span><span class="o">*</span> <span class="n">generateTank</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Russia generates a Tank.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="n">RussiaTank</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">virtual</span> <span class="n">Warship</span><span class="o">*</span> <span class="n">generateWarship</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Russia generate a Warship.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="n">RussiaWarship</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">Armory</span> <span class="o">*</span><span class="n">pUSArmory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">USArmory</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">Armory</span> <span class="o">*</span><span class="n">pRussiaArmory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RussiaArmory</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">Tank</span> <span class="o">*</span><span class="n">pUSTank</span> <span class="o">=</span> <span class="n">pUSArmory</span><span class="o">-&gt;</span><span class="n">generateTank</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">Warship</span> <span class="o">*</span><span class="n">pUSWarship</span> <span class="o">=</span> <span class="n">pUSArmory</span><span class="o">-&gt;</span><span class="n">generateWarship</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">Tank</span> <span class="o">*</span><span class="n">pRussiaTank</span> <span class="o">=</span> <span class="n">pRussiaArmory</span><span class="o">-&gt;</span><span class="n">generateTank</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">Warship</span> <span class="o">*</span><span class="n">pRussiaWarship</span> <span class="o">=</span> <span class="n">pRussiaArmory</span><span class="o">-&gt;</span><span class="n">generateWarship</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">pRussiaWarship</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">pRussiaTank</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">pUSWarship</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">pUSTank</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">pRussiaArmory</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">delete</span> <span class="n">pUSArmory</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
