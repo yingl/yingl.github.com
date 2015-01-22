@@ -4,7 +4,7 @@
   <title><![CDATA[怪兽说]]></title>
   <link href="http://blog.monstersay.cn/atom.xml" rel="self"/>
   <link href="http://blog.monstersay.cn/"/>
-  <updated>2015-01-15T10:18:13+08:00</updated>
+  <updated>2015-01-22T10:31:30+08:00</updated>
   <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -50,32 +50,32 @@
 
 <p>先来谈谈我在工作中看到的自动化测试的误区：</p>
 
-<ol>
+<ul>
 <li>自动化测试脚本在完成后因为产品更新导致大量测试用例失效，由于团队忙于新功能开发，当失效的用例积累越来越多时，这些测试用例就慢慢失去维护。如果开发这些用例同学在的时候可能还好办，看一眼就知道是用例过期还是真有bug，可是当新同学接手的时候就迷茫了。记得刚进入微软我们团队接手一个项目的时候，跑一轮测试有5000个左右的用例，每次都有几百个随机错误，最后花了7个人近半年时间才清理干净。对于大多数团队来说是不会有如此奢侈的资源的。</li>
 <li>大量的自动化测试脚本没有发现问题，上线后仍然问题不断。在测试中我们主要针对正常流程进行测试，但是在线上出故障的都是非正常流程，而在测试环境里由于种种限制，我们很难模拟服务请求失败，数据库访问异常，队列数据丢失，磁盘失效等等各种小概率异常。</li>
 <li>代码质量问题严重。很多人写的单元测试只是构造一个输入然后检查返回值，结果是测试通过了但是问题却遗漏了。之前抽查某项目代码的时候发现这样一个问题：一个函数对它的输入做了处理后把结果写数据库，只要写成功了就返回true，反之则false。自动化脚本每次运行都通过，貌似皆大欢喜，但是问题来了，处理后写入数据库的内容正确吗？分析代码后发现对输入处理的逻辑有问题，写入数据库的内容本身就有问题。</li>
 <li>重复轮子制造。大量的团队都在开发自己的自动化测试框架，实际上只是对各种开源框架进行裁剪完善。面试的时候经常有人说自动化测试经验丰富，一问就是开发某某自动化测试框架，再问产品测试的细节就很茫然了。其实对于大多数公司来说，开源的产品已经够用了，测试框架本身并不能提高产品质量。</li>
-</ol>
+</ul>
 
 
 <p>下面在谈分层测试之前先复习一下几个名词：</p>
 
-<ol>
+<ul>
 <li>单元测试：开发者编写的一小段代码，用于检验被测代码的一个很小的、很明确的功能是否正确。通常而言，一个单元测试是用于判断某个特定条件（或者场景）下某个特定函数的行为。</li>
 <li>集成测试：也叫组装测试或联合测试。在单元测试的基础上，将所有模块按照设计要求（如根据结构图〕组装成为子系统或系统，进行集成测试。实践表明，一些模块虽然能够单独地工作，但并不能保证连接起来也能正常的工作。程序在某些局部反映不出来的问题，在全局上很可能暴露出来，影响功能的实现。</li>
 <li>系统测试：将需测试的软件，作为整个基于计算机系统的一个元素，与计算机硬件、外设、某些支持软件、数据和人员等其他系统元素及环境结合在一起测试。在实际运行(使用)环境下，对计算机系统进行一系列的组装测试和确认测试。系统测试的目的在于通过与系统的需求定义作比较，发现软件与系统定义不符合或与之矛盾的地方。</li>
-</ol>
+</ul>
 
 
 <p>另外我们还要牢记一个概念：bug发现得越早修复成本越低。这里有个惨痛的教训，当年在fix了一个ADO的bug之后由于代码评审的一个失误，用户在运行了2年之后发现存在内存泄露，虽然修复很容易，加一行代码释放资源就解决了，但是沟通成本，修复和验证投入的人力成本，客户的信任成本等综合起来就非常可观了。</p>
 
 <p>现在我们来看自动化测试如何分层（从低到高）：</p>
 
-<ol>
-<li>单元测试：开发人员在实现完代码之后或者在重构代码之前编写单元测试，用来确保功能正确或者保持一致。在这一层，我们可以把测试做到很细的粒度。通过<a href="http://baike.so.com/doc/2249429.html">mock</a>框架（在这里推荐PowerMock，能有效支持静态和私有方法的mock，具体使用可以参考这个<a href="https://github.com/yingl/PowerMockDemo">例子</a>）能模拟各种异常情况，大大降低测试的外部依赖，使得单元测试尽可能做到随时随地可以运行。另外根据程序模块的划分，单元测试本身可以继续分层。比如服务层会调用数据库访问层读写数据库，我们可以在数据库访问层检查SQL脚本是否正确，数据写入是否正确（曾经遇到过分库分表逻辑设计错误）。在服务层的测试用例编写时我们就可以假设数据库访问层是正确工作的，通过mock我们可以简化测试程序的配置和用例编写，比如模拟数据库访问失败抛出异常等场景，另外对于网络层的很多功能也能进行mock。一般来说，单元测试由开发同学负责实现，写单元测试的过程也是对自己代码进行检查的一个过程。通过代码层有效的单元测试，相当于我们把生产的零部件都做了一遍检测，可以进入下一层了。这一层也是自动化测试投入产出比最高的地方，代码变动带来的维护成本也最低。通过接入持续集成，可以及时有效的发现代码层的问题并完成修复。</li>
+<ul>
+<li>单元测试：开发人员在实现完代码之后或者在重构代码之前编写单元测试，用来确保功能正确或者保持一致。在这一层，我们可以把测试做到很细的粒度。通过<a href="http://baike.so.com/doc/2249429.html">mock</a>框架（在这里推荐PowerMock，能有效支持静态和私有方法的mock，具体使用可以参考这个<a href="https://github.com/yingl/PowerMockDemo">例子</a>。）能模拟各种异常情况，大大降低测试的外部依赖，使得单元测试尽可能做到随时随地可以运行。另外根据程序模块的划分，单元测试本身可以继续分层。比如服务层会调用数据库访问层读写数据库，我们可以在数据库访问层检查SQL脚本是否正确，数据写入是否正确（曾经遇到过分库分表逻辑设计错误）。在服务层的测试用例编写时我们就可以假设数据库访问层是正确工作的，通过mock我们可以简化测试程序的配置和用例编写，比如模拟数据库访问失败抛出异常等场景，另外对于网络层的很多功能也能进行mock。一般来说，单元测试由开发同学负责实现，写单元测试的过程也是对自己代码进行检查的一个过程。通过代码层有效的单元测试，相当于我们把生产的零部件都做了一遍检测，可以进入下一层了。这一层也是自动化测试投入产出比最高的地方，代码变动带来的维护成本也最低。通过接入持续集成，可以及时有效的发现代码层的问题并完成修复。</li>
 <li>集成测试：在每个零部件通过检测之后，我们可以把他们装配起来了，对每一个模块进行检测。在这个层面我们更关心输入输出功能是否正确，对于常见的错误场景能否正确处理。结合我厂实际经验来说，可以理解成代码部署到日常环境后，通过直接访问HSF或者MTOP服务，在这里我们只关心对于输入能否有正确的响应，至于一些比较难模拟的错误场景，因为我们在单元测试里通过mock进行了覆盖，所以在这里不用过于操心，除非有特别需求我们再做特别处理。这一层应当是测试人员大展身手的地方，我们不需要了解代码的细节，但是我们对系统的结构，模块之间关系等等的理解充分体现你的测试代码里了。至于XUnit框架，它只是一个框架，方便我们组织测试代码而已。</li>
 <li>系统测试：这个级别的测试是最接近用户实际场景的，同时也是自动化成本最高的。具体原因已经有很多论述了，在这里我就不细说了。所以在这一层做自动化测试，进可能能去实现那些已经标准化的流程，对于其它部分，通过手工测试或者一些辅助工具半自动化测试也未尝不是一种好的选择。</li>
-</ol>
+</ul>
 
 ]]></content>
   </entry>
@@ -101,9 +101,7 @@
 <!--more-->
 
 
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -152,7 +150,7 @@
 
 <p>原理看着很简单，如果已经初始化，就直接从缓存map里查找并返回数据，否则检查是否有其它线程在运行init程序，没有的话先init初始化缓存然后从map里查找并返回数据并返回数据。可是单元测试一跑，问题立马暴露，当我直接查询数据库获得结果或者异常抛出后没有直接返回，而是去返回缓存里的结果。这会导致一个问题，当某个线程在初始化的时候，另一个线程去访问了一个没有完全初始化的缓存。要问这个bug怎么发现的？在单元测试里使用mock很容易模拟初始化的各种状态遍历各种控制路径。开发自己测试的时候只走了一条标准路径自然没有发现问题。修改后的代码如下：</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -215,7 +213,7 @@
 
 <p>Maven配置：在pom.xml中添加以下引用，这里使用了基于Mockito的实现。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -244,7 +242,7 @@
 
 <p>测试代码前添加如下注解，把你需要mock的类放在PrepareForTest里，不然运行时会报错。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -252,9 +250,11 @@
 </pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@RunWith</span><span class="o">(</span><span class="n">PowerMockRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
 </span><span class='line'><span class="nd">@PrepareForTest</span><span class="o">({</span><span class="n">DemoSpy</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
 </span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoSpyTest</span> <span class="o">{</span>
-</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'>  <span class="c1">// ...</span>
 </span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
 
 ]]></content>
   </entry>
@@ -287,16 +287,16 @@
 
 <p>现在看看我们的系统问题出在哪里，大胆假设，小心求证后，我发现我们的数据只写了缓存，并没有写到数据库记录。现在来还原案发现场：</p>
 
-<ol>
-<li>集群A和B都没有记录。</li>
-<li>集群A选中，没有记录，写入记录。</li>
-<li>集群A选中，读取记录成功。</li>
-<li>集群A选中，&hellip;&hellip;</li>
-<li>集群B选中，写入A中的记录读取不到（因为2个集群是相互独立的，而且我们只写缓存，所以没有从数据库读取更新缓存这一步），写入之前调用了一次失效操作，导致集群A的记录也失效，这时B集群记录写入。</li>
-<li>集群B选中，读取记录成功。</li>
-<li>集群B选中，&hellip;&hellip;</li>
-<li>集群A选中，第5步的情况又出现了。</li>
-</ol>
+<ul>
+<li>[1] 集群A和B都没有记录。</li>
+<li>[2] 集群A选中，没有记录，写入记录。</li>
+<li>[3] 集群A选中，读取记录成功。</li>
+<li>[4] 集群A选中，&hellip;&hellip;</li>
+<li>[5] 集群B选中，写入A中的记录读取不到（因为2个集群是相互独立的，而且我们只写缓存，所以没有从数据库读取更新缓存这一步），写入之前调用了一次失效操作，导致集群A的记录也失效，这时B集群记录写入。</li>
+<li>[6] 集群B选中，读取记录成功。</li>
+<li>[7] 集群B选中，&hellip;&hellip;</li>
+<li>[8] 集群A选中，第5步的情况又出现了。</li>
+</ul>
 
 
 <p>每次状况5和8出现的时候，因为该读的缓存记录我们没有读取到，所以做了一个特定的操作。然后因为我们应用的访问量特别大，这个操作出现的次数也忒多了些，然后就悲剧了。</p>
@@ -314,14 +314,14 @@
 
 <p><strong>定义</strong></p>
 
-<p><a href="http://zh.wikipedia.org/wiki/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F">Wiki链接</a>。将一个类的接口转接成用户所期待的。一个适配使得因接口不兼容而不能在一起工作的类工作在一起，做法是将类别自己的接口包裹在一个已存在的类中。</p>
+<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F">链接</a>。将一个类的接口转接成用户所期待的。一个适配使得因接口不兼容而不能在一起工作的类工作在一起，做法是将类别自己的接口包裹在一个已存在的类中。</p>
 
 <!--more-->
 
 
 <p>这个简单来说就像Mac接显示器需要一个额外的转接头一样，这个转接头扮演的就是适配器的角色。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -395,6 +395,8 @@
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+
 ]]></content>
   </entry>
   
@@ -412,14 +414,24 @@
 
 <p>培训过程就不具体描述了，这里就谈几点总结：</p>
 
-<ol>
+<ul>
 <li>如何挖掘需求。在阿里测试人员经常听到开发人员说：这个功能做好了，你测一下，明天就发了。呃&hellip;好像这个到底是个什么样的功能都没搞清楚。所以对于测试人员要先了解这个系统，它的功能和设计目标。在教学中举了一个真实的例子，系统看着很简单，输入->判断->输出。一开始觉得这个系统简单，但是在得知是针对航天工程设计的系统时，实时性和稳定性就成为了重要的测试需求。在了解了输入系统的复杂程度之后，测试的重点也立刻明确了。所以对于测试人员，一边要自己摸索，同时也要和团队的其它成员密切沟通，获取需要的各种信息帮助决策。</li>
-<li>关于测试用例。James基本上否定了测试用例的价值，这点和我们团队内部正在摸索的实践类似。从项目实践的角度来说，光凭借测试用例，我们无法1）评估测试的有效性；2）保持测试用例和实际情况同步（谁不服自己上Kelude看）；3）从测试用例无法了解整个系统（测试评审基本是在过流水）。大神的观点是基于场景做测试，你可以不写测试用例，但是不代表你不需要做你的家庭作业。取代测试用例的是如下的报告：1）测试场景；2）每个场景需要覆盖的功能点；3）对于每个功能点如何测试；4）场景设计的理由；5）重点测试模块的选择等。总儿言之，你必须让项目组成员相信你的测试是完整的，有足够覆盖的，能保证产品质量的。</li>
+<li>关于测试用例。James基本上否定了测试用例的价值，这点和我们团队内部正在摸索的实践类似。从项目实践的角度来说，光凭借测试用例，我们无法</li>
+<li>评估测试的有效性</li>
+<li>保持测试用例和实际情况同步（谁不服自己上Kelude看）</li>
+<li>从测试用例无法了解整个系统（测试评审基本是在过流水）。
+大神的观点是基于场景做测试，你可以不写测试用例，但是不代表你不需要做你的家庭作业。取代测试用例的是如下的报告：</li>
+<li>测试场景</li>
+<li>每个场景需要覆盖的功能点</li>
+<li>对于每个功能点如何测试</li>
+<li>场景设计的理由</li>
+<li>重点测试模块的选择等。
+总儿言之，你必须让项目组成员相信你的测试是完整的，有足够覆盖的，能保证产品质量的。</li>
 <li>探索性测试不是无目的的。探索意味着自由，自由意味着责任。因为你能负责，所以才给你一定的自由。你必须通过试探，分析，验证这个流程去深入了解产品，之后再去系统的分析，有针对性的设计测试，这样才是真正的探索性测试。探索不是漫无目的的随机布朗运动，而是要通过探索建立对整个产品的了解。</li>
 <li>为什么课程叫Rapid而不是Agile敏捷？因为Rapid Test讲的是普遍真理，不管你用什么开发模式，敏捷或者传统的瀑布流都能解决问题。其实说到底，就是在人手有限，时间有限的情况下找到一个最好的平衡点，既能按时交付，又能保证质量。</li>
 <li>测试人员的定位是守门员，是守住产品质量底线的人。这个观点不是很赞同，毕竟当代足球守门员还担负有后场防守组织的责任。个人认为当代软件测试还承担有带领团队保证软件质量以及不断改进质量的责任。</li>
 <li>测试的第一要素是人，工具只是辅助。当人们在谈自动化测试的时候，有人要求过开发自动化编程吗？但是事实上，自动化编程某种程度上确实在发生，比如编译器的工作。对于自动化，我们的衡量标准是生产效率的提高和投入产出比。这个是值得我们在日常工作中借鉴的，有时候比起高大上的全自动化测试脚本，手工测试辅助工具更能提高效率，而且维护成本更低，投入产出比更高。</li>
-</ol>
+</ul>
 
 
 <p>课程只有短短两天，要是指望培训后能力有个突飞猛进那是没可能的。这个课程让你回到测试的原点，解答了为什么要做软件测试，如何做软件测试，如何像一个测试工程师一样思考问题，如何去发现问题。把这些原则与你工作实践想结合，才能真正的提高软件产品质量。</p>
@@ -433,11 +445,11 @@
     <id>http://blog.monstersay.cn/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui</id>
     <content type="html"><![CDATA[<p>阿里巴巴2015校招內推已经开始了，收到简历的同学我已录入系统，名单如下，大家可以自己对一下。如果有漏掉的，请直接在微博上@我。如果内部推荐电面不通过的话，抱着不落下任一个优秀同学的心态，针对于内部推荐面试不通过的同学，我们还会给予正常校招的笔试机会，笔试通过依然可以参加现场的面试哈。另外，关于內推后的流程，安排如下：</p>
 
-<ol>
+<ul>
 <li>即日起至8月1日前完成推荐的简历：简历筛选通过者->安排电话面试</li>
 <li>8月1日至8月15日完成推荐的简历：笔试通过者->安排进校面试</li>
 <li>8月15日之后完成推荐的简历：我们将在有补招需求时处理</li>
-</ol>
+</ul>
 
 
 <!--more-->
@@ -488,14 +500,14 @@
 
 <p><strong>定义</strong></p>
 
-<p><a href="http://zh.wikipedia.org/zh-cn/%E5%A4%96%E8%A7%80%E6%A8%A1%E5%BC%8F">Wiki链接</a>。它为子系统中的一组接口提供一个统一的高层接口，使得子系统更容易使用。</p>
+<p>Wiki<a href="http://zh.wikipedia.org/zh-cn/%E5%A4%96%E8%A7%80%E6%A8%A1%E5%BC%8F">链接</a>。它为子系统中的一组接口提供一个统一的高层接口，使得子系统更容易使用。</p>
 
 <!--more-->
 
 
 <p>这个模式估计是所有设计模式里最简单的了。我们以计算机为例，一个开机动作涉及到CPU启动，硬盘读取，内存装载等一系列动作，但是对于用户来说，只要按一下电源键就可以了。我们可以把开机抽象成计算机对象的一个方法，为了完成一次开机，它完成了所有涉及CPU、内存和硬盘的相关操作。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -603,6 +615,8 @@
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+
 ]]></content>
   </entry>
   
@@ -615,7 +629,7 @@
 
 <p><strong>定义</strong></p>
 
-<p><a href="http://zh.wikipedia.org/wiki/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">Wiki链接</a>。单例对象的类必须保证只有一个实例存在。</p>
+<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">链接</a>。单例对象的类必须保证只有一个实例存在。</p>
 
 <!--more-->
 
@@ -624,7 +638,7 @@
 
 <p>实现一（一般面试的标准答案）</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -675,9 +689,9 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>实现二（利用静态变量简化多线程的情况）</p>
+<p>实现二（利用静态变量简化多线程的情况，有兴趣的话可以看下GTest的源码，就是这么做的。）</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -695,6 +709,8 @@
 </span><span class='line'><span class="p">};</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+
 ]]></content>
   </entry>
   
@@ -708,9 +724,7 @@
 <!--more-->
 
 
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -757,12 +771,12 @@
 
 <p>首先你的学历背景已经胜过大多数同龄人了，家庭背景又足以让你没有后顾之忧，所以趁着年轻，赶紧努力去追逐梦想！下面逐条回答你的问题，希望能对你有所帮助。</p>
 
-<ol>
+<ul>
 <li><p>关于工作经历什么的建议你上Linkedin，可以查到很多牛人的经历。我的经历没什么特别的，先在国营工厂，然后去了外企，最近又来到了民企。对于职业发展，我有一句忠告：大多数人的工作都是乏味无趣的。如果想追求有挑战性的工作，第一件事诚实的问一下自己能力够不够？所以不要轻视你手里乏味的工作，有个关于年轻人贴发票的段子（不清楚的话可以Google）老得不能再老，但是对现实生活有着切实得指导意义。如果你觉得工作枯燥，乏味，那么运用你的智慧去改善它，让它变得更有趣，更有挑战力。另外对于刚参加工作的年轻人来说，不要指望有什么伯乐，在你证明你的能力之前没人把你当回事。当你一迈上工作岗位后，忘记你的学校和学历，在点滴工作中证明自己才是最好的办法。古人说得好，不积珪步无以成千里，很多业内大牛也都是从很多很初级的工作做起。比如上海微软不少人转到美国去工作，他们在加入微软之前已经是业务骨干，不少在网上也小有名气，但是来了微软后有的做的是很基础的修复一些老产品bug的工作，但正是慢慢的在这些项目上证明能力和建立信任，才逐步转到核心产品岗位上。</p></li>
 <li><p>关于企业具体想要什么能力，最简单的方法是看企业招聘广告上的JD（工作描述）。或者是通过社交网络结识相关企业的员工了解详细情况。但是某些能力是通用的：了解计算机体系结构，基本的数据结构和算法，至少熟悉一门编程语言，深入了解1到2样主流技术。</p></li>
 <li><p>关于真正的实力，只能说你们很幸运的生在了这个年代。互联网行业与传统行业不同，哪怕你一天班都没上过，也能积累很多经验并证明。想进入大公司，算法只是一方面，很多人不懂算法也混得很好，因为有真本事。但是真本事是需要花时间积累的，比如github上有很多开源项目，可以先试着去读他们的代码，在自己机器上调试，理解了别人的设计后再自己试着去改。说实话，捷径真的没有。我有个朋友，本科毕业加入阿里，4年就升到技术专家，无它，刻苦而已。本科的时候为ACM通宵刷题，工作后为解决技术难题加班到凌晨是经常的。只有热爱并为之真正付出才会有回报。最后给出一个勉强算是捷径的方法：好学校毕业，或者在微博上和很多真伪大牛打得火热，自己的努力达到能和这些人交流的门槛，然后就混圈子吧。</p></li>
-<li><p>关于你的职业理想，一开始不会有这样的工作等着你。至少在技术或业务某一个地方证明你的能力，上级才会扩大你的职责范围。今天下午开年会，分管的高级副总裁讲话，他在转向管理之前做了7年的技术工作。我之前有个同事是微软中国的首席技术步道师（从工作内容上来看接近你的要求），但是他在加入微软之前就已经国内出色的技术专家，之后在技术支持和项目管理岗位上又做了10年，没有这点积累，上级和客户怎么会信任你？无论如何，IT行业的萝卜干饭不用像传统行业吃那么久。当年我在国企第一年还是助理工程师，第二年也只是有资格考工程师职称，而且离开那个行业后，你积累的知识毫无用处。另外不管外企民企，干活最重要。很多外企外表光鲜，但本质就是一个大号国企。加入一个公司之前首先问你自己想从里面得到什么。</p></li>
-</ol>
+<li><p>关于你的职业理想，一开始不会有这样的工作等着你。至少在技术或业务某一个地方证明你的能力，上级才会扩大你的职责范围。今天下午开年会，分管的高级副总裁讲话，他在转向管理之前做了7年的技术工作。我之前有个同事是微软中国的首席技术布道师（从工作内容上来看接近你的要求），但是他在加入微软之前就已经国内出色的技术专家，之后在技术支持和项目管理岗位上又做了10年，没有这点积累，上级和客户怎么会信任你？无论如何，IT行业的萝卜干饭不用像传统行业吃那么久。当年我在国企第一年还是助理工程师，第二年也只是有资格考工程师职称，而且离开那个行业后，你积累的知识毫无用处。另外不管外企民企，干活最重要。很多外企外表光鲜，但本质就是一个大号国企。加入一个公司之前首先问你自己想从里面得到什么。</p></li>
+</ul>
 
 ]]></content>
   </entry>
@@ -833,7 +847,7 @@
 
 <p>先看以下这段简化过的代码：</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -848,7 +862,7 @@
 
 <p>这段代码初看没什么问题，如果_DEBUG打开TRACE就执行printf，否则TRACE就是一个空操作。但是情况真的跟想当然一样吗？请看以下代码：</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -885,7 +899,7 @@
 
 <p>分别打开关闭<em>DEBUG编译执行看看结果是什么？会不会觉得比较奇怪？如果我把#define </em>DEBUG注释掉，理论上应该什么都不打印。其实这个问题我们只要把宏展开就可以发现，代码其实是这样的：</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -900,15 +914,15 @@
 
 <p>修复这个问题的方法有两个：</p>
 
-<ol>
+<ul>
 <li>在所有调用TRACE的地方用{}包起来，这个改动量太大了，最后没有采用。</li>
 <li>用while取代if，这样展开就没有问题了。而且只要修改一个公共的头文件就可以了。</li>
-</ol>
+</ul>
 
 
 <p>最终代码如下：</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -923,7 +937,7 @@
 
 <p>上面例子的代码展开就可以按照期望运行了。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -947,7 +961,7 @@
 
 <p><strong>定义</strong></p>
 
-<p><a href="http://zh.wikipedia.org/wiki/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F">Wiki链接</a>。通过“复制”一个已经存在的实例来返回新的实例,而不是新建实例。被复制的实例就是我们所称的“原型”，这个原型是可定制的。原型模式多用于创建复杂的或者耗时的实例，因为这种情况下，复制一个已经存在的实例使程序运行更高效；或者创建值相等，只是命名不一样的同类数据。</p>
+<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F">链接</a>。通过“复制”一个已经存在的实例来返回新的实例,而不是新建实例。被复制的实例就是我们所称的“原型”，这个原型是可定制的。原型模式多用于创建复杂的或者耗时的实例，因为这种情况下，复制一个已经存在的实例使程序运行更高效；或者创建值相等，只是命名不一样的同类数据。</p>
 
 <!--more-->
 
@@ -956,7 +970,7 @@
 
 <p>Wiki已经讲的很清楚了。简单来说就是把一个复杂的对象创建过程简化成复制粘贴的形式。需要注意的是我们在复制原型的时候使用深拷贝还是浅拷贝。此外该模式还经常和工厂模式一起使用，因为原型可以用工厂来构建。看了以下例子后可能会有一个疑问，为什么要提供一个clone方法，而不是直接调用拷贝构造函数？因为C++是静态语言，我们在复制原型时并不知道它是具体那个类型，而clone的话这个类自己负责拷贝，只需要返回一个基类类型的指针就可以了。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -1018,6 +1032,8 @@
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+
 ]]></content>
   </entry>
   
@@ -1030,7 +1046,7 @@
 
 <p><strong>定义</strong></p>
 
-<p><a href="http://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%99%A8%E6%A8%A1%E5%BC%8F">Wiki链接</a>。又名：建造模式，是一种对象构建模式。它可以将复杂对象的建造过程抽象出来（抽象类别），使这个抽象过程的不同实现方法可以构造出不同表现（属性）的对象。</p>
+<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%99%A8%E6%A8%A1%E5%BC%8F">链接</a>。又名：建造模式，是一种对象构建模式。它可以将复杂对象的建造过程抽象出来（抽象类别），使这个抽象过程的不同实现方法可以构造出不同表现（属性）的对象。</p>
 
 <!--more-->
 
@@ -1039,7 +1055,7 @@
 
 <p>我们已生成汽车做为例子。虽然不同的车厂生成不同品牌的汽车，但是很多零部件的通用的，不同品牌的汽车只是把他们组合起来。比如轮胎选择米其林或固特异，变速箱采用ZF或爱信。工厂在为某个新品牌新建生产线的时候只要选择不同的供应商就可以了，而不需要所有零件都自己从头生产。例子代码如下。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -1261,6 +1277,8 @@
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+
 ]]></content>
   </entry>
   
@@ -1273,7 +1291,7 @@
 
 <p><strong>定义</strong></p>
 
-<p><a href="http://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F">Wiki链接</a>。为一个产品族提供了统一的创建接口。当需要这个产品族的某一系列的时候，可以从抽象工厂中选出相应的系列创建一个具体的工厂类。</p>
+<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F">链接</a>。为一个产品族提供了统一的创建接口。当需要这个产品族的某一系列的时候，可以从抽象工厂中选出相应的系列创建一个具体的工厂类。</p>
 
 <!--more-->
 
@@ -1284,7 +1302,7 @@
 
 <p>解决方案和工厂方法很像，只不过现在的工厂提供了一组方法。先定义一个兵工厂接口，声明一系列方法告诉别人我要生产那些装备，剩下的就是各个具体兵工厂继承并实现这些方法。如果我们套定义的话，就是为一系列武器的创建提供了统一的接口，在需要的时候我们选择某个具体的兵工厂实现来完成任务。例子代码如下。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -1417,6 +1435,8 @@
 </span><span class='line'>  <span class="k">delete</span> <span class="n">pUSArmory</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
 
 ]]></content>
   </entry>

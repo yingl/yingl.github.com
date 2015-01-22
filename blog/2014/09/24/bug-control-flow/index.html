@@ -117,9 +117,7 @@
 <!--more-->
 
 
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -168,7 +166,7 @@
 
 <p>原理看着很简单，如果已经初始化，就直接从缓存map里查找并返回数据，否则检查是否有其它线程在运行init程序，没有的话先init初始化缓存然后从map里查找并返回数据并返回数据。可是单元测试一跑，问题立马暴露，当我直接查询数据库获得结果或者异常抛出后没有直接返回，而是去返回缓存里的结果。这会导致一个问题，当某个线程在初始化的时候，另一个线程去访问了一个没有完全初始化的缓存。要问这个bug怎么发现的？在单元测试里使用mock很容易模拟初始化的各种状态遍历各种控制路径。开发自己测试的时候只走了一条标准路径自然没有发现问题。修改后的代码如下：</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>

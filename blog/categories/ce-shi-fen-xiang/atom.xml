@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 测试分享 | 怪兽说]]></title>
   <link href="http://blog.monstersay.cn/blog/categories/ce-shi-fen-xiang/atom.xml" rel="self"/>
   <link href="http://blog.monstersay.cn/"/>
-  <updated>2015-01-15T10:18:13+08:00</updated>
+  <updated>2015-01-22T10:31:30+08:00</updated>
   <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -22,32 +22,32 @@
 
 <p>先来谈谈我在工作中看到的自动化测试的误区：</p>
 
-<ol>
+<ul>
 <li>自动化测试脚本在完成后因为产品更新导致大量测试用例失效，由于团队忙于新功能开发，当失效的用例积累越来越多时，这些测试用例就慢慢失去维护。如果开发这些用例同学在的时候可能还好办，看一眼就知道是用例过期还是真有bug，可是当新同学接手的时候就迷茫了。记得刚进入微软我们团队接手一个项目的时候，跑一轮测试有5000个左右的用例，每次都有几百个随机错误，最后花了7个人近半年时间才清理干净。对于大多数团队来说是不会有如此奢侈的资源的。</li>
 <li>大量的自动化测试脚本没有发现问题，上线后仍然问题不断。在测试中我们主要针对正常流程进行测试，但是在线上出故障的都是非正常流程，而在测试环境里由于种种限制，我们很难模拟服务请求失败，数据库访问异常，队列数据丢失，磁盘失效等等各种小概率异常。</li>
 <li>代码质量问题严重。很多人写的单元测试只是构造一个输入然后检查返回值，结果是测试通过了但是问题却遗漏了。之前抽查某项目代码的时候发现这样一个问题：一个函数对它的输入做了处理后把结果写数据库，只要写成功了就返回true，反之则false。自动化脚本每次运行都通过，貌似皆大欢喜，但是问题来了，处理后写入数据库的内容正确吗？分析代码后发现对输入处理的逻辑有问题，写入数据库的内容本身就有问题。</li>
 <li>重复轮子制造。大量的团队都在开发自己的自动化测试框架，实际上只是对各种开源框架进行裁剪完善。面试的时候经常有人说自动化测试经验丰富，一问就是开发某某自动化测试框架，再问产品测试的细节就很茫然了。其实对于大多数公司来说，开源的产品已经够用了，测试框架本身并不能提高产品质量。</li>
-</ol>
+</ul>
 
 
 <p>下面在谈分层测试之前先复习一下几个名词：</p>
 
-<ol>
+<ul>
 <li>单元测试：开发者编写的一小段代码，用于检验被测代码的一个很小的、很明确的功能是否正确。通常而言，一个单元测试是用于判断某个特定条件（或者场景）下某个特定函数的行为。</li>
 <li>集成测试：也叫组装测试或联合测试。在单元测试的基础上，将所有模块按照设计要求（如根据结构图〕组装成为子系统或系统，进行集成测试。实践表明，一些模块虽然能够单独地工作，但并不能保证连接起来也能正常的工作。程序在某些局部反映不出来的问题，在全局上很可能暴露出来，影响功能的实现。</li>
 <li>系统测试：将需测试的软件，作为整个基于计算机系统的一个元素，与计算机硬件、外设、某些支持软件、数据和人员等其他系统元素及环境结合在一起测试。在实际运行(使用)环境下，对计算机系统进行一系列的组装测试和确认测试。系统测试的目的在于通过与系统的需求定义作比较，发现软件与系统定义不符合或与之矛盾的地方。</li>
-</ol>
+</ul>
 
 
 <p>另外我们还要牢记一个概念：bug发现得越早修复成本越低。这里有个惨痛的教训，当年在fix了一个ADO的bug之后由于代码评审的一个失误，用户在运行了2年之后发现存在内存泄露，虽然修复很容易，加一行代码释放资源就解决了，但是沟通成本，修复和验证投入的人力成本，客户的信任成本等综合起来就非常可观了。</p>
 
 <p>现在我们来看自动化测试如何分层（从低到高）：</p>
 
-<ol>
-<li>单元测试：开发人员在实现完代码之后或者在重构代码之前编写单元测试，用来确保功能正确或者保持一致。在这一层，我们可以把测试做到很细的粒度。通过<a href="http://baike.so.com/doc/2249429.html">mock</a>框架（在这里推荐PowerMock，能有效支持静态和私有方法的mock，具体使用可以参考这个<a href="https://github.com/yingl/PowerMockDemo">例子</a>）能模拟各种异常情况，大大降低测试的外部依赖，使得单元测试尽可能做到随时随地可以运行。另外根据程序模块的划分，单元测试本身可以继续分层。比如服务层会调用数据库访问层读写数据库，我们可以在数据库访问层检查SQL脚本是否正确，数据写入是否正确（曾经遇到过分库分表逻辑设计错误）。在服务层的测试用例编写时我们就可以假设数据库访问层是正确工作的，通过mock我们可以简化测试程序的配置和用例编写，比如模拟数据库访问失败抛出异常等场景，另外对于网络层的很多功能也能进行mock。一般来说，单元测试由开发同学负责实现，写单元测试的过程也是对自己代码进行检查的一个过程。通过代码层有效的单元测试，相当于我们把生产的零部件都做了一遍检测，可以进入下一层了。这一层也是自动化测试投入产出比最高的地方，代码变动带来的维护成本也最低。通过接入持续集成，可以及时有效的发现代码层的问题并完成修复。</li>
+<ul>
+<li>单元测试：开发人员在实现完代码之后或者在重构代码之前编写单元测试，用来确保功能正确或者保持一致。在这一层，我们可以把测试做到很细的粒度。通过<a href="http://baike.so.com/doc/2249429.html">mock</a>框架（在这里推荐PowerMock，能有效支持静态和私有方法的mock，具体使用可以参考这个<a href="https://github.com/yingl/PowerMockDemo">例子</a>。）能模拟各种异常情况，大大降低测试的外部依赖，使得单元测试尽可能做到随时随地可以运行。另外根据程序模块的划分，单元测试本身可以继续分层。比如服务层会调用数据库访问层读写数据库，我们可以在数据库访问层检查SQL脚本是否正确，数据写入是否正确（曾经遇到过分库分表逻辑设计错误）。在服务层的测试用例编写时我们就可以假设数据库访问层是正确工作的，通过mock我们可以简化测试程序的配置和用例编写，比如模拟数据库访问失败抛出异常等场景，另外对于网络层的很多功能也能进行mock。一般来说，单元测试由开发同学负责实现，写单元测试的过程也是对自己代码进行检查的一个过程。通过代码层有效的单元测试，相当于我们把生产的零部件都做了一遍检测，可以进入下一层了。这一层也是自动化测试投入产出比最高的地方，代码变动带来的维护成本也最低。通过接入持续集成，可以及时有效的发现代码层的问题并完成修复。</li>
 <li>集成测试：在每个零部件通过检测之后，我们可以把他们装配起来了，对每一个模块进行检测。在这个层面我们更关心输入输出功能是否正确，对于常见的错误场景能否正确处理。结合我厂实际经验来说，可以理解成代码部署到日常环境后，通过直接访问HSF或者MTOP服务，在这里我们只关心对于输入能否有正确的响应，至于一些比较难模拟的错误场景，因为我们在单元测试里通过mock进行了覆盖，所以在这里不用过于操心，除非有特别需求我们再做特别处理。这一层应当是测试人员大展身手的地方，我们不需要了解代码的细节，但是我们对系统的结构，模块之间关系等等的理解充分体现你的测试代码里了。至于XUnit框架，它只是一个框架，方便我们组织测试代码而已。</li>
 <li>系统测试：这个级别的测试是最接近用户实际场景的，同时也是自动化成本最高的。具体原因已经有很多论述了，在这里我就不细说了。所以在这一层做自动化测试，进可能能去实现那些已经标准化的流程，对于其它部分，通过手工测试或者一些辅助工具半自动化测试也未尝不是一种好的选择。</li>
-</ol>
+</ul>
 
 ]]></content>
   </entry>
@@ -67,56 +67,35 @@
 <p>之所以选用PowerMock是因为它弥补了iMock, EasyMock和Mockito框架等的一个共同缺点：不支持静态，私有和final方法。具体使用的时候非常方便，因为PowerMock是对现有框架进行扩展，基本遵循相同的语法。我在github上放了一个<a href="https://github.com/yingl/PowerMockDemo">例子</a>，演示了几个常用的场景。</p>
 
 <p>Maven配置：在pom.xml中添加以下引用，这里使用了基于Mockito的实现。
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>groupId<span class="ni">&amp;gt;</span>org.powermock<span class="ni">&amp;lt;</span>/groupId<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="ni">&amp;lt;</span>artifactId<span class="ni">&amp;gt;</span>powermock-api-mockito<span class="ni">&amp;lt;</span>/artifactId<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="ni">&amp;lt;</span>version<span class="ni">&amp;gt;</span>1.5.5<span class="ni">&amp;lt;</span>/version<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="ni">&amp;lt;</span>scope<span class="ni">&amp;gt;</span>test<span class="ni">&amp;lt;</span>/scope<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;/dependency&gt;</span>
-</span><span class='line'><span class="nt">&lt;dependency&gt;&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>groupId<span class="ni">&amp;gt;</span>org.powermock<span class="ni">&amp;lt;</span>/groupId<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="ni">&amp;lt;</span>artifactId<span class="ni">&amp;gt;</span>powermock-module-junit4<span class="ni">&amp;lt;</span>/artifactId<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="ni">&amp;lt;</span>version<span class="ni">&amp;gt;</span>1.5.5<span class="ni">&amp;lt;</span>/version<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="ni">&amp;lt;</span>scope<span class="ni">&amp;gt;</span>test<span class="ni">&amp;lt;</span>/scope<span class="ni">&amp;gt;</span>
-</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;p&gt;&lt;/dependency&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+```xml
+<dependency></p>
+
+<pre><code>&lt;groupId&gt;org.powermock&lt;/groupId&gt;
+&lt;artifactId&gt;powermock-api-mockito&lt;/artifactId&gt;
+&lt;version&gt;1.5.5&lt;/version&gt;
+&lt;scope&gt;test&lt;/scope&gt;
+</code></pre>
+
+<p></dependency>
+<dependency></p>
+
+<pre><code>&lt;groupId&gt;org.powermock&lt;/groupId&gt;
+&lt;artifactId&gt;powermock-module-junit4&lt;/artifactId&gt;
+&lt;version&gt;1.5.5&lt;/version&gt;
+&lt;scope&gt;test&lt;/scope&gt;
+</code></pre>
+
+<p></dependency>
+```</p>
 
 <p>测试代码前添加如下注解，把你需要mock的类放在PrepareForTest里，不然运行时会报错。
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@RunWith</span><span class="o">(</span><span class="n">PowerMockRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-</span><span class='line'><span class="nd">@PrepareForTest</span><span class="o">({</span><span class="n">DemoSpy</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoSpyTest</span> <span class="o">{</span>
-</span><span class='line'>  <span class="o">&amp;</span><span class="n">hellip</span><span class="o">;</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<code>java
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({DemoSpy.class})
+public class DemoSpyTest {
+  // ...
+}
+</code></p>
 ]]></content>
   </entry>
   
@@ -134,14 +113,24 @@
 
 <p>培训过程就不具体描述了，这里就谈几点总结：</p>
 
-<ol>
+<ul>
 <li>如何挖掘需求。在阿里测试人员经常听到开发人员说：这个功能做好了，你测一下，明天就发了。呃&hellip;好像这个到底是个什么样的功能都没搞清楚。所以对于测试人员要先了解这个系统，它的功能和设计目标。在教学中举了一个真实的例子，系统看着很简单，输入->判断->输出。一开始觉得这个系统简单，但是在得知是针对航天工程设计的系统时，实时性和稳定性就成为了重要的测试需求。在了解了输入系统的复杂程度之后，测试的重点也立刻明确了。所以对于测试人员，一边要自己摸索，同时也要和团队的其它成员密切沟通，获取需要的各种信息帮助决策。</li>
-<li>关于测试用例。James基本上否定了测试用例的价值，这点和我们团队内部正在摸索的实践类似。从项目实践的角度来说，光凭借测试用例，我们无法1）评估测试的有效性；2）保持测试用例和实际情况同步（谁不服自己上Kelude看）；3）从测试用例无法了解整个系统（测试评审基本是在过流水）。大神的观点是基于场景做测试，你可以不写测试用例，但是不代表你不需要做你的家庭作业。取代测试用例的是如下的报告：1）测试场景；2）每个场景需要覆盖的功能点；3）对于每个功能点如何测试；4）场景设计的理由；5）重点测试模块的选择等。总儿言之，你必须让项目组成员相信你的测试是完整的，有足够覆盖的，能保证产品质量的。</li>
+<li>关于测试用例。James基本上否定了测试用例的价值，这点和我们团队内部正在摸索的实践类似。从项目实践的角度来说，光凭借测试用例，我们无法</li>
+<li>评估测试的有效性</li>
+<li>保持测试用例和实际情况同步（谁不服自己上Kelude看）</li>
+<li>从测试用例无法了解整个系统（测试评审基本是在过流水）。
+大神的观点是基于场景做测试，你可以不写测试用例，但是不代表你不需要做你的家庭作业。取代测试用例的是如下的报告：</li>
+<li>测试场景</li>
+<li>每个场景需要覆盖的功能点</li>
+<li>对于每个功能点如何测试</li>
+<li>场景设计的理由</li>
+<li>重点测试模块的选择等。
+总儿言之，你必须让项目组成员相信你的测试是完整的，有足够覆盖的，能保证产品质量的。</li>
 <li>探索性测试不是无目的的。探索意味着自由，自由意味着责任。因为你能负责，所以才给你一定的自由。你必须通过试探，分析，验证这个流程去深入了解产品，之后再去系统的分析，有针对性的设计测试，这样才是真正的探索性测试。探索不是漫无目的的随机布朗运动，而是要通过探索建立对整个产品的了解。</li>
 <li>为什么课程叫Rapid而不是Agile敏捷？因为Rapid Test讲的是普遍真理，不管你用什么开发模式，敏捷或者传统的瀑布流都能解决问题。其实说到底，就是在人手有限，时间有限的情况下找到一个最好的平衡点，既能按时交付，又能保证质量。</li>
 <li>测试人员的定位是守门员，是守住产品质量底线的人。这个观点不是很赞同，毕竟当代足球守门员还担负有后场防守组织的责任。个人认为当代软件测试还承担有带领团队保证软件质量以及不断改进质量的责任。</li>
 <li>测试的第一要素是人，工具只是辅助。当人们在谈自动化测试的时候，有人要求过开发自动化编程吗？但是事实上，自动化编程某种程度上确实在发生，比如编译器的工作。对于自动化，我们的衡量标准是生产效率的提高和投入产出比。这个是值得我们在日常工作中借鉴的，有时候比起高大上的全自动化测试脚本，手工测试辅助工具更能提高效率，而且维护成本更低，投入产出比更高。</li>
-</ol>
+</ul>
 
 
 <p>课程只有短短两天，要是指望培训后能力有个突飞猛进那是没可能的。这个课程让你回到测试的原点，解答了为什么要做软件测试，如何做软件测试，如何像一个测试工程师一样思考问题，如何去发现问题。把这些原则与你工作实践想结合，才能真正的提高软件产品质量。</p>
@@ -217,48 +206,36 @@
 
 <h3>活动型项目的特点</h3>
 
-<ol>
+<ul>
 <li>短平快。整个项目扣除春节长假和额外休假，实际施工时间仅为1个月。包含了从需求分析、设计评审到开发测试整个流程。</li>
 <li>投入资源有限。活动只投入一个后端、一个前端和一个测试。</li>
 <li>一次性代码多。很多代码针对活动的特殊场景做了特殊的逻辑和硬编码处理，基本不考虑重用性。</li>
 <li>测试链路长，上下游组件依赖关系复杂。</li>
 <li>非技术因素影响复杂。必须对线下数据进行清洗。而且活动分线上线下部分，线下部分有很多不可控风险因素需要考虑。</li>
 <li>及时响应前线反馈。</li>
-</ol>
+</ul>
 
 
 <h3>测试经验分享</h3>
 
-<ol>
+<ul>
 <li>Web UI自动化测试这种高大上东西基本就不考虑了。等这套东西能稳定跑起来活动都结束了，放到下次活动又是另一套玩法了。</li>
-<li>测试模块化。由于测试链路长，依赖组件多，等各组件联调完成再展开测试时间已经不够。对此我们做了如下处理：
-
-<ol>
+<li>测试模块化。由于测试链路长，依赖组件多，等各组件联调完成再展开测试时间已经不够。对此我们做了如下处理：</li>
 <li>前后端分别生成mock数据进行单元测试。因为即使在测试环境的数据库里生成测试数据也是一件很复杂的工作，所以我们可以用mock数据检查各种复杂场景。这样在联调通过后对系统进行集成测试只要选取少数典型场景进行测试就可以了，大大减少了测试工作量。而且对于后端，可以直接在开发的项目里编写Java单元测试脚本，每次可以自动回归。</li>
 <li>坐在一起工作。发现问题提交到bug系统后不要等待对方回复然后修复，直接抓人当面交流。如果已经清楚bug原因和修复方案的话，直接修改然后拉对方做代码评审是效率最高的做法。</li>
 <li>对于上下游组件的测试，一定要约定好数据交换格式和接口。因为是o2o活动，我们输入的影院数据要经过引擎的处理展现给附近页面，但是这个流程连续三天没有走通，最好发现是数据格式约定有问题，有一个字段引擎默认我们会正确设定所以没有告知，而实际上我们根本不知道这个字段的作用。这个教训值得深刻总结。</li>
-</ol>
-</li>
-<li>对于抢购／秒杀类的活动，一定要注意以下两个问题：
-
-<ol>
+<li>对于抢购／秒杀类的活动，一定要注意以下两个问题：</li>
 <li>性能测试。在第一次性能测试的时候我们发现了缓存没有被正确使用，导致预定的性能指标远远不能达到。</li>
 <li>潜在的死锁问题。在一个被精心构造的场景里，我们发现当所有座位被选，即使因为有人因为15分钟内为付款导致座位被释放，其他人也无法进入选座页面选择被释放的座位。后来经过排查，是判断座位释放和更新座位状态的代码逻辑有问题。如果等活动发生时再注意到这个问题，那么很多座位会因为这个原因导致无法被售出。</li>
-</ol>
-</li>
-<li>O2O活动的offline要非常重视，为了保证线下核销能正常进行，我们专门组织了影院实地测试，发现了一系列原来没有充分考虑的问题：
-
-<ol>
+<li>O2O活动的offline要非常重视，为了保证线下核销能正常进行，我们专门组织了影院实地测试，发现了一系列原来没有充分考虑的问题：</li>
 <li>影院不认短信核销，必须检查淘宝的卡券包。</li>
 <li>现场没有wifi，而且有些影院2G/3G信号不大好，部分影院完全没有信号。</li>
 <li>卡券包没有做本地缓存，弱网络情况下花了至少5分钟才打开。考虑活动当天影院淘宝全部包场，如果核销速度慢的话肯定会影响入场进度。</li>
 <li>给影院的培训资料全是基于iOS版淘宝的，有些服务员不会使用Android版的客户端。</li>
-</ol>
-</li>
 <li>自动化工具很重要。当天共有超过200家影院超过7000场电影需要排期，运营和影院交流后给出了一套复杂的规则，但是如果人肉做的话至少2人天的工作量，测试在了解需求后主动为运营编写的一个自动排期脚本，几秒钟就能完成排期并生成数据订正脚本。</li>
 <li>线下数据靠不住。影院方提供的数据不能100%相信，经常会出现一些莫名其妙的问题。比如座位给多了，场次排重了等。必须根据已有的数据及时核对并反馈。</li>
 <li>敏捷！前线的需求就是我们的任务，凌晨2点下班不算太晚，即使在活动最后一天还是有各种突发状况，比如某个影院突然停电，我们必须赶快安排退票补偿事宜。</li>
-</ol>
+</ul>
 
 
 <h3>效果怎么样？</h3>

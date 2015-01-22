@@ -99,7 +99,7 @@
 
 <p><strong>定义</strong></p>
 
-<p><a href="http://zh.wikipedia.org/wiki/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">Wiki链接</a>。单例对象的类必须保证只有一个实例存在。</p>
+<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">链接</a>。单例对象的类必须保证只有一个实例存在。</p>
 
 <!--more-->
 
@@ -108,7 +108,7 @@
 
 <p>实现一（一般面试的标准答案）</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -159,9 +159,9 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>实现二（利用静态变量简化多线程的情况）</p>
+<p>实现二（利用静态变量简化多线程的情况，有兴趣的话可以看下GTest的源码，就是这么做的。）</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -178,6 +178,8 @@
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">};</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
 
 </div>
 
