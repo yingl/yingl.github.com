@@ -10,17 +10,17 @@ categories: Bugs
 <!--more-->
 先看以下这段简化过的代码：
 
-{% codeblock lang:cpp %}
+```cpp
 #ifdef _DEBUG
   #define TRACE printf
 #else
   #define TRACE if(0) printf
 #endif
-{% endcodeblock %}
+```
 
 这段代码初看没什么问题，如果_DEBUG打开TRACE就执行printf，否则TRACE就是一个空操作。但是情况真的跟想当然一样吗？请看以下代码：
 
-{% codeblock lang:cpp %}
+```cpp
 #include <stdio.h>
 
 #define _DEBUG
@@ -37,39 +37,39 @@ int main(void) {
   else
     printf("Why?\n");
 }
-{% endcodeblock %}
+```
 
 分别打开关闭_DEBUG编译执行看看结果是什么？会不会觉得比较奇怪？如果我把#define _DEBUG注释掉，理论上应该什么都不打印。其实这个问题我们只要把宏展开就可以发现，代码其实是这样的：
 
-{% codeblock lang:cpp %}
+```cpp
 if (1)
   if (0)
     printf("OK!\n");
   else
     printf("Why?\n");
-{% endcodeblock %}
+```
 
 修复这个问题的方法有两个：
 
-1. 在所有调用TRACE的地方用{}包起来，这个改动量太大了，最后没有采用。
-2. 用while取代if，这样展开就没有问题了。而且只要修改一个公共的头文件就可以了。
+ - 在所有调用TRACE的地方用{}包起来，这个改动量太大了，最后没有采用。
+ - 用while取代if，这样展开就没有问题了。而且只要修改一个公共的头文件就可以了。
 
 最终代码如下：
 
-{% codeblock lang:cpp %}
+```cpp
 #ifdef _DEBUG
   #define TRACE printf
 #else
   #define TRACE while(0) printf
 #endif
-{% endcodeblock %}
+```
 
 上面例子的代码展开就可以按照期望运行了。
 
-{% codeblock lang:cpp %}
+```cpp
 if (1)
   while (0)
     printf("OK!\n");
 else
   printf("Why?\n");
-{% endcodeblock %}
+```

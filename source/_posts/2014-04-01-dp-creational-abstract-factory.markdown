@@ -8,7 +8,7 @@ categories: 设计模式
 ### 抽象工厂 Abstract Factory
 **定义**
 
-[Wiki链接](http://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F)。为一个产品族提供了统一的创建接口。当需要这个产品族的某一系列的时候，可以从抽象工厂中选出相应的系列创建一个具体的工厂类。
+Wiki[链接][1]。为一个产品族提供了统一的创建接口。当需要这个产品族的某一系列的时候，可以从抽象工厂中选出相应的系列创建一个具体的工厂类。
 
 <!--more-->
 **用户场景**
@@ -18,7 +18,7 @@ categories: 设计模式
 
 解决方案和工厂方法很像，只不过现在的工厂提供了一组方法。先定义一个兵工厂接口，声明一系列方法告诉别人我要生产那些装备，剩下的就是各个具体兵工厂继承并实现这些方法。如果我们套定义的话，就是为一系列武器的创建提供了统一的接口，在需要的时候我们选择某个具体的兵工厂实现来完成任务。例子代码如下。
 
-{% codeblock lang:cpp %}
+```cpp
 #include <iostream>
 
 using namespace std;
@@ -85,4 +85,6 @@ int main(void) {
   delete pRussiaArmory;
   delete pUSArmory;
 }
-{% endcodeblock %}
+```
+
+[1]: http://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F

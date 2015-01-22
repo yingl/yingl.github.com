@@ -8,14 +8,14 @@ categories: 设计模式
 ### 生成器 Builder
 **定义**
 
-[Wiki链接](http://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%99%A8%E6%A8%A1%E5%BC%8F)。又名：建造模式，是一种对象构建模式。它可以将复杂对象的建造过程抽象出来（抽象类别），使这个抽象过程的不同实现方法可以构造出不同表现（属性）的对象。
+Wiki[链接][1]。又名：建造模式，是一种对象构建模式。它可以将复杂对象的建造过程抽象出来（抽象类别），使这个抽象过程的不同实现方法可以构造出不同表现（属性）的对象。
 
 <!--more-->
 **用户场景**
 
 我们已生成汽车做为例子。虽然不同的车厂生成不同品牌的汽车，但是很多零部件的通用的，不同品牌的汽车只是把他们组合起来。比如轮胎选择米其林或固特异，变速箱采用ZF或爱信。工厂在为某个新品牌新建生产线的时候只要选择不同的供应商就可以了，而不需要所有零件都自己从头生产。例子代码如下。
 
-{% codeblock lang:cpp %}
+```cpp
 #include <iostream>
 #include <string>
 
@@ -126,4 +126,6 @@ int main(void) {
   delete bmwCarBuilder;
   delete golfCarBuilder;
 }
-{% endcodeblock %}
+```
+
+[1]: http://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%99%A8%E6%A8%A1%E5%BC%8F
