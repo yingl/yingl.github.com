@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>PowerMock简介 - 怪兽说</title>
+  <title>Bugs: 优化要小心 - 怪兽说</title>
   <meta name="author" content="窥基／无柳无酒／黑灯瞎火">
 
   
-  <meta name="description" content="工作多年以来发现很多团队对自动化测试的理解就是写脚本，单元测试就是用XUnit框架写脚本。团队话费了大量精力去写脚本但取得的实际价值确不容乐观。比如在测试中我想测试数据库读写异常，网络请求返回特定的错误等等&hellip; 以上这些想法如果通过正常手段去模拟会遇到很多困难，而且会导致测试对外部组件 &hellip;">
+  <meta name="description" content="最近某个移动客户端发布新版本后有新用户反映安装后经常出现随机接口请求错误，经过日志排查是某些请求过于频繁导致后台暂时屏蔽。但是为什么会导致如此频繁的请求呢？记得开发同学们信誓旦旦的拍着胸脯说这块代码逻辑没改过啊～～～还是老规矩代码说话，把当前版本的git提交日志拉出来，好吧，相关代码有个优化& &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.monstersay.cn/blog/2014/09/15/powermock-jie-shao">
+  <link rel="canonical" href="http://blog.monstersay.cn/blog/2015/01/22/bug-optimization">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="怪兽说" type="application/atom+xml">
@@ -68,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">PowerMock简介</h1>
+      <h1 class="entry-title">Bugs: 优化要小心</h1>
     
     
       <p class="meta">
@@ -84,23 +84,14 @@
   
 
 
-<time datetime="2014-09-15T16:48:05+08:00" pubdate data-updated="true">Sep 15<span>th</span>, 2014</time>
+<time datetime="2015-01-22T10:33:35+08:00" pubdate data-updated="true">Jan 22<span>nd</span>, 2015</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>工作多年以来发现很多团队对自动化测试的理解就是写脚本，单元测试就是用XUnit框架写脚本。团队话费了大量精力去写脚本但取得的实际价值确不容乐观。比如在测试中我想测试数据库读写异常，网络请求返回特定的错误等等&hellip;</p>
-
-<!--more-->
-
-
-<p>以上这些想法如果通过正常手段去模拟会遇到很多困难，而且会导致测试对外部组件、环境有很强的依赖，还会导致代码难以维护。为了方便起见，我在单元测试的编写过程中选用了PowerMock框架来实现mock功能。</p>
-
-<p>之所以选用PowerMock是因为它弥补了iMock, EasyMock和Mockito框架等的一个共同缺点：不支持静态，私有和final方法。具体使用的时候非常方便，因为PowerMock是对现有框架进行扩展，基本遵循相同的语法。我在github上放了一个<a href="https://github.com/yingl/PowerMockDemo">例子</a>，演示了几个常用的场景。</p>
-
-<p>Maven配置：在pom.xml中添加以下引用，这里使用了基于Mockito的实现。</p>
+<div class="entry-content"><p>最近某个移动客户端发布新版本后有新用户反映安装后经常出现随机接口请求错误，经过日志排查是某些请求过于频繁导致后台暂时屏蔽。但是为什么会导致如此频繁的请求呢？记得开发同学们信誓旦旦的拍着胸脯说这块代码逻辑没改过啊～～～还是老规矩代码说话，把当前版本的git提交日志拉出来，好吧，相关代码有个优化&hellip;呃，真的只是优化吗？让我们先来看一下优化后的伪代码。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -112,39 +103,45 @@
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>org.powermock<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>powermock-api-mockito<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;version&gt;</span>1.5.5<span class="nt">&lt;/version&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
-</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
-</span><span class='line'><span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>org.powermock<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>powermock-module-junit4<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;version&gt;</span>1.5.5<span class="nt">&lt;/version&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
-</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">void</span> <span class="nf">init</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">dataAdapter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DataAdapter</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="nf">onMessageReceived</span><span class="o">(</span><span class="n">Result</span> <span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">((</span><span class="n">result</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">result</span><span class="o">.</span><span class="na">getCount</span><span class="o">()</span> <span class="o">==</span> <span class="mi">0</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">receiveMessage</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>测试代码前添加如下注解，把你需要mock的类放在PrepareForTest里，不然运行时会报错。</p>
+<p>仔细分析一下代码问题就来了，对于老的已经有消息的用户，这段代码没有问题，但是对于新安装用户，服务端一条消息没有，那么问题就来了。当传入的result的count为0，调用receiveMessage向服务端请求，返回的result的count还是为0，结果就陷入了死循环，你丫好歹加个重试次数限制呢。再来看一下所谓优化前的代码。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@RunWith</span><span class="o">(</span><span class="n">PowerMockRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-</span><span class='line'><span class="nd">@PrepareForTest</span><span class="o">({</span><span class="n">DemoSpy</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoSpyTest</span> <span class="o">{</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">void</span> <span class="nf">onMessageReceived</span><span class="o">(</span><span class="n">Result</span> <span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">dataAdapter</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">dataAdapter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DataAdapter</span><span class="o">();</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">((</span><span class="n">result</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">result</span><span class="o">.</span><span class="na">getCount</span><span class="o">()</span> <span class="o">==</span> <span class="mi">0</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">receiveMessage</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
 </span><span class='line'>  <span class="c1">// ...</span>
 </span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p>在原来的代码里，仅当dataAdapter没有初始化的时候，也就是系统第一次初始化的时候，会尝试重新向服务器请求一次信息，查看receiveMessage代码可以发现，第一次请求是读取本地缓存，可能会因为各种原因返回的count是0。初始化完成之后如果再取到count为0的情况，有可能是网络不好，用户手动刷新一下就好了，不影响正常使用。</p>
 
+<p>事后沟通因为开发认为dataAdaper的初始化应该放到init中会比较清晰，结果没有正确解读原有代码的逻辑。所以没事不要随便优化，做优化之前一定要先写好单元测试，不然改完之后，哼哼！</p>
 </div>
 
 
@@ -167,12 +164,12 @@
   
 
 
-<time datetime="2014-09-15T16:48:05+08:00" pubdate data-updated="true">Sep 15<span>th</span>, 2014</time>
+<time datetime="2015-01-22T10:33:35+08:00" pubdate data-updated="true">Jan 22<span>nd</span>, 2015</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/ce-shi-fen-xiang/'>测试分享</a>
+    <a class='category' href='/blog/categories/bugs/'>Bugs</a>
   
 </span>
 
@@ -190,7 +187,7 @@
       scrolling="no" 
       height="16" 
       frameborder="0" 
-      src="http://hits.sinajs.cn/A1/weiboshare.html?title=写点什么&amp;url=http://blog.monstersay.cn/blog/2014/09/15/powermock-jie-shao/&amp;type=6&amp;ralateUid=2607195824&amp;language=zh_cn" allowtransparency="true">
+      src="http://hits.sinajs.cn/A1/weiboshare.html?title=写点什么&amp;url=http://blog.monstersay.cn/blog/2015/01/22/bug-optimization/&amp;type=6&amp;ralateUid=2607195824&amp;language=zh_cn" allowtransparency="true">
     </iframe>
   </span>
   
@@ -199,10 +196,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/08/13/da-hua-yi-dong-app-ce-shi-shu-ping/" title="Previous Post: 《大话移动APP测试》书评">&laquo; 《大话移动APP测试》书评</a>
+        <a class="basic-alignment left" href="/blog/2014/10/16/hu-lian-wang-zhao-pin-hei-hua/" title="Previous Post: 互联网招聘黑话">&laquo; 互联网招聘黑话</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/09/24/bug-control-flow/" title="Next Post: Bugs: 控制逻辑要小心">Bugs: 控制逻辑要小心 &raquo;</a>
       
     </p>
   </footer>
@@ -211,7 +206,7 @@
 
   <section>
     <h1>评论</h1>
-    <div id="ds_thread" aria-live="polite"><div class="ds-thread" data-title="PowerMock简介"></div>
+    <div id="ds_thread" aria-live="polite"><div class="ds-thread" data-title="Bugs: 优化要小心"></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">

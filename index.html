@@ -9,11 +9,7 @@
   <meta name="author" content="窥基／无柳无酒／黑灯瞎火">
 
   
-  <meta name="description" content="在水木上看到转的。 期权激励拿到手软 &ndash;> 希望能弥补你看到基本工资后的脚软
-有活力的技术团队 &ndash;> 团队平均工作经验&lt;1年
-千亿市场的探索者 &ndash;> 目前尚没看清具体市场在哪
-扁平化管理 &ndash;> 公司还没招到HR
-典型欧美创业工作环境 & &hellip;">
+  <meta name="description" content="最近某个移动客户端发布新版本后有新用户反映安装后经常出现随机接口请求错误，经过日志排查是某些请求过于频繁导致后台暂时屏蔽。但是为什么会导致如此频繁的请求呢？记得开发同学们信誓旦旦的拍着胸脯说这块代码逻辑没改过啊～～～还是老规矩代码说话，把当前版本的git提交日志拉出来，好吧，相关代码有个优化& &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -69,6 +65,92 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/01/22/bug-optimization/">Bugs: 优化要小心</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-01-22T10:33:35+08:00" pubdate data-updated="true">Jan 22<span>nd</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近某个移动客户端发布新版本后有新用户反映安装后经常出现随机接口请求错误，经过日志排查是某些请求过于频繁导致后台暂时屏蔽。但是为什么会导致如此频繁的请求呢？记得开发同学们信誓旦旦的拍着胸脯说这块代码逻辑没改过啊～～～还是老规矩代码说话，把当前版本的git提交日志拉出来，好吧，相关代码有个优化&hellip;呃，真的只是优化吗？让我们先来看一下优化后的伪代码。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">void</span> <span class="nf">init</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">dataAdapter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DataAdapter</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="nf">onMessageReceived</span><span class="o">(</span><span class="n">Result</span> <span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">((</span><span class="n">result</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">result</span><span class="o">.</span><span class="na">getCount</span><span class="o">()</span> <span class="o">==</span> <span class="mi">0</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">receiveMessage</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>仔细分析一下代码问题就来了，对于老的已经有消息的用户，这段代码没有问题，但是对于新安装用户，服务端一条消息没有，那么问题就来了。当传入的result的count为0，调用receiveMessage向服务端请求，返回的result的count还是为0，结果就陷入了死循环，你丫好歹加个重试次数限制呢。再来看一下所谓优化前的代码。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">void</span> <span class="nf">onMessageReceived</span><span class="o">(</span><span class="n">Result</span> <span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">dataAdapter</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">dataAdapter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DataAdapter</span><span class="o">();</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">((</span><span class="n">result</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">result</span><span class="o">.</span><span class="na">getCount</span><span class="o">()</span> <span class="o">==</span> <span class="mi">0</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">receiveMessage</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在原来的代码里，仅当dataAdapter没有初始化的时候，也就是系统第一次初始化的时候，会尝试重新向服务器请求一次信息，查看receiveMessage代码可以发现，第一次请求是读取本地缓存，可能会因为各种原因返回的count是0。初始化完成之后如果再取到count为0的情况，有可能是网络不好，用户手动刷新一下就好了，不影响正常使用。</p>
+
+<p>事后沟通因为开发认为dataAdaper的初始化应该放到init中会比较清晰，结果没有正确解读原有代码的逻辑。所以没事不要随便优化，做优化之前一定要先写好单元测试，不然改完之后，哼哼！</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -155,37 +237,12 @@
 
   <div class="entry-content"><p>工作多年以来发现很多团队对自动化测试的理解就是写脚本，单元测试就是用XUnit框架写脚本。团队话费了大量精力去写自动化脚本但取得的实际价值确不容乐观，但很多人乐此不彼，觉得写代码就是白盒测试，是高大上的体现。其实这完全是个误区，首先我们看下白盒测试的定义：白盒测试（white-box testing）又称透明盒测试（glass box testing）、结构测试（structural testing）等，软件测试的主要方法之一，也称结构测试、逻辑驱动测试或基于程序本身的测试。测试应用程序的内部结构或运作，而不是测试应用程序的功能（即黑盒测试）。所以说我们平时写的大量功能测试脚本也属于黑盒测试的范畴。另外先强调一点，不管黑盒测试还是白盒测试，手工测试还是自动化测试，都属于革命工作分工不同，没有高低贵贱的区别，能发现bug，能保证产品按时发布，用户满意就是硬道理。</p>
 
-<p>先来谈谈我在工作中看到的自动化测试的误区：</p>
-
-<ul>
-<li>自动化测试脚本在完成后因为产品更新导致大量测试用例失效，由于团队忙于新功能开发，当失效的用例积累越来越多时，这些测试用例就慢慢失去维护。如果开发这些用例同学在的时候可能还好办，看一眼就知道是用例过期还是真有bug，可是当新同学接手的时候就迷茫了。记得刚进入微软我们团队接手一个项目的时候，跑一轮测试有5000个左右的用例，每次都有几百个随机错误，最后花了7个人近半年时间才清理干净。对于大多数团队来说是不会有如此奢侈的资源的。</li>
-<li>大量的自动化测试脚本没有发现问题，上线后仍然问题不断。在测试中我们主要针对正常流程进行测试，但是在线上出故障的都是非正常流程，而在测试环境里由于种种限制，我们很难模拟服务请求失败，数据库访问异常，队列数据丢失，磁盘失效等等各种小概率异常。</li>
-<li>代码质量问题严重。很多人写的单元测试只是构造一个输入然后检查返回值，结果是测试通过了但是问题却遗漏了。之前抽查某项目代码的时候发现这样一个问题：一个函数对它的输入做了处理后把结果写数据库，只要写成功了就返回true，反之则false。自动化脚本每次运行都通过，貌似皆大欢喜，但是问题来了，处理后写入数据库的内容正确吗？分析代码后发现对输入处理的逻辑有问题，写入数据库的内容本身就有问题。</li>
-<li>重复轮子制造。大量的团队都在开发自己的自动化测试框架，实际上只是对各种开源框架进行裁剪完善。面试的时候经常有人说自动化测试经验丰富，一问就是开发某某自动化测试框架，再问产品测试的细节就很茫然了。其实对于大多数公司来说，开源的产品已经够用了，测试框架本身并不能提高产品质量。</li>
-</ul>
-
-
-<p>下面在谈分层测试之前先复习一下几个名词：</p>
-
-<ul>
-<li>单元测试：开发者编写的一小段代码，用于检验被测代码的一个很小的、很明确的功能是否正确。通常而言，一个单元测试是用于判断某个特定条件（或者场景）下某个特定函数的行为。</li>
-<li>集成测试：也叫组装测试或联合测试。在单元测试的基础上，将所有模块按照设计要求（如根据结构图〕组装成为子系统或系统，进行集成测试。实践表明，一些模块虽然能够单独地工作，但并不能保证连接起来也能正常的工作。程序在某些局部反映不出来的问题，在全局上很可能暴露出来，影响功能的实现。</li>
-<li>系统测试：将需测试的软件，作为整个基于计算机系统的一个元素，与计算机硬件、外设、某些支持软件、数据和人员等其他系统元素及环境结合在一起测试。在实际运行(使用)环境下，对计算机系统进行一系列的组装测试和确认测试。系统测试的目的在于通过与系统的需求定义作比较，发现软件与系统定义不符合或与之矛盾的地方。</li>
-</ul>
-
-
-<p>另外我们还要牢记一个概念：bug发现得越早修复成本越低。这里有个惨痛的教训，当年在fix了一个ADO的bug之后由于代码评审的一个失误，用户在运行了2年之后发现存在内存泄露，虽然修复很容易，加一行代码释放资源就解决了，但是沟通成本，修复和验证投入的人力成本，客户的信任成本等综合起来就非常可观了。</p>
-
-<p>现在我们来看自动化测试如何分层（从低到高）：</p>
-
-<ul>
-<li>单元测试：开发人员在实现完代码之后或者在重构代码之前编写单元测试，用来确保功能正确或者保持一致。在这一层，我们可以把测试做到很细的粒度。通过<a href="http://baike.so.com/doc/2249429.html">mock</a>框架（在这里推荐PowerMock，能有效支持静态和私有方法的mock，具体使用可以参考这个<a href="https://github.com/yingl/PowerMockDemo">例子</a>。）能模拟各种异常情况，大大降低测试的外部依赖，使得单元测试尽可能做到随时随地可以运行。另外根据程序模块的划分，单元测试本身可以继续分层。比如服务层会调用数据库访问层读写数据库，我们可以在数据库访问层检查SQL脚本是否正确，数据写入是否正确（曾经遇到过分库分表逻辑设计错误）。在服务层的测试用例编写时我们就可以假设数据库访问层是正确工作的，通过mock我们可以简化测试程序的配置和用例编写，比如模拟数据库访问失败抛出异常等场景，另外对于网络层的很多功能也能进行mock。一般来说，单元测试由开发同学负责实现，写单元测试的过程也是对自己代码进行检查的一个过程。通过代码层有效的单元测试，相当于我们把生产的零部件都做了一遍检测，可以进入下一层了。这一层也是自动化测试投入产出比最高的地方，代码变动带来的维护成本也最低。通过接入持续集成，可以及时有效的发现代码层的问题并完成修复。</li>
-<li>集成测试：在每个零部件通过检测之后，我们可以把他们装配起来了，对每一个模块进行检测。在这个层面我们更关心输入输出功能是否正确，对于常见的错误场景能否正确处理。结合我厂实际经验来说，可以理解成代码部署到日常环境后，通过直接访问HSF或者MTOP服务，在这里我们只关心对于输入能否有正确的响应，至于一些比较难模拟的错误场景，因为我们在单元测试里通过mock进行了覆盖，所以在这里不用过于操心，除非有特别需求我们再做特别处理。这一层应当是测试人员大展身手的地方，我们不需要了解代码的细节，但是我们对系统的结构，模块之间关系等等的理解充分体现你的测试代码里了。至于XUnit框架，它只是一个框架，方便我们组织测试代码而已。</li>
-<li>系统测试：这个级别的测试是最接近用户实际场景的，同时也是自动化成本最高的。具体原因已经有很多论述了，在这里我就不细说了。所以在这一层做自动化测试，进可能能去实现那些已经标准化的流程，对于其它部分，通过手工测试或者一些辅助工具半自动化测试也未尝不是一种好的选择。</li>
-</ul>
-
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/10/14/fen-ceng-zi-dong-hua-ce-shi/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -483,54 +540,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui/">2015阿里校招內推</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-07-14T13:50:58+08:00" pubdate data-updated="true">Jul 14<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>阿里巴巴2015校招內推已经开始了，收到简历的同学我已录入系统，名单如下，大家可以自己对一下。如果有漏掉的，请直接在微博上@我。如果内部推荐电面不通过的话，抱着不落下任一个优秀同学的心态，针对于内部推荐面试不通过的同学，我们还会给予正常校招的笔试机会，笔试通过依然可以参加现场的面试哈。另外，关于內推后的流程，安排如下：</p>
-
-<ul>
-<li>即日起至8月1日前完成推荐的简历：简历筛选通过者->安排电话面试</li>
-<li>8月1日至8月15日完成推荐的简历：笔试通过者->安排进校面试</li>
-<li>8月15日之后完成推荐的简历：我们将在有补招需求时处理</li>
-</ul>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -554,6 +563,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/01/22/bug-optimization/">Bugs: 优化要小心</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/10/16/hu-lian-wang-zhao-pin-hei-hua/">互联网招聘黑话</a>
       </li>
     
@@ -569,16 +582,12 @@
         <a href="/blog/2014/09/24/bug-control-flow/">Bugs: 控制逻辑要小心</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/09/15/powermock-jie-shao/">PowerMock简介</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/bugs/'>Bugs (4)</a></li>
+    <li class='category'><a href='/blog/categories/bugs/'>Bugs (5)</a></li>
 <li class='category'><a href='/blog/categories/c-plus-plus/'>C++ (1)</a></li>
 <li class='category'><a href='/blog/categories/shu-ping/'>书评 (1)</a></li>
 <li class='category'><a href='/blog/categories/xiao-ji-qiao/'>小技巧 (1)</a></li>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bugs | 怪兽说]]></title>
   <link href="http://blog.monstersay.cn/blog/categories/bugs/atom.xml" rel="self"/>
   <link href="http://blog.monstersay.cn/"/>
-  <updated>2015-01-22T10:31:30+08:00</updated>
+  <updated>2015-01-29T19:51:08+08:00</updated>
   <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -12,6 +12,51 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Bugs: 优化要小心]]></title>
+    <link href="http://blog.monstersay.cn/blog/2015/01/22/bug-optimization/"/>
+    <updated>2015-01-22T10:33:35+08:00</updated>
+    <id>http://blog.monstersay.cn/blog/2015/01/22/bug-optimization</id>
+    <content type="html"><![CDATA[<p>最近某个移动客户端发布新版本后有新用户反映安装后经常出现随机接口请求错误，经过日志排查是某些请求过于频繁导致后台暂时屏蔽。但是为什么会导致如此频繁的请求呢？记得开发同学们信誓旦旦的拍着胸脯说这块代码逻辑没改过啊～～～还是老规矩代码说话，把当前版本的git提交日志拉出来，好吧，相关代码有个优化&hellip;呃，真的只是优化吗？让我们先来看一下优化后的伪代码。</p>
+
+<p>```java
+void init() {
+  dataAdapter = new DataAdapter();
+}</p>
+
+<p>void onMessageReceived(Result result) {
+  if ((result != null) &amp;&amp; (result.getCount() == 0)) {</p>
+
+<pre><code>receiveMessage();
+</code></pre>
+
+<p>  }
+  // &hellip;
+}
+```
+仔细分析一下代码问题就来了，对于老的已经有消息的用户，这段代码没有问题，但是对于新安装用户，服务端一条消息没有，那么问题就来了。当传入的result的count为0，调用receiveMessage向服务端请求，返回的result的count还是为0，结果就陷入了死循环，你丫好歹加个重试次数限制呢。再来看一下所谓优化前的代码。</p>
+
+<p>```java
+void onMessageReceived(Result result) {
+  if (dataAdapter == null) {</p>
+
+<pre><code>dataAdapter = new DataAdapter();
+if ((result != null) &amp;&amp; (result.getCount() == 0)) {
+  receiveMessage();
+}
+</code></pre>
+
+<p>  }
+  // &hellip;
+}
+```</p>
+
+<p>在原来的代码里，仅当dataAdapter没有初始化的时候，也就是系统第一次初始化的时候，会尝试重新向服务器请求一次信息，查看receiveMessage代码可以发现，第一次请求是读取本地缓存，可能会因为各种原因返回的count是0。初始化完成之后如果再取到count为0的情况，有可能是网络不好，用户手动刷新一下就好了，不影响正常使用。</p>
+
+<p>事后沟通因为开发认为dataAdaper的初始化应该放到init中会比较清晰，结果没有正确解读原有代码的逻辑。所以没事不要随便优化，做优化之前一定要先写好单元测试，不然改完之后，哼哼！</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Bugs: 控制逻辑要小心]]></title>
