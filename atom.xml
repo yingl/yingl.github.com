@@ -4,7 +4,7 @@
   <title><![CDATA[怪兽说]]></title>
   <link href="http://blog.monstersay.cn/atom.xml" rel="self"/>
   <link href="http://blog.monstersay.cn/"/>
-  <updated>2015-01-29T19:51:08+08:00</updated>
+  <updated>2015-01-30T17:04:36+08:00</updated>
   <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -14,11 +14,33 @@
 
   
   <entry>
+    <title type="html"><![CDATA[王强讲话]]></title>
+    <link href="http://blog.monstersay.cn/blog/2015/01/29/wang-qiang-jiang-hua/"/>
+    <updated>2015-01-29T19:53:54+08:00</updated>
+    <id>http://blog.monstersay.cn/blog/2015/01/29/wang-qiang-jiang-hua</id>
+    <content type="html"><![CDATA[<p>今天王强老师和徐小平老师来阿里交流，幸亏手快抢了一张门票。徐小平老师基本上就和评价一样，是个老顽童，语速很快，很活泼，重点讲了公司治理，当中扯淡也挺多。王强老师上场后，一看就有学者风度，果然是当年做班长的，先谈人生哲学，再谈投资哲学，听完后很有启发，讲话的几个关键点在这里简单记录一下。</p>
+
+<ul>
+<li>先谈了一下容格的人生曲线理论，简而言之人生是一条抛物线。王老师认为人生是波动曲线，平庸和精彩的区别在于有些人死了以后波动就停止了，而有些人的波动一直在延续。</li>
+<li>创业是什么，就是你有一个梦，如果大家都认同你这个梦，愿意融合到你这个梦里来，就可以成功了。</li>
+<li>商业计划书没什么用，关键看团队是不是靠谱，没有领域专业知识就算了。天使轮也不看数字，梦是无法审计的。</li>
+<li>承担坏的结果不是最痛苦的，面向未来的不确定进行选择是最痛苦的。想创业的话必须放弃眼前能看到的利益。</li>
+<li>空想行业趋势和夕阳朝阳行业都是扯淡。抓住人们的刚需，解决大家的痛点他们就会投。真格基金去年投了北京一个做殡葬的startup，创始人是清华的~~~详情见<a href="http://www.biian.com/bzfw/71.html%E3%80%82">http://www.biian.com/bzfw/71.html%E3%80%82</a></li>
+<li>作为startup的创始人，胸怀一定要大，你的胸怀决定了你能招到什么样的人，不能有老子天下第一的思想。用行政手段建立起来的权威是不可靠的，当你招了第一个下属或合伙人后，就必须重新树立自己的权威。</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Bugs: 优化要小心]]></title>
     <link href="http://blog.monstersay.cn/blog/2015/01/22/bug-optimization/"/>
     <updated>2015-01-22T10:33:35+08:00</updated>
     <id>http://blog.monstersay.cn/blog/2015/01/22/bug-optimization</id>
     <content type="html"><![CDATA[<p>最近某个移动客户端发布新版本后有新用户反映安装后经常出现随机接口请求错误，经过日志排查是某些请求过于频繁导致后台暂时屏蔽。但是为什么会导致如此频繁的请求呢？记得开发同学们信誓旦旦的拍着胸脯说这块代码逻辑没改过啊～～～还是老规矩代码说话，把当前版本的git提交日志拉出来，好吧，相关代码有个优化&hellip;呃，真的只是优化吗？让我们先来看一下优化后的伪代码。</p>
+
+<!--more-->
+
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1091,251 +1113,6 @@
 </span><span class='line'>  <span class="n">Prototype</span> <span class="o">*</span><span class="n">p1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Product</span><span class="p">;</span>
 </span><span class='line'>  <span class="n">Prototype</span> <span class="o">*</span><span class="n">p2</span> <span class="o">=</span> <span class="n">p1</span><span class="o">-&gt;</span><span class="n">clone</span><span class="p">();</span>
 </span><span class='line'>  <span class="n">Prototype</span> <span class="o">*</span><span class="n">p3</span> <span class="o">=</span> <span class="n">p2</span><span class="o">-&gt;</span><span class="n">clone</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[设计模式 创建型：生成器]]></title>
-    <link href="http://blog.monstersay.cn/blog/2014/04/05/dp-creational-builder/"/>
-    <updated>2014-04-05T16:29:57+08:00</updated>
-    <id>http://blog.monstersay.cn/blog/2014/04/05/dp-creational-builder</id>
-    <content type="html"><![CDATA[<h3>生成器 Builder</h3>
-
-<p><strong>定义</strong></p>
-
-<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%99%A8%E6%A8%A1%E5%BC%8F">链接</a>。又名：建造模式，是一种对象构建模式。它可以将复杂对象的建造过程抽象出来（抽象类别），使这个抽象过程的不同实现方法可以构造出不同表现（属性）的对象。</p>
-
-<!--more-->
-
-
-<p><strong>用户场景</strong></p>
-
-<p>我们已生成汽车做为例子。虽然不同的车厂生成不同品牌的汽车，但是很多零部件的通用的，不同品牌的汽车只是把他们组合起来。比如轮胎选择米其林或固特异，变速箱采用ZF或爱信。工厂在为某个新品牌新建生产线的时候只要选择不同的供应商就可以了，而不需要所有零件都自己从头生产。例子代码如下。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-<span class='line-number'>100</span>
-<span class='line-number'>101</span>
-<span class='line-number'>102</span>
-<span class='line-number'>103</span>
-<span class='line-number'>104</span>
-<span class='line-number'>105</span>
-<span class='line-number'>106</span>
-<span class='line-number'>107</span>
-<span class='line-number'>108</span>
-<span class='line-number'>109</span>
-<span class='line-number'>110</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
-</span><span class='line'><span class="cp">#include &lt;string&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Tire</span> <span class="p">{};</span>  <span class="c1">// 轮胎</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">GoodYearTire</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Tire</span> <span class="p">{};</span>  <span class="c1">// 固特异轮胎</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">MichelinTire</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Tire</span> <span class="p">{};</span>  <span class="c1">// 米其林轮胎</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">GearBox</span> <span class="p">{};</span> <span class="c1">// 变速箱</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">ZFGearBox</span> <span class="o">:</span> <span class="k">public</span> <span class="n">GearBox</span> <span class="p">{};</span>  <span class="c1">// ZF变速箱</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">AWGearBox</span> <span class="o">:</span> <span class="k">public</span> <span class="n">GearBox</span> <span class="p">{};</span>  <span class="c1">// 爱信变速箱</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Car</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="n">Car</span><span class="p">(</span><span class="n">string</span> <span class="n">name</span><span class="p">,</span> <span class="n">Tire</span> <span class="o">*</span><span class="n">tires</span><span class="p">,</span> <span class="n">GearBox</span> <span class="o">*</span><span class="n">gearBox</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">_name</span> <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
-</span><span class='line'>      <span class="n">_tires</span> <span class="o">=</span> <span class="n">tires</span><span class="p">;</span>
-</span><span class='line'>      <span class="n">_gearBox</span> <span class="o">=</span> <span class="n">gearBox</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">Car</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">delete</span><span class="p">[]</span> <span class="n">_tires</span><span class="p">;</span>
-</span><span class='line'>      <span class="k">delete</span> <span class="n">_gearBox</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kt">void</span> <span class="n">showInfo</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;I am a &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">_name</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; car.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">protected</span><span class="o">:</span>
-</span><span class='line'>  <span class="n">string</span> <span class="n">_name</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">Tire</span> <span class="o">*</span><span class="n">_tires</span><span class="p">;</span>       <span class="c1">// 轮胎</span>
-</span><span class='line'>  <span class="n">GearBox</span> <span class="o">*</span><span class="n">_gearBox</span><span class="p">;</span>  <span class="c1">// 变速箱</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 生产线</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">CarBuilder</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">virtual</span> <span class="n">Car</span><span class="o">*</span> <span class="n">produce</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 高尔夫生产线</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">GolfCarBuilder</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CarBuilder</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">virtual</span> <span class="n">Car</span><span class="o">*</span> <span class="n">produce</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="c1">// 使用固特异轮胎和ZF变速箱</span>
-</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="n">Car</span><span class="p">(</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;Golf&quot;</span><span class="p">),</span> <span class="k">new</span> <span class="n">GoodYearTire</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="k">new</span> <span class="n">ZFGearBox</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 宝马生产线</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">BMWCarBuilder</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CarBuilder</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">virtual</span> <span class="n">Car</span><span class="o">*</span> <span class="n">produce</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="c1">// 使用米其林轮胎和爱信变速箱</span>
-</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="n">Car</span><span class="p">(</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;BMW&quot;</span><span class="p">),</span> <span class="k">new</span> <span class="n">MichelinTire</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="k">new</span> <span class="n">AWGearBox</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 汽车工厂</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">Factory</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">virtual</span> <span class="n">Car</span><span class="o">*</span> <span class="n">produce</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">setBuilder</span><span class="p">(</span><span class="n">CarBuilder</span><span class="o">*</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 大众工厂，我们有高尔夫和宝马两条生产线</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">VWFactory</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Factory</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="n">VWFactory</span><span class="p">(</span><span class="n">CarBuilder</span> <span class="o">*</span><span class="n">carBuilder</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">_carBuilder</span> <span class="o">=</span> <span class="n">carBuilder</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kt">void</span> <span class="n">setBuilder</span><span class="p">(</span><span class="n">CarBuilder</span> <span class="o">*</span><span class="n">carBuilder</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">_carBuilder</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">delete</span> <span class="n">_carBuilder</span><span class="p">;</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">_carBuilder</span> <span class="o">=</span> <span class="n">carBuilder</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">virtual</span> <span class="n">Car</span><span class="o">*</span> <span class="n">produce</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="n">_carBuilder</span><span class="o">-&gt;</span><span class="n">produce</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">protected</span><span class="o">:</span>
-</span><span class='line'>    <span class="n">CarBuilder</span> <span class="o">*</span><span class="n">_carBuilder</span><span class="p">;</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="n">CarBuilder</span> <span class="o">*</span><span class="n">golfCarBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GolfCarBuilder</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">CarBuilder</span> <span class="o">*</span><span class="n">bmwCarBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BMWCarBuilder</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">Factory</span> <span class="o">*</span><span class="n">vwFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">VWFactory</span><span class="p">(</span><span class="n">golfCarBuilder</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">Car</span> <span class="o">*</span><span class="n">golfCar</span> <span class="o">=</span> <span class="n">vwFactory</span><span class="o">-&gt;</span><span class="n">produce</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">vwFactory</span><span class="o">-&gt;</span><span class="n">setBuilder</span><span class="p">(</span><span class="n">bmwCarBuilder</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">Car</span> <span class="o">*</span><span class="n">bmwCar</span> <span class="o">=</span> <span class="n">vwFactory</span><span class="o">-&gt;</span><span class="n">produce</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">golfCar</span><span class="o">-&gt;</span><span class="n">showInfo</span><span class="p">();</span>
-</span><span class='line'>  <span class="n">bmwCar</span><span class="o">-&gt;</span><span class="n">showInfo</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">delete</span> <span class="n">bmwCar</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">delete</span> <span class="n">golfCar</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">delete</span> <span class="n">vwFactory</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">delete</span> <span class="n">bmwCarBuilder</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">delete</span> <span class="n">golfCarBuilder</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 

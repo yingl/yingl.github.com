@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bugs | 怪兽说]]></title>
   <link href="http://blog.monstersay.cn/blog/categories/bugs/atom.xml" rel="self"/>
   <link href="http://blog.monstersay.cn/"/>
-  <updated>2015-01-29T19:51:08+08:00</updated>
+  <updated>2015-01-30T17:04:36+08:00</updated>
   <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -19,6 +19,9 @@
     <updated>2015-01-22T10:33:35+08:00</updated>
     <id>http://blog.monstersay.cn/blog/2015/01/22/bug-optimization</id>
     <content type="html"><![CDATA[<p>最近某个移动客户端发布新版本后有新用户反映安装后经常出现随机接口请求错误，经过日志排查是某些请求过于频繁导致后台暂时屏蔽。但是为什么会导致如此频繁的请求呢？记得开发同学们信誓旦旦的拍着胸脯说这块代码逻辑没改过啊～～～还是老规矩代码说话，把当前版本的git提交日志拉出来，好吧，相关代码有个优化&hellip;呃，真的只是优化吗？让我们先来看一下优化后的伪代码。</p>
+
+<!--more-->
+
 
 <p>```java
 void init() {
