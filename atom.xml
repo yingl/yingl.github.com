@@ -4,7 +4,7 @@
   <title><![CDATA[怪兽说]]></title>
   <link href="http://blog.monstersay.cn/atom.xml" rel="self"/>
   <link href="http://blog.monstersay.cn/"/>
-  <updated>2015-02-15T11:35:50+08:00</updated>
+  <updated>2015-02-15T15:02:02+08:00</updated>
   <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -12,6 +12,122 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[设计模式 结构型：桥接]]></title>
+    <link href="http://blog.monstersay.cn/blog/2015/02/15/dp-structual-bridge/"/>
+    <updated>2015-02-15T12:44:07+08:00</updated>
+    <id>http://blog.monstersay.cn/blog/2015/02/15/dp-structual-bridge</id>
+    <content type="html"><![CDATA[<h3>桥接 Bridge</h3>
+
+<p><strong>定义</strong></p>
+
+<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E6%A9%8B%E6%8E%A5%E6%A8%A1%E5%BC%8F">链接</a>。号称是最复杂的设计模式之一。它把事物对象和其具体行为、具体特征分离开来，使它们可以各自独立的变化。</p>
+
+<p>设想一下我们要开发一个绘图程序，需要支持不同的形状和不同的颜色，这时我们有以下两种方案可选：</p>
+
+<ul>
+<li>为某种形状和颜色的组合提供一个实现版本。</li>
+<li>根据设计方案对形状和颜色进行组合。</li>
+</ul>
+
+
+<p>如果选择第一个方案，一旦排列组合爆炸的话我们就处理不过来了。而第二个方案则可以像搭积木一样自由选择，情况就简单多了。</p>
+
+<p>在例子代码中，我们通过形状的抽象基类CShape把颜色CColor组合进来，这样我们就可以非常轻松的实例化出不同形状和颜色的组合。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">CColor</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">paint</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">CRed</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CColor</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">paint</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Paint by RED.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">CBlue</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CColor</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">paint</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Paint by BLUE.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">CShape</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">CShape</span><span class="p">(</span><span class="k">const</span> <span class="n">CColor</span> <span class="o">*</span><span class="n">pColor</span><span class="p">)</span> <span class="p">{</span> <span class="n">_pColor</span> <span class="o">=</span> <span class="n">pColor</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">draw</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">protected</span><span class="o">:</span>
+</span><span class='line'>    <span class="k">const</span> <span class="n">CColor</span> <span class="o">*</span><span class="n">_pColor</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">CCircle</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CShape</span>  <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">CCircle</span><span class="p">(</span><span class="k">const</span> <span class="n">CColor</span> <span class="o">*</span><span class="n">pColor</span><span class="p">)</span> <span class="o">:</span> <span class="n">CShape</span><span class="p">(</span><span class="n">pColor</span><span class="p">)</span> <span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">draw</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Circle: &quot;</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">_pColor</span><span class="o">-&gt;</span><span class="n">paint</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">CColor</span> <span class="o">*</span><span class="n">pColor</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CRed</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">CShape</span> <span class="o">*</span><span class="n">pShape</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CCircle</span><span class="p">(</span><span class="n">pColor</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">pShape</span><span class="o">-&gt;</span><span class="n">draw</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[王强讲话]]></title>
@@ -750,7 +866,7 @@
 </span><span class='line'>
 </span><span class='line'><span class="k">class</span> <span class="nc">Singeleton</span> <span class="p">{</span>
 </span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">static</span> <span class="n">Obj</span><span class="o">*</span> <span class="n">getInstance</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">Obj</span><span class="o">*</span> <span class="n">getInstance</span><span class="p">()</span>
 </span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nb">NULL</span> <span class="o">==</span> <span class="n">_instance</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="c1">// 加锁确保线程安全</span>
 </span><span class='line'>        <span class="n">lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">g_lock</span><span class="p">);</span>
@@ -1032,91 +1148,6 @@
 </span><span class='line'><span class="k">else</span>
 </span><span class='line'>  <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Why?</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[设计模式 创建型：原型]]></title>
-    <link href="http://blog.monstersay.cn/blog/2014/04/16/dp-creational-prototype/"/>
-    <updated>2014-04-16T01:53:44+08:00</updated>
-    <id>http://blog.monstersay.cn/blog/2014/04/16/dp-creational-prototype</id>
-    <content type="html"><![CDATA[<h3>原型 Prototype</h3>
-
-<p><strong>定义</strong></p>
-
-<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F">链接</a>。通过“复制”一个已经存在的实例来返回新的实例,而不是新建实例。被复制的实例就是我们所称的“原型”，这个原型是可定制的。原型模式多用于创建复杂的或者耗时的实例，因为这种情况下，复制一个已经存在的实例使程序运行更高效；或者创建值相等，只是命名不一样的同类数据。</p>
-
-<!--more-->
-
-
-<p><strong>用户场景</strong></p>
-
-<p>Wiki已经讲的很清楚了。简单来说就是把一个复杂的对象创建过程简化成复制粘贴的形式。需要注意的是我们在复制原型的时候使用深拷贝还是浅拷贝。此外该模式还经常和工厂模式一起使用，因为原型可以用工厂来构建。看了以下例子后可能会有一个疑问，为什么要提供一个clone方法，而不是直接调用拷贝构造函数？因为C++是静态语言，我们在复制原型时并不知道它是具体那个类型，而clone的话这个类自己负责拷贝，只需要返回一个基类类型的指针就可以了。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
-</span><span class='line'><span class="cp">#include &lt;string&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Prototype</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">virtual</span> <span class="n">Prototype</span><span class="o">*</span> <span class="n">clone</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Product</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Prototype</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="n">Product</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Take long time to create a product.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">Product</span><span class="p">(</span><span class="k">const</span> <span class="n">Product</span><span class="o">&amp;</span> <span class="n">product</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Copy a product is so fast.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">Prototype</span><span class="o">*</span> <span class="n">clone</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="n">Product</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="n">Prototype</span> <span class="o">*</span><span class="n">p1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Product</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">Prototype</span> <span class="o">*</span><span class="n">p2</span> <span class="o">=</span> <span class="n">p1</span><span class="o">-&gt;</span><span class="n">clone</span><span class="p">();</span>
-</span><span class='line'>  <span class="n">Prototype</span> <span class="o">*</span><span class="n">p3</span> <span class="o">=</span> <span class="n">p2</span><span class="o">-&gt;</span><span class="n">clone</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
 
 ]]></content>
   </entry>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 设计模式 | 怪兽说]]></title>
   <link href="http://blog.monstersay.cn/blog/categories/she-ji-mo-shi/atom.xml" rel="self"/>
   <link href="http://blog.monstersay.cn/"/>
-  <updated>2015-02-15T11:35:50+08:00</updated>
+  <updated>2015-02-15T15:02:02+08:00</updated>
   <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -12,6 +12,96 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[设计模式 结构型：桥接]]></title>
+    <link href="http://blog.monstersay.cn/blog/2015/02/15/dp-structual-bridge/"/>
+    <updated>2015-02-15T12:44:07+08:00</updated>
+    <id>http://blog.monstersay.cn/blog/2015/02/15/dp-structual-bridge</id>
+    <content type="html"><![CDATA[<h3>桥接 Bridge</h3>
+
+<p><strong>定义</strong></p>
+
+<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E6%A9%8B%E6%8E%A5%E6%A8%A1%E5%BC%8F">链接</a>。号称是最复杂的设计模式之一。它把事物对象和其具体行为、具体特征分离开来，使它们可以各自独立的变化。</p>
+
+<p>设想一下我们要开发一个绘图程序，需要支持不同的形状和不同的颜色，这时我们有以下两种方案可选：</p>
+
+<ul>
+<li>为某种形状和颜色的组合提供一个实现版本。</li>
+<li>根据设计方案对形状和颜色进行组合。</li>
+</ul>
+
+
+<p>如果选择第一个方案，一旦排列组合爆炸的话我们就处理不过来了。而第二个方案则可以像搭积木一样自由选择，情况就简单多了。</p>
+
+<p>在例子代码中，我们通过形状的抽象基类CShape把颜色CColor组合进来，这样我们就可以非常轻松的实例化出不同形状和颜色的组合。</p>
+
+<p>```cpp</p>
+
+<h1>include <iostream></h1>
+
+<p>using namespace std;</p>
+
+<p>class CColor {
+  public:</p>
+
+<pre><code>virtual void paint() const = 0;
+</code></pre>
+
+<p>};</p>
+
+<p>class CRed : public CColor {
+  public:</p>
+
+<pre><code>void paint() const { cout &lt;&lt; "Paint by RED." &lt;&lt; endl; }
+</code></pre>
+
+<p>};</p>
+
+<p>class CBlue : public CColor {
+  public:</p>
+
+<pre><code>void paint() const { cout &lt;&lt; "Paint by BLUE." &lt;&lt; endl; }
+</code></pre>
+
+<p>};</p>
+
+<p>class CShape {
+  public:</p>
+
+<pre><code>CShape(const CColor *pColor) { _pColor = pColor; }
+
+virtual void draw() = 0;
+</code></pre>
+
+<p>  protected:</p>
+
+<pre><code>const CColor *_pColor;
+</code></pre>
+
+<p>};</p>
+
+<p>class CCircle : public CShape  {
+  public:</p>
+
+<pre><code>CCircle(const CColor *pColor) : CShape(pColor) {}
+
+void draw() {
+  cout &lt;&lt; "Circle: ";
+  _pColor-&gt;paint();
+</code></pre>
+
+<p>  }
+};</p>
+
+<p>int main(void) {
+  CColor <em>pColor = new CRed();
+  CShape </em>pShape = new CCircle(pColor);
+  pShape->draw();
+}
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[设计模式 结构型：适配器]]></title>
@@ -189,14 +279,15 @@ cout &lt;&lt; "Computer power on" &lt;&lt; endl;
 
 <p>为什么需要单例，其实理由很简单，为避免重复建设。比如我们前面讲到的工厂模式，相同的工厂只要有一个就够了，多了就浪费了，管理起来也不方便。下面具体讲一下单例的实现。</p>
 
-<p>实现一（一般面试的标准答案）
-```cpp
+<p>实现一（一般面试的标准答案）</p>
+
+<p>```cpp
 lock g_lock;</p>
 
 <p>class Singeleton {
   public:</p>
 
-<pre><code>static Obj* getInstance() {
+<pre><code>static Obj* getInstance() 
   if (NULL == _instance) {
     // 加锁确保线程安全
     lock(&amp;g_lock);
@@ -222,8 +313,9 @@ lock g_lock;</p>
 <p>Obj* Singeleton::_instance = NULL;
 ```</p>
 
-<p>实现二（利用静态变量简化多线程的情况，有兴趣的话可以看下GTest的源码，就是这么做的。）
-```cpp
+<p>实现二（利用静态变量简化多线程的情况，有兴趣的话可以看下GTest的源码，就是这么做的。）</p>
+
+<p>```cpp
 template<class T> class Singleton {
   public:</p>
 
@@ -295,160 +387,6 @@ Prototype* clone() const {
   Prototype <em>p1 = new Product;
   Prototype </em>p2 = p1->clone();
   Prototype *p3 = p2->clone();
-}
-```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[设计模式 创建型：生成器]]></title>
-    <link href="http://blog.monstersay.cn/blog/2014/04/05/dp-creational-builder/"/>
-    <updated>2014-04-05T16:29:57+08:00</updated>
-    <id>http://blog.monstersay.cn/blog/2014/04/05/dp-creational-builder</id>
-    <content type="html"><![CDATA[<h3>生成器 Builder</h3>
-
-<p><strong>定义</strong></p>
-
-<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E7%94%9F%E6%88%90%E5%99%A8%E6%A8%A1%E5%BC%8F">链接</a>。又名：建造模式，是一种对象构建模式。它可以将复杂对象的建造过程抽象出来（抽象类别），使这个抽象过程的不同实现方法可以构造出不同表现（属性）的对象。</p>
-
-<!--more-->
-
-
-<p><strong>用户场景</strong></p>
-
-<p>我们已生成汽车做为例子。虽然不同的车厂生成不同品牌的汽车，但是很多零部件的通用的，不同品牌的汽车只是把他们组合起来。比如轮胎选择米其林或固特异，变速箱采用ZF或爱信。工厂在为某个新品牌新建生产线的时候只要选择不同的供应商就可以了，而不需要所有零件都自己从头生产。例子代码如下。</p>
-
-<p>```cpp</p>
-
-<h1>include <iostream></h1>
-
-<h1>include <string></h1>
-
-<p>using namespace std;</p>
-
-<p>class Tire {};  // 轮胎
-class GoodYearTire : public Tire {};  // 固特异轮胎
-class MichelinTire : public Tire {};  // 米其林轮胎</p>
-
-<p>class GearBox {}; // 变速箱
-class ZFGearBox : public GearBox {};  // ZF变速箱
-class AWGearBox : public GearBox {};  // 爱信变速箱</p>
-
-<p>class Car {
-  public:</p>
-
-<pre><code>Car(string name, Tire *tires, GearBox *gearBox) {
-  _name = name;
-  _tires = tires;
-  _gearBox = gearBox;
-}
-
-Car() {
-  delete[] _tires;
-  delete _gearBox;
-}
-
-void showInfo() {
-  cout &lt;&lt; "I am a " &lt;&lt; _name &lt;&lt; " car." &lt;&lt; endl;
-}
-</code></pre>
-
-<p>protected:
-  string <em>name;
-  Tire *</em>tires;       // 轮胎
-  GearBox *_gearBox;  // 变速箱
-};</p>
-
-<p>// 生产线
-class CarBuilder {
-  public:</p>
-
-<pre><code>virtual Car* produce() = 0;
-</code></pre>
-
-<p>};</p>
-
-<p>// 高尔夫生产线
-class GolfCarBuilder : public CarBuilder {
-  public:</p>
-
-<pre><code>virtual Car* produce() {
-  // 使用固特异轮胎和ZF变速箱
-  return new Car(string("Golf"), new GoodYearTire[4], new ZFGearBox);
-}
-</code></pre>
-
-<p>};</p>
-
-<p>// 宝马生产线
-class BMWCarBuilder : public CarBuilder {
-  public:</p>
-
-<pre><code>virtual Car* produce() {
-  // 使用米其林轮胎和爱信变速箱
-  return new Car(string("BMW"), new MichelinTire[4], new AWGearBox);
-}
-</code></pre>
-
-<p>};</p>
-
-<p>// 汽车工厂
-class Factory {
-  public:</p>
-
-<pre><code>virtual Car* produce() = 0;
-virtual void setBuilder(CarBuilder*) = 0;
-</code></pre>
-
-<p>};</p>
-
-<p>// 大众工厂，我们有高尔夫和宝马两条生产线
-class VWFactory : public Factory {
-  public:</p>
-
-<pre><code>VWFactory(CarBuilder *carBuilder) {
-  _carBuilder = carBuilder;
-}
-
-void setBuilder(CarBuilder *carBuilder) {
-  if (_carBuilder != NULL) {
-    delete _carBuilder;
-  }
-
-  _carBuilder = carBuilder;
-}
-
-virtual Car* produce() {
-  return _carBuilder-&gt;produce();
-}
-</code></pre>
-
-<p>  protected:</p>
-
-<pre><code>CarBuilder *_carBuilder;
-</code></pre>
-
-<p>};</p>
-
-<p>int main(void) {
-  CarBuilder <em>golfCarBuilder = new GolfCarBuilder;
-  CarBuilder </em>bmwCarBuilder = new BMWCarBuilder;
-  Factory *vwFactory = new VWFactory(golfCarBuilder);</p>
-
-<p>  Car *golfCar = vwFactory->produce();</p>
-
-<p>  vwFactory->setBuilder(bmwCarBuilder);</p>
-
-<p>  Car *bmwCar = vwFactory->produce();</p>
-
-<p>  golfCar->showInfo();
-  bmwCar->showInfo();</p>
-
-<p>  delete bmwCar;
-  delete golfCar;
-  delete vwFactory;
-  delete bmwCarBuilder;
-  delete golfCarBuilder;
 }
 ```</p>
 ]]></content>
