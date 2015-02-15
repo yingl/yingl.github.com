@@ -14,12 +14,13 @@ Wiki[链接][1]。单例对象的类必须保证只有一个实例存在。
 为什么需要单例，其实理由很简单，为避免重复建设。比如我们前面讲到的工厂模式，相同的工厂只要有一个就够了，多了就浪费了，管理起来也不方便。下面具体讲一下单例的实现。
 
 实现一（一般面试的标准答案）
+
 ```cpp
 lock g_lock;
 
 class Singeleton {
   public:
-    static Obj* getInstance() {
+    static Obj* getInstance() 
       if (NULL == _instance) {
         // 加锁确保线程安全
         lock(&g_lock);
@@ -42,6 +43,7 @@ Obj* Singeleton::_instance = NULL;
 ```
 
 实现二（利用静态变量简化多线程的情况，有兴趣的话可以看下GTest的源码，就是这么做的。）
+
 ```cpp
 template<class T> class Singleton {
   public:
