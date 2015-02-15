@@ -9,7 +9,7 @@
   <meta name="author" content="窥基／无柳无酒／黑灯瞎火">
 
   
-  <meta name="description" content="原型 Prototype 定义 Wiki链接。通过“复制”一个已经存在的实例来返回新的实例,而不是新建实例。被复制的实例就是我们所称的“原型”，这个原型是可定制的。原型模式多用于创建复杂的或者耗时的实例，因为这种情况下，复制一个已经存在的实例使程序运行更高效；或者创建值相等， &hellip;">
+  <meta name="description" content="以前在微软做数据库连接组件测试时曾遇到这么一个问题，为了提高测试的真实性，所有测试用例在编译时取消了_DEBUG/DEBUG的定义，结果在执行测试用例的时候出现一个从未见过的错误，经调试发现if/else工作不正常，在if已经判断为false之后还是继续执行，没有跳转。经过对代码反复排查， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,47 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/04/16/bug-macro/">Bugs: 小心Macro</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-16T20:24:59+08:00" pubdate data-updated="true">Apr 16<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>以前在微软做数据库连接组件测试时曾遇到这么一个问题，为了提高测试的真实性，所有测试用例在编译时取消了_DEBUG/DEBUG的定义，结果在执行测试用例的时候出现一个从未见过的错误，经调试发现if/else工作不正常，在if已经判断为false之后还是继续执行，没有跳转。经过对代码反复排查，最终发现是宏的不恰当使用导致了这个问题。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/04/16/bug-macro/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -355,6 +396,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/02/15/dp-structual-decorator/">设计模式 结构型：修饰</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/02/15/dp-structual-bridge/">设计模式 结构型：桥接</a>
       </li>
     
@@ -370,10 +415,6 @@
         <a href="/blog/2014/10/16/hu-lian-wang-zhao-pin-hei-hua/">互联网招聘黑话</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/10/14/fen-ceng-zi-dong-hua-ce-shi/">分层自动化测试</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -383,7 +424,7 @@
 <li class='category'><a href='/blog/categories/xiao-ji-qiao/'>小技巧 (1)</a></li>
 <li class='category'><a href='/blog/categories/qiu-zhi-he-ji-tang/'>求职和鸡汤 (8)</a></li>
 <li class='category'><a href='/blog/categories/ce-shi-fen-xiang/'>测试分享 (4)</a></li>
-<li class='category'><a href='/blog/categories/she-ji-mo-shi/'>设计模式 (8)</a></li>
+<li class='category'><a href='/blog/categories/she-ji-mo-shi/'>设计模式 (9)</a></li>
 
   </ul>
 </section>

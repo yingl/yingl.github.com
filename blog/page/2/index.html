@@ -9,7 +9,7 @@
   <meta name="author" content="窥基／无柳无酒／黑灯瞎火">
 
   
-  <meta name="description" content="适配器 Adapter 定义 Wiki链接。将一个类的接口转接成用户所期待的。一个适配使得因接口不兼容而不能在一起工作的类工作在一起，做法是将类别自己的接口包裹在一个已存在的类中。 ">
+  <meta name="description" content="具体业务细节不方便公开，但是这个问题警告我们在使用缓存的时候必须非常重视一致性问题。 首先来研究一下我们的缓存设计，我们选择了双机房双集群模式。也就是理论上说，每个机房都有一个独立的缓存集群，每次根据响应速度随机挑选一个比较快的集群访问，如果读取到数据，那么直接返回，如果没有读取到， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/12/bug-cache/">Bugs: 小缓存大问题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-12T20:40:05+08:00" pubdate data-updated="true">Aug 12<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>具体业务细节不方便公开，但是这个问题警告我们在使用缓存的时候必须非常重视一致性问题。</p>
+
+<p>首先来研究一下我们的缓存设计，我们选择了双机房双集群模式。也就是理论上说，每个机房都有一个独立的缓存集群，每次根据响应速度随机挑选一个比较快的集群访问，如果读取到数据，那么直接返回，如果没有读取到，那么从检查数据库并更新缓存记录。如果数据库里没有记录，那么先调用一个失效操作，然后写入缓存。整个系统看着没什么问题，但是天有不测风云～～～</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/12/bug-cache/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -456,47 +499,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/04/16/bug-macro/">Bugs: 小心Macro</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-04-16T20:24:59+08:00" pubdate data-updated="true">Apr 16<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>以前在微软做数据库连接组件测试时曾遇到这么一个问题，为了提高测试的真实性，所有测试用例在编译时取消了_DEBUG/DEBUG的定义，结果在执行测试用例的时候出现一个从未见过的错误，经调试发现if/else工作不正常，在if已经判断为false之后还是继续执行，没有跳转。经过对代码反复排查，最终发现是宏的不恰当使用导致了这个问题。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/04/16/bug-macro/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -522,6 +524,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/02/15/dp-structual-decorator/">设计模式 结构型：修饰</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/02/15/dp-structual-bridge/">设计模式 结构型：桥接</a>
       </li>
     
@@ -537,10 +543,6 @@
         <a href="/blog/2014/10/16/hu-lian-wang-zhao-pin-hei-hua/">互联网招聘黑话</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/10/14/fen-ceng-zi-dong-hua-ce-shi/">分层自动化测试</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -550,7 +552,7 @@
 <li class='category'><a href='/blog/categories/xiao-ji-qiao/'>小技巧 (1)</a></li>
 <li class='category'><a href='/blog/categories/qiu-zhi-he-ji-tang/'>求职和鸡汤 (8)</a></li>
 <li class='category'><a href='/blog/categories/ce-shi-fen-xiang/'>测试分享 (4)</a></li>
-<li class='category'><a href='/blog/categories/she-ji-mo-shi/'>设计模式 (8)</a></li>
+<li class='category'><a href='/blog/categories/she-ji-mo-shi/'>设计模式 (9)</a></li>
 
   </ul>
 </section>

@@ -9,7 +9,7 @@
   <meta name="author" content="窥基／无柳无酒／黑灯瞎火">
 
   
-  <meta name="description" content="桥接 Bridge 定义 Wiki链接。号称是最复杂的设计模式之一。它把事物对象和其具体行为、具体特征分离开来，使它们可以各自独立的变化。 设想一下我们要开发一个绘图程序，需要支持不同的形状和不同的颜色，这时我们有以下两种方案可选： 为某种形状和颜色的组合提供一个实现版本。 &hellip;">
+  <meta name="description" content="修饰 Decorator 定义 Wiki链接。一种动态地往一个类中添加新的行为的设计模式。就功能而言，修饰模式相比生成子类更为灵活，这样可以给某个对象而不是整个类添加一些功能。 比如我们设计一个UI库，需要能灵活的给一个文本框添加垂直滚动、水平滚动功能。如果用继承的方式很容易因为排列组合导致失控， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,7 +71,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/02/15/dp-structual-bridge/">设计模式 结构型：桥接</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/02/15/dp-structual-decorator/">设计模式 结构型：修饰</a></h1>
     
     
       <p class="meta">
@@ -87,30 +87,20 @@
   
 
 
-<time datetime="2015-02-15T12:44:07+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2015</time>
+<time datetime="2015-02-15T15:20:01+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2015</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h3>桥接 Bridge</h3>
+  <div class="entry-content"><h3>修饰 Decorator</h3>
 
 <p><strong>定义</strong></p>
 
-<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E6%A9%8B%E6%8E%A5%E6%A8%A1%E5%BC%8F">链接</a>。号称是最复杂的设计模式之一。它把事物对象和其具体行为、具体特征分离开来，使它们可以各自独立的变化。</p>
+<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E4%BF%AE%E9%A5%B0%E6%A8%A1%E5%BC%8F">链接</a>。一种动态地往一个类中添加新的行为的设计模式。就功能而言，修饰模式相比生成子类更为灵活，这样可以给某个对象而不是整个类添加一些功能。</p>
 
-<p>设想一下我们要开发一个绘图程序，需要支持不同的形状和不同的颜色，这时我们有以下两种方案可选：</p>
-
-<ul>
-<li>为某种形状和颜色的组合提供一个实现版本。</li>
-<li>根据设计方案对形状和颜色进行组合。</li>
-</ul>
-
-
-<p>如果选择第一个方案，一旦排列组合爆炸的话我们就处理不过来了。而第二个方案则可以像搭积木一样自由选择，情况就简单多了。</p>
-
-<p>在例子代码中，我们通过形状的抽象基类CShape把颜色CColor组合进来，这样我们就可以非常轻松的实例化出不同形状和颜色的组合。</p>
+<p>比如我们设计一个UI库，需要能灵活的给一个文本框添加垂直滚动、水平滚动功能。如果用继承的方式很容易因为排列组合导致失控，而依靠修饰模式我们可以自由的对各种扩展功能进行有选择的排列组合。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -155,55 +145,114 @@
 <span class='line-number'>41</span>
 <span class='line-number'>42</span>
 <span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
 </pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">CColor</span> <span class="p">{</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Widget</span> <span class="p">{</span>
 </span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">paint</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">draw</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </span><span class='line'><span class="p">};</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">CRed</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CColor</span> <span class="p">{</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">TextBox</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Widget</span> <span class="p">{</span>
 </span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="kt">void</span> <span class="n">paint</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Paint by RED.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">draw</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;TextBox&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
 </span><span class='line'><span class="p">};</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">CBlue</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CColor</span> <span class="p">{</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Decorator</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Widget</span> <span class="p">{</span>
 </span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="kt">void</span> <span class="n">paint</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Paint by BLUE.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
+</span><span class='line'>    <span class="n">Decorator</span><span class="p">(</span><span class="k">const</span> <span class="n">Widget</span> <span class="o">*</span><span class="n">pWidget</span><span class="p">)</span> <span class="p">{</span> <span class="n">_pWidget</span> <span class="o">=</span> <span class="n">pWidget</span><span class="p">;</span> <span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">CShape</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="n">CShape</span><span class="p">(</span><span class="k">const</span> <span class="n">CColor</span> <span class="o">*</span><span class="n">pColor</span><span class="p">)</span> <span class="p">{</span> <span class="n">_pColor</span> <span class="o">=</span> <span class="n">pColor</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">draw</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="n">_pWidget</span><span class="o">-&gt;</span><span class="n">draw</span><span class="p">();</span> <span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">draw</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </span><span class='line'>  <span class="k">protected</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">const</span> <span class="n">CColor</span> <span class="o">*</span><span class="n">_pColor</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">const</span> <span class="n">Widget</span> <span class="o">*</span><span class="n">_pWidget</span><span class="p">;</span>
 </span><span class='line'><span class="p">};</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">CCircle</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CShape</span>  <span class="p">{</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">HScrollDecorator</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Decorator</span> <span class="p">{</span>
 </span><span class='line'>  <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>    <span class="n">CCircle</span><span class="p">(</span><span class="k">const</span> <span class="n">CColor</span> <span class="o">*</span><span class="n">pColor</span><span class="p">)</span> <span class="o">:</span> <span class="n">CShape</span><span class="p">(</span><span class="n">pColor</span><span class="p">)</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="n">HScrollDecorator</span><span class="p">(</span><span class="n">Widget</span> <span class="o">*</span><span class="n">pWidget</span><span class="p">)</span> <span class="o">:</span> <span class="n">Decorator</span><span class="p">(</span><span class="n">pWidget</span><span class="p">)</span> <span class="p">{}</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="kt">void</span> <span class="n">draw</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Circle: &quot;</span><span class="p">;</span>
-</span><span class='line'>      <span class="n">_pColor</span><span class="o">-&gt;</span><span class="n">paint</span><span class="p">();</span>
-</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">draw</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">Decorator</span><span class="o">::</span><span class="n">draw</span><span class="p">();</span>
+</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;HScroll is supoorted!&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">VScrollDecorator</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Decorator</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">VScrollDecorator</span><span class="p">(</span><span class="k">const</span> <span class="n">Widget</span> <span class="o">*</span><span class="n">pWidget</span><span class="p">)</span> <span class="o">:</span> <span class="n">Decorator</span><span class="p">(</span><span class="n">pWidget</span><span class="p">)</span> <span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">draw</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">Decorator</span><span class="o">::</span><span class="n">draw</span><span class="p">();</span>
+</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;VScroll is supoorted!&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">};</span>
 </span><span class='line'>
 </span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="n">CColor</span> <span class="o">*</span><span class="n">pColor</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CRed</span><span class="p">();</span>
-</span><span class='line'>  <span class="n">CShape</span> <span class="o">*</span><span class="n">pShape</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CCircle</span><span class="p">(</span><span class="n">pColor</span><span class="p">);</span>
-</span><span class='line'>  <span class="n">pShape</span><span class="o">-&gt;</span><span class="n">draw</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">Widget</span> <span class="o">*</span><span class="n">pWidget</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HScrollDecorator</span><span class="p">(</span>
+</span><span class='line'>                      <span class="k">new</span> <span class="n">VScrollDecorator</span><span class="p">(</span>
+</span><span class='line'>                        <span class="k">new</span> <span class="n">TextBox</span><span class="p">));</span>
+</span><span class='line'>  <span class="n">pWidget</span><span class="o">-&gt;</span><span class="n">draw</span><span class="p">();</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p></p>
+
 </div>
   
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/02/15/dp-structual-bridge/">设计模式 结构型：桥接</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-02-15T12:44:07+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>桥接 Bridge</h3>
+
+<p><strong>定义</strong></p>
+
+<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E6%A9%8B%E6%8E%A5%E6%A8%A1%E5%BC%8F">链接</a>。号称是最复杂的设计模式之一。它把事物对象和其具体行为、具体特征分离开来，使它们可以各自独立的变化。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/02/15/dp-structual-bridge/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -553,49 +602,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/08/12/bug-cache/">Bugs: 小缓存大问题</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-08-12T20:40:05+08:00" pubdate data-updated="true">Aug 12<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>具体业务细节不方便公开，但是这个问题警告我们在使用缓存的时候必须非常重视一致性问题。</p>
-
-<p>首先来研究一下我们的缓存设计，我们选择了双机房双集群模式。也就是理论上说，每个机房都有一个独立的缓存集群，每次根据响应速度随机挑选一个比较快的集群访问，如果读取到数据，那么直接返回，如果没有读取到，那么从检查数据库并更新缓存记录。如果数据库里没有记录，那么先调用一个失效操作，然后写入缓存。整个系统看着没什么问题，但是天有不测风云～～～</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/08/12/bug-cache/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -619,6 +625,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/02/15/dp-structual-decorator/">设计模式 结构型：修饰</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/02/15/dp-structual-bridge/">设计模式 结构型：桥接</a>
       </li>
     
@@ -634,10 +644,6 @@
         <a href="/blog/2014/10/16/hu-lian-wang-zhao-pin-hei-hua/">互联网招聘黑话</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/10/14/fen-ceng-zi-dong-hua-ce-shi/">分层自动化测试</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -647,7 +653,7 @@
 <li class='category'><a href='/blog/categories/xiao-ji-qiao/'>小技巧 (1)</a></li>
 <li class='category'><a href='/blog/categories/qiu-zhi-he-ji-tang/'>求职和鸡汤 (8)</a></li>
 <li class='category'><a href='/blog/categories/ce-shi-fen-xiang/'>测试分享 (4)</a></li>
-<li class='category'><a href='/blog/categories/she-ji-mo-shi/'>设计模式 (8)</a></li>
+<li class='category'><a href='/blog/categories/she-ji-mo-shi/'>设计模式 (9)</a></li>
 
   </ul>
 </section>

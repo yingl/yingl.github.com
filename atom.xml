@@ -4,7 +4,7 @@
   <title><![CDATA[怪兽说]]></title>
   <link href="http://blog.monstersay.cn/atom.xml" rel="self"/>
   <link href="http://blog.monstersay.cn/"/>
-  <updated>2015-02-15T15:03:50+08:00</updated>
+  <updated>2015-02-15T16:29:40+08:00</updated>
   <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -12,6 +12,126 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[设计模式 结构型：修饰]]></title>
+    <link href="http://blog.monstersay.cn/blog/2015/02/15/dp-structual-decorator/"/>
+    <updated>2015-02-15T15:20:01+08:00</updated>
+    <id>http://blog.monstersay.cn/blog/2015/02/15/dp-structual-decorator</id>
+    <content type="html"><![CDATA[<h3>修饰 Decorator</h3>
+
+<p><strong>定义</strong></p>
+
+<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E4%BF%AE%E9%A5%B0%E6%A8%A1%E5%BC%8F">链接</a>。一种动态地往一个类中添加新的行为的设计模式。就功能而言，修饰模式相比生成子类更为灵活，这样可以给某个对象而不是整个类添加一些功能。</p>
+
+<p>比如我们设计一个UI库，需要能灵活的给一个文本框添加垂直滚动、水平滚动功能。如果用继承的方式很容易因为排列组合导致失控，而依靠修饰模式我们可以自由的对各种扩展功能进行有选择的排列组合。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#include &lt;iostream&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Widget</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">draw</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">TextBox</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Widget</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">draw</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;TextBox&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Decorator</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Widget</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">Decorator</span><span class="p">(</span><span class="k">const</span> <span class="n">Widget</span> <span class="o">*</span><span class="n">pWidget</span><span class="p">)</span> <span class="p">{</span> <span class="n">_pWidget</span> <span class="o">=</span> <span class="n">pWidget</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">draw</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="n">_pWidget</span><span class="o">-&gt;</span><span class="n">draw</span><span class="p">();</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">protected</span><span class="o">:</span>
+</span><span class='line'>    <span class="k">const</span> <span class="n">Widget</span> <span class="o">*</span><span class="n">_pWidget</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">HScrollDecorator</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Decorator</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">HScrollDecorator</span><span class="p">(</span><span class="n">Widget</span> <span class="o">*</span><span class="n">pWidget</span><span class="p">)</span> <span class="o">:</span> <span class="n">Decorator</span><span class="p">(</span><span class="n">pWidget</span><span class="p">)</span> <span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">draw</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">Decorator</span><span class="o">::</span><span class="n">draw</span><span class="p">();</span>
+</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;HScroll is supoorted!&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">VScrollDecorator</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Decorator</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="n">VScrollDecorator</span><span class="p">(</span><span class="k">const</span> <span class="n">Widget</span> <span class="o">*</span><span class="n">pWidget</span><span class="p">)</span> <span class="o">:</span> <span class="n">Decorator</span><span class="p">(</span><span class="n">pWidget</span><span class="p">)</span> <span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">draw</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">Decorator</span><span class="o">::</span><span class="n">draw</span><span class="p">();</span>
+</span><span class='line'>      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;VScroll is supoorted!&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">Widget</span> <span class="o">*</span><span class="n">pWidget</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HScrollDecorator</span><span class="p">(</span>
+</span><span class='line'>                      <span class="k">new</span> <span class="n">VScrollDecorator</span><span class="p">(</span>
+</span><span class='line'>                        <span class="k">new</span> <span class="n">TextBox</span><span class="p">));</span>
+</span><span class='line'>  <span class="n">pWidget</span><span class="o">-&gt;</span><span class="n">draw</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[设计模式 结构型：桥接]]></title>
@@ -23,6 +143,9 @@
 <p><strong>定义</strong></p>
 
 <p>Wiki<a href="http://zh.wikipedia.org/wiki/%E6%A9%8B%E6%8E%A5%E6%A8%A1%E5%BC%8F">链接</a>。号称是最复杂的设计模式之一。它把事物对象和其具体行为、具体特征分离开来，使它们可以各自独立的变化。</p>
+
+<!--more-->
+
 
 <p>设想一下我们要开发一个绘图程序，需要支持不同的形状和不同的颜色，这时我们有以下两种方案可选：</p>
 
@@ -1032,123 +1155,6 @@
 <p>“我负责整个项目的组织协调工作”。这个，我只能说我们这次不招PM。不过就算负责组织协调工作，要是你能1234有条有理讲清楚的话，还是会想办法让你面试过的。还有很多同学的问题是做了什么讲不清楚，或者没有条理。有一个做云存储的同学是个很正面的例子，取得什么成果，用了什么技术，解决了什么困难条理清晰。正好遇到我以前也是做类似产品，问了一些以前遇到的难题，虽然回答不完全正确，但显然是真刀真枪操练过的，对自己方案的弱点一清二楚。所以同学们在平时做项目的时候多思考，多总结。</p>
 
 <p>另外，面试的时候打扮得精神一点会有额外加分，大部分人都是外貌协会的。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Bugs: 小心Macro]]></title>
-    <link href="http://blog.monstersay.cn/blog/2014/04/16/bug-macro/"/>
-    <updated>2014-04-16T20:24:59+08:00</updated>
-    <id>http://blog.monstersay.cn/blog/2014/04/16/bug-macro</id>
-    <content type="html"><![CDATA[<p>以前在微软做数据库连接组件测试时曾遇到这么一个问题，为了提高测试的真实性，所有测试用例在编译时取消了_DEBUG/DEBUG的定义，结果在执行测试用例的时候出现一个从未见过的错误，经调试发现if/else工作不正常，在if已经判断为false之后还是继续执行，没有跳转。经过对代码反复排查，最终发现是宏的不恰当使用导致了这个问题。</p>
-
-<!--more-->
-
-
-<p>先看以下这段简化过的代码：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#ifdef _DEBUG</span>
-</span><span class='line'>  <span class="err">#</span><span class="n">define</span> <span class="n">TRACE</span> <span class="n">printf</span>
-</span><span class='line'><span class="cp">#else</span>
-</span><span class='line'>  <span class="err">#</span><span class="n">define</span> <span class="n">TRACE</span> <span class="k">if</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="n">printf</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这段代码初看没什么问题，如果_DEBUG打开TRACE就执行printf，否则TRACE就是一个空操作。但是情况真的跟想当然一样吗？请看以下代码：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#include &lt;stdio.h&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define _DEBUG</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#ifdef _DEBUG</span>
-</span><span class='line'>  <span class="err">#</span><span class="n">define</span> <span class="n">TRACE</span> <span class="n">printf</span>
-</span><span class='line'><span class="cp">#else</span>
-</span><span class='line'>  <span class="err">#</span><span class="n">define</span> <span class="n">TRACE</span> <span class="k">if</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="n">printf</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">TRACE</span><span class="p">(</span><span class="s">&quot;OK!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Why?</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>分别打开关闭<em>DEBUG编译执行看看结果是什么？会不会觉得比较奇怪？如果我把#define </em>DEBUG注释掉，理论上应该什么都不打印。其实这个问题我们只要把宏展开就可以发现，代码其实是这样的：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;OK!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Why?</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>修复这个问题的方法有两个：</p>
-
-<ul>
-<li>在所有调用TRACE的地方用{}包起来，这个改动量太大了，最后没有采用。</li>
-<li>用while取代if，这样展开就没有问题了。而且只要修改一个公共的头文件就可以了。</li>
-</ul>
-
-
-<p>最终代码如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cp">#ifdef _DEBUG</span>
-</span><span class='line'>  <span class="err">#</span><span class="n">define</span> <span class="n">TRACE</span> <span class="n">printf</span>
-</span><span class='line'><span class="cp">#else</span>
-</span><span class='line'>  <span class="err">#</span><span class="n">define</span> <span class="n">TRACE</span> <span class="k">while</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="n">printf</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>上面例子的代码展开就可以按照期望运行了。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">while</span> <span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;OK!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="k">else</span>
-</span><span class='line'>  <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Why?</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   

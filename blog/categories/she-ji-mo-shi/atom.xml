@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 设计模式 | 怪兽说]]></title>
   <link href="http://blog.monstersay.cn/blog/categories/she-ji-mo-shi/atom.xml" rel="self"/>
   <link href="http://blog.monstersay.cn/"/>
-  <updated>2015-02-15T15:03:50+08:00</updated>
+  <updated>2015-02-15T16:29:40+08:00</updated>
   <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -12,6 +12,95 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[设计模式 结构型：修饰]]></title>
+    <link href="http://blog.monstersay.cn/blog/2015/02/15/dp-structual-decorator/"/>
+    <updated>2015-02-15T15:20:01+08:00</updated>
+    <id>http://blog.monstersay.cn/blog/2015/02/15/dp-structual-decorator</id>
+    <content type="html"><![CDATA[<h3>修饰 Decorator</h3>
+
+<p><strong>定义</strong></p>
+
+<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E4%BF%AE%E9%A5%B0%E6%A8%A1%E5%BC%8F">链接</a>。一种动态地往一个类中添加新的行为的设计模式。就功能而言，修饰模式相比生成子类更为灵活，这样可以给某个对象而不是整个类添加一些功能。</p>
+
+<p>比如我们设计一个UI库，需要能灵活的给一个文本框添加垂直滚动、水平滚动功能。如果用继承的方式很容易因为排列组合导致失控，而依靠修饰模式我们可以自由的对各种扩展功能进行有选择的排列组合。</p>
+
+<p>```cpp</p>
+
+<h1>include <iostream></h1>
+
+<p>using namespace std;</p>
+
+<p>class Widget {
+  public:</p>
+
+<pre><code>virtual void draw() const = 0;
+</code></pre>
+
+<p>};</p>
+
+<p>class TextBox : public Widget {
+  public:</p>
+
+<pre><code>void draw() const { cout &lt;&lt; "TextBox" &lt;&lt; endl; }
+</code></pre>
+
+<p>};</p>
+
+<p>class Decorator : public Widget {
+  public:</p>
+
+<pre><code>Decorator(const Widget *pWidget) { _pWidget = pWidget; }
+
+void draw() const { _pWidget-&gt;draw(); }
+</code></pre>
+
+<p>  protected:</p>
+
+<pre><code>const Widget *_pWidget;
+</code></pre>
+
+<p>};</p>
+
+<p>class HScrollDecorator : public Decorator {
+  public:</p>
+
+<pre><code>HScrollDecorator(Widget *pWidget) : Decorator(pWidget) {}
+
+void draw() const {
+  Decorator::draw();
+  cout &lt;&lt; "HScroll is supoorted!" &lt;&lt; endl;
+}
+</code></pre>
+
+<p>};</p>
+
+<p>class VScrollDecorator : public Decorator {
+  public:</p>
+
+<pre><code>VScrollDecorator(const Widget *pWidget) : Decorator(pWidget) {}
+
+void draw() const {
+  Decorator::draw();
+  cout &lt;&lt; "VScroll is supoorted!" &lt;&lt; endl;
+}
+</code></pre>
+
+<p>};</p>
+
+<p>int main(void) {
+  Widget *pWidget = new HScrollDecorator(</p>
+
+<pre><code>                  new VScrollDecorator(
+                    new TextBox));
+</code></pre>
+
+<p>  pWidget->draw();
+}
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[设计模式 结构型：桥接]]></title>
@@ -23,6 +112,9 @@
 <p><strong>定义</strong></p>
 
 <p>Wiki<a href="http://zh.wikipedia.org/wiki/%E6%A9%8B%E6%8E%A5%E6%A8%A1%E5%BC%8F">链接</a>。号称是最复杂的设计模式之一。它把事物对象和其具体行为、具体特征分离开来，使它们可以各自独立的变化。</p>
+
+<!--more-->
+
 
 <p>设想一下我们要开发一个绘图程序，需要支持不同的形状和不同的颜色，这时我们有以下两种方案可选：</p>
 
@@ -327,67 +419,6 @@ template<class T> class Singleton {
 </code></pre>
 
 <p>};
-```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[设计模式 创建型：原型]]></title>
-    <link href="http://blog.monstersay.cn/blog/2014/04/16/dp-creational-prototype/"/>
-    <updated>2014-04-16T01:53:44+08:00</updated>
-    <id>http://blog.monstersay.cn/blog/2014/04/16/dp-creational-prototype</id>
-    <content type="html"><![CDATA[<h3>原型 Prototype</h3>
-
-<p><strong>定义</strong></p>
-
-<p>Wiki<a href="http://zh.wikipedia.org/wiki/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F">链接</a>。通过“复制”一个已经存在的实例来返回新的实例,而不是新建实例。被复制的实例就是我们所称的“原型”，这个原型是可定制的。原型模式多用于创建复杂的或者耗时的实例，因为这种情况下，复制一个已经存在的实例使程序运行更高效；或者创建值相等，只是命名不一样的同类数据。</p>
-
-<!--more-->
-
-
-<p><strong>用户场景</strong></p>
-
-<p>Wiki已经讲的很清楚了。简单来说就是把一个复杂的对象创建过程简化成复制粘贴的形式。需要注意的是我们在复制原型的时候使用深拷贝还是浅拷贝。此外该模式还经常和工厂模式一起使用，因为原型可以用工厂来构建。看了以下例子后可能会有一个疑问，为什么要提供一个clone方法，而不是直接调用拷贝构造函数？因为C++是静态语言，我们在复制原型时并不知道它是具体那个类型，而clone的话这个类自己负责拷贝，只需要返回一个基类类型的指针就可以了。</p>
-
-<p>```cpp</p>
-
-<h1>include <iostream></h1>
-
-<h1>include <string></h1>
-
-<p>using namespace std;</p>
-
-<p>class Prototype {
-  public:</p>
-
-<pre><code>virtual Prototype* clone() const = 0;
-</code></pre>
-
-<p>};</p>
-
-<p>class Product : public Prototype {
-  public:</p>
-
-<pre><code>Product() {
-  cout &lt;&lt; "Take long time to create a product." &lt;&lt; endl;
-}   
-
-Product(const Product&amp; product) {
-  cout &lt;&lt; "Copy a product is so fast." &lt;&lt; endl;
-}   
-
-Prototype* clone() const {
-  return new Product(*this);
-}   
-</code></pre>
-
-<p>};</p>
-
-<p>int main(void) {
-  Prototype <em>p1 = new Product;
-  Prototype </em>p2 = p1->clone();
-  Prototype *p3 = p2->clone();
-}
 ```</p>
 ]]></content>
   </entry>
