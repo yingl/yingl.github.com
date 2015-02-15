@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: 职业发展 | 怪兽说]]></title>
-  <link href="http://blog.monstersay.cn/blog/categories/zhi-ye-fa-zhan/atom.xml" rel="self"/>
+  <title><![CDATA[Category: 求职和鸡汤 | 怪兽说]]></title>
+  <link href="http://blog.monstersay.cn/blog/categories/qiu-zhi-he-ji-tang/atom.xml" rel="self"/>
   <link href="http://blog.monstersay.cn/"/>
-  <updated>2015-02-12T13:16:44+08:00</updated>
+  <updated>2015-02-15T11:35:50+08:00</updated>
   <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -12,6 +12,25 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[王强讲话]]></title>
+    <link href="http://blog.monstersay.cn/blog/2015/01/29/wang-qiang-jiang-hua/"/>
+    <updated>2015-01-29T19:53:54+08:00</updated>
+    <id>http://blog.monstersay.cn/blog/2015/01/29/wang-qiang-jiang-hua</id>
+    <content type="html"><![CDATA[<p>今天王强老师和徐小平老师来阿里交流，幸亏手快抢了一张门票。徐小平老师基本上就和评价一样，是个老顽童，语速很快，很活泼，重点讲了公司治理，当中扯淡也挺多。王强老师上场后，一看就有学者风度，果然是当年做班长的，先谈人生哲学，再谈投资哲学，听完后很有启发，讲话的几个关键点在这里简单记录一下。</p>
+
+<ul>
+<li>先谈了一下容格的人生曲线理论，简而言之人生是一条抛物线。王老师认为人生是波动曲线，平庸和精彩的区别在于有些人死了以后波动就停止了，而有些人的波动一直在延续。</li>
+<li>创业是什么，就是你有一个梦，如果大家都认同你这个梦，愿意融合到你这个梦里来，就可以成功了。</li>
+<li>商业计划书没什么用，关键看团队是不是靠谱，没有领域专业知识就算了。天使轮也不看数字，梦是无法审计的。</li>
+<li>承担坏的结果不是最痛苦的，面向未来的不确定进行选择是最痛苦的。想创业的话必须放弃眼前能看到的利益。</li>
+<li>空想行业趋势和夕阳朝阳行业都是扯淡。抓住人们的刚需，解决大家的痛点他们就会投。真格基金去年投了北京一个做殡葬的startup，创始人是清华的~~~详情见<a href="http://www.biian.com/bzfw/71.html%E3%80%82">http://www.biian.com/bzfw/71.html%E3%80%82</a></li>
+<li>作为startup的创始人，胸怀一定要大，你的胸怀决定了你能招到什么样的人，不能有老子天下第一的思想。用行政手段建立起来的权威是不可靠的，当你招了第一个下属或合伙人后，就必须重新树立自己的权威。</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[互联网招聘黑话]]></title>
@@ -38,6 +57,73 @@
 <li>徘徊在牛A和牛C之间一群人！ &ndash;> 永不止步，从来没在牛B上停驻过</li>
 </ul>
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[《大话移动APP测试》书评]]></title>
+    <link href="http://blog.monstersay.cn/blog/2014/08/13/da-hua-yi-dong-app-ce-shi-shu-ping/"/>
+    <updated>2014-08-13T10:10:04+08:00</updated>
+    <id>http://blog.monstersay.cn/blog/2014/08/13/da-hua-yi-dong-app-ce-shi-shu-ping</id>
+    <content type="html"><![CDATA[<p><a href="http://book.douban.com/subject/25923638/">豆瓣链接</a></p>
+
+<!--more-->
+
+
+<p>Monkey可以称得上是中国移动互联网测试的先驱人物，今日做为同事为他的新书推荐，倍感荣幸。正如书名包含“大话”二字，所以你不要期望它是一本严肃的、学院派的技术书籍（据说2会是一本技术著作）。但是你如果是一个想进入移动测试领域的新人，又或者是一个想了解移动产品测试的产品经理、开发者、投资人，那么这本书是一本再好不过的教材。从针对专业技术人员的工具、框架、性能和自动化测试，到针对产品的用户体验测试，基本涵盖了移动产品测试的方方面面。另外作者还分享了大量亲身经历的案例，使得本书更具有可操作性，看完之后可以立刻投入到实际工作中去。除了严肃的技术内容，还有幽默风趣的吐槽和心灵鸡汤式的职业生涯指点。不管你式测试老兵还是行业新人，读完相信都能让你会心一笑，豁然开朗。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[2015阿里校招內推]]></title>
+    <link href="http://blog.monstersay.cn/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui/"/>
+    <updated>2014-07-14T13:50:58+08:00</updated>
+    <id>http://blog.monstersay.cn/blog/2014/07/14/2015a-li-xiao-zhao-nei-tui</id>
+    <content type="html"><![CDATA[<p>阿里巴巴2015校招內推已经开始了，收到简历的同学我已录入系统，名单如下，大家可以自己对一下。如果有漏掉的，请直接在微博上@我。如果内部推荐电面不通过的话，抱着不落下任一个优秀同学的心态，针对于内部推荐面试不通过的同学，我们还会给予正常校招的笔试机会，笔试通过依然可以参加现场的面试哈。另外，关于內推后的流程，安排如下：</p>
+
+<ul>
+<li>即日起至8月1日前完成推荐的简历：简历筛选通过者->安排电话面试</li>
+<li>8月1日至8月15日完成推荐的简历：笔试通过者->安排进校面试</li>
+<li>8月15日之后完成推荐的简历：我们将在有补招需求时处理</li>
+</ul>
+
+
+<!--more-->
+
+
+<h4>同学名单</h4>
+
+<p>曹昱：大连理工大学／本科<br/>
+陈峰：东南大学／硕士<br/>
+陈琼：湖南大学／硕士<br/>
+丁道贤：天津大学／硕士<br/>
+丁富刚：中南民族大学／本科<br/>
+郭婉：西北工业大学／硕士<br/>
+李志欣：西北工业大学／硕士<br/>
+黄帅：中国地质大学／本科<br/>
+刘德强：南阳理工学院／本科<br/>
+张友谊：南阳理工学院／本科<br/>
+王伟：南京邮电大学／硕士<br/>
+王玉萍：南京理工大学／硕士<br/>
+吴康伟：山东科技大学／本科<br/>
+杨沛超：北京航空航天大学／硕士<br/>
+张睿阳：浙江大学／硕士<br/>
+徐勤劼：浙江工业大学<br/>
+柯姣：宁波大学／硕士<br/>
+祝军：宁波大学／硕士<br/>
+李木军：宁波大学／硕士<br/>
+曹茵茵：北京理工大学／硕士<br/>
+李贺：中国科技大学／硕士<br/>
+王磊：东华大学／硕士<br/>
+王梦丝：西安电子科技大学／硕士<br/>
+刘宝：大连理工大学／硕士<br/>
+王秀林：大连理工大学／硕士<br/>
+姚淑慧：四川大学／本科<br/>
+冯博炜：广东工业大学／硕士<br/>
+胡为：湖南大学／硕士<br/>
+刘斌：湖南大学／硕士<br/>
+李中坤：湖南大学／本科<br/>
+黄晋：中山大学／本科<br/></p>
 ]]></content>
   </entry>
   
