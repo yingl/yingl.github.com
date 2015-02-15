@@ -3,7 +3,7 @@ layout: post
 title: "《大话移动APP测试》书评"
 date: 2014-08-13 10:10:04 +0800
 comments: true
-categories: 书评
+categories: 求职和鸡汤
 ---
 [豆瓣链接][1]
 

@@ -3,7 +3,7 @@ layout: post
 title: "互联网招聘黑话"
 date: 2014-10-16 09:25:26 +0800
 comments: true
-categories: 职业发展
+categories: 求职和鸡汤
 ---
 
 在水木上看到转的。

@@ -3,7 +3,7 @@ layout: post
 title: "leetcode终于刷完了"
 date: 2014-05-13 21:33:45 +0800
 comments: true
-categories: 算法 C++ 面试
+categories: 求职和鸡汤
 ---
 
 当年准备面试FLAG时开工的，后来断断续续做了一点，这次终于痛下决心刷完整理上传到github上了。参考链接：https://github.com/yingl/leetcode_in_cpp
