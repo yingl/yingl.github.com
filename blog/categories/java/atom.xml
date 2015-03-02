@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Java | 怪兽说]]></title>
+  <link href="http://blog.monstersay.cn/blog/categories/java/atom.xml" rel="self"/>
+  <link href="http://blog.monstersay.cn/"/>
+  <updated>2015-03-02T20:53:32+08:00</updated>
+  <id>http://blog.monstersay.cn/</id>
+  <author>
+    <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Clazz.this和this的区别]]></title>
+    <link href="http://blog.monstersay.cn/blog/2015/02/28/class-this/"/>
+    <updated>2015-02-28T17:09:27+08:00</updated>
+    <id>http://blog.monstersay.cn/blog/2015/02/28/class-this</id>
+    <content type="html"><![CDATA[<p>最近在看某项目源代码，经常看到类似这样的代码"doSomething(XXXFragment.this, &hellip;)&ldquo;，这个和直接调用this有什么区别？为了搞清楚这个概念，在参考了网上的资料后写了这么一段例子代码：</p>
+
+<p>```Java
+public class MyObject {
+  public void method() {</p>
+
+<pre><code>new Runnable() {
+  public void run() {
+    System.out.println(this.toString());
+    System.out.println(MyObject.this.toString());
+  }
+
+  public String toString() {
+    return "Anonymous objects's Runnable!";
+  }
+}.run();
+</code></pre>
+
+<p>  }</p>
+
+<p>  public String toString() {</p>
+
+<pre><code>return "MyObjects's object!";
+</code></pre>
+
+<p>```</p>
+
+<p>执行结果如下：
+Anonymous objects&rsquo;s Runnable!
+MyObjects&rsquo;s object!</p>
+
+<p>可以看出，当一个inner类必须使用outer类的this实例时，就必须使用Clazz.this，使得编译器知道使用正确的this实例。</p>
+]]></content>
+  </entry>
+  
+</feed>
