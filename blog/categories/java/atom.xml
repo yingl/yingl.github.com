@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | 怪兽说]]></title>
   <link href="http://blog.monstersay.cn/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://blog.monstersay.cn/"/>
-  <updated>2015-03-02T21:06:33+08:00</updated>
+  <updated>2015-03-02T21:11:09+08:00</updated>
   <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -56,7 +56,7 @@ MyObjects's object!
 
 <p>可以看出，当一个inner类必须使用outer类的this实例时，就必须使用Clazz.this，使得编译器知道使用正确的this实例。</p>
 
-<p>另外还发现octopress的一个坑，用markdown的<strong>```</strong>来标识语言的时候，一定要用小写的java，大写就会产生一个错误"Pygments can&rsquo;t parse unknown language: Java"。网上搜到一个哥们花了6个小时更新python版本姐姐这个问题，What&rsquo;s the fuck!</p>
+<p>另外还发现octopress的一个坑，用markdown的<strong>```</strong>来标识语言的时候，一定要用小写的java，大写就会产生一个错误"Pygments can&rsquo;t parse unknown language: Java"。网上搜到一个哥们花了6个小时更新python版本解决这个问题，What&rsquo;s the fuck!</p>
 ]]></content>
   </entry>
   
