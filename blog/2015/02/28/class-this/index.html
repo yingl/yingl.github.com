@@ -142,9 +142,14 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>执行结果如下：
-Anonymous objects&rsquo;s Runnable!
-MyObjects&rsquo;s object!</p>
+<p>执行结果如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Anonymous</span> <span class="n">objects</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">Runnable</span><span class="o">!</span>
+</span><span class='line'><span class="n">MyObjects</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">object</span><span class="o">!</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>可以看出，当一个inner类必须使用outer类的this实例时，就必须使用Clazz.this，使得编译器知道使用正确的this实例。</p>
 
