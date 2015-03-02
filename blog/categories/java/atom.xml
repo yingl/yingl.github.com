@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | 怪兽说]]></title>
   <link href="http://blog.monstersay.cn/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://blog.monstersay.cn/"/>
-  <updated>2015-03-02T20:54:06+08:00</updated>
+  <updated>2015-03-02T21:04:17+08:00</updated>
   <id>http://blog.monstersay.cn/</id>
   <author>
     <name><![CDATA[窥基／无柳无酒／黑灯瞎火]]></name>
@@ -20,8 +20,9 @@
     <id>http://blog.monstersay.cn/blog/2015/02/28/class-this</id>
     <content type="html"><![CDATA[<p>最近在看某项目源代码，经常看到类似这样的代码"doSomething(XXXFragment.this, &hellip;)&ldquo;，这个和直接调用this有什么区别？为了搞清楚这个概念，在参考了网上的资料后写了这么一段例子代码：</p>
 
-<p>```Java
-public class MyObject {
+<p>```java</p>
+
+<p>public class MyObject {
   public void method() {</p>
 
 <pre><code>new Runnable() {
@@ -43,6 +44,9 @@ public class MyObject {
 <pre><code>return "MyObjects's object!";
 </code></pre>
 
+<p>  }
+}</p>
+
 <p>```</p>
 
 <p>执行结果如下：
@@ -50,6 +54,8 @@ Anonymous objects&rsquo;s Runnable!
 MyObjects&rsquo;s object!</p>
 
 <p>可以看出，当一个inner类必须使用outer类的this实例时，就必须使用Clazz.this，使得编译器知道使用正确的this实例。</p>
+
+<p>另外还发现octopress的一个坑，用markdown的<strong>```</strong>来标识语言的时候，一定要用小写的java，大写就会产生一个错误"Pygments can&rsquo;t parse unknown language: Java"。网上搜到一个哥们花了6个小时更新python版本姐姐这个问题，What&rsquo;s the fuck!</p>
 ]]></content>
   </entry>
   

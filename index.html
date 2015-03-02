@@ -9,7 +9,17 @@
   <meta name="author" content="窥基／无柳无酒／黑灯瞎火">
 
   
-  <meta name="description" content="修饰 Decorator 定义 Wiki链接。一种动态地往一个类中添加新的行为的设计模式。就功能而言，修饰模式相比生成子类更为灵活，这样可以给某个对象而不是整个类添加一些功能。 比如我们设计一个UI库，需要能灵活的给一个文本框添加垂直滚动、水平滚动功能。如果用继承的方式很容易因为排列组合导致失控， &hellip;">
+  <meta name="description" content="最近在看某项目源代码，经常看到类似这样的代码&#8221;doSomething(XXXFragment.this, &hellip;)&ldquo;，这个和直接调用this有什么区别？为了搞清楚这个概念，在参考了网上的资料后写了这么一段例子代码： 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +75,89 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/02/28/class-this/">Clazz.this和this的区别</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-02-28T17:09:27+08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近在看某项目源代码，经常看到类似这样的代码&#8221;doSomething(XXXFragment.this, &hellip;)&ldquo;，这个和直接调用this有什么区别？为了搞清楚这个概念，在参考了网上的资料后写了这么一段例子代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyObject</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">method</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">new</span> <span class="nf">Runnable</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">MyObject</span><span class="o">.</span><span class="na">this</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="s">&quot;Anonymous objects&#39;s Runnable!&quot;</span><span class="o">;</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">}.</span><span class="na">run</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s">&quot;MyObjects&#39;s object!&quot;</span><span class="o">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>执行结果如下：
+Anonymous objects&rsquo;s Runnable!
+MyObjects&rsquo;s object!</p>
+
+<p>可以看出，当一个inner类必须使用outer类的this实例时，就必须使用Clazz.this，使得编译器知道使用正确的this实例。</p>
+
+<p>另外还发现octopress的一个坑，用markdown的<strong>&#8220;`</strong>来标识语言的时候，一定要用小写的java，大写就会产生一个错误&#8221;Pygments can&rsquo;t parse unknown language: Java&#8221;。网上搜到一个哥们花了6个小时更新python版本姐姐这个问题，What&rsquo;s the fuck!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -561,47 +654,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/08/13/da-hua-yi-dong-app-ce-shi-shu-ping/">《大话移动APP测试》书评</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-08-13T10:10:04+08:00" pubdate data-updated="true">Aug 13<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://book.douban.com/subject/25923638/">豆瓣链接</a></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/08/13/da-hua-yi-dong-app-ce-shi-shu-ping/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -625,6 +677,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/02/28/class-this/">Clazz.this和this的区别</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/02/15/dp-structual-decorator/">设计模式 结构型：修饰</a>
       </li>
     
@@ -640,16 +696,13 @@
         <a href="/blog/2015/01/22/bug-optimization/">Bugs: 优化要小心</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/10/16/hu-lian-wang-zhao-pin-hei-hua/">互联网招聘黑话</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Categories</h1>
   <ul id="categories">
     <li class='category'><a href='/blog/categories/bugs/'>Bugs (5)</a></li>
+<li class='category'><a href='/blog/categories/java/'>Java (1)</a></li>
 <li class='category'><a href='/blog/categories/xiao-ji-qiao/'>小技巧 (1)</a></li>
 <li class='category'><a href='/blog/categories/qiu-zhi-he-ji-tang/'>求职和鸡汤 (8)</a></li>
 <li class='category'><a href='/blog/categories/ce-shi-fen-xiang/'>测试分享 (4)</a></li>
