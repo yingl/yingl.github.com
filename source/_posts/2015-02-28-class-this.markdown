@@ -38,4 +38,4 @@ MyObjects's object!
 
 可以看出，当一个inner类必须使用outer类的this实例时，就必须使用Clazz.this，使得编译器知道使用正确的this实例。
 
-另外还发现octopress的一个坑，用markdown的**```**来标识语言的时候，一定要用小写的java，大写就会产生一个错误"Pygments can't parse unknown language: Java"。网上搜到一个哥们花了6个小时更新python版本姐姐这个问题，What's the fuck!
+另外还发现octopress的一个坑，用markdown的**```**来标识语言的时候，一定要用小写的java，大写就会产生一个错误"Pygments can't parse unknown language: Java"。网上搜到一个哥们花了6个小时更新python版本解决这个问题，What's the fuck!
