@@ -36,7 +36,7 @@ class Singeleton {
     }
 
   protected:
-    static Obj *_instance;
+    static volatile Obj *_instance;
 };
 
 Obj* Singeleton::_instance = NULL;
